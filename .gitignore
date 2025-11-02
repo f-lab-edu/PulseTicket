@@ -41,6 +41,8 @@ out/
 .serena
 CLAUDE.md
 .cursor
+.claude
+.mcp.json
 
 ### Temp Files ###
 cookies.txt
