@@ -41,3 +41,6 @@ out/
 .serena
 CLAUDE.md
 .cursor
+
+### Temp Files ###
+cookies.txt
