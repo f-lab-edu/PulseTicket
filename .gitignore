@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.cache_ggshield
 
 ### STS ###
 .apt_generated
@@ -46,3 +47,13 @@ CLAUDE.md
 
 ### Temp Files ###
 cookies.txt
+
+### Environment Variables ###
+.env
+
+### Docker Compose Override ###
+docker-compose.override.yml
+
+### PostgreSQL Init Scripts ###
+docker/postgres/init/*.sql
+!docker/postgres/init/*.sql.example

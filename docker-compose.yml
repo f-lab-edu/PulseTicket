@@ -10,24 +10,24 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: pulseticket-postgres
+    env_file:
+      - .env
     environment:
-      # 데이터베이스 초기 설정
-      POSTGRES_DB: pulseticket
-      POSTGRES_USER: pulseticket
-      POSTGRES_PASSWORD: pulseticket_password
       # 로케일 설정
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      # 호스트 포트:컨테이너 포트 (개발 환경에서 외부 접근용)
-      - "5432:5432"
+      # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
     volumes:
       # 데이터 영속성을 위한 볼륨 마운트
       - postgres_data:/var/lib/postgresql/data
+      # 초기화 스크립트 마운트
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
     networks:
       - pulseticket-network
     healthcheck:
       # 데이터베이스 준비 상태 확인
-      test: ["CMD-SHELL", "pg_isready -U pulseticket"]
+      test: ["CMD-SHELL", "pg_isready -U PulseTicket_PostgreSQL_SuperUser"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -39,18 +39,20 @@ services:
   redis:
     image: redis:7-alpine
     container_name: pulseticket-redis
-    command: redis-server --appendonly yes --requirepass pulseticket_redis_password
+    env_file:
+      - .env
+    command: redis-server --port ${REDIS_PORT:-6379} --appendonly yes --requirepass ${SPRING_DATA_REDIS_PASSWORD}
     ports:
-      # 호스트 포트:컨테이너 포트 (개발 환경에서 외부 접근용)
-      - "6379:6379"
+      # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
+      - "${REDIS_HOST_PORT:-6379}:${REDIS_PORT:-6379}"
     volumes:
       # 데이터 영속성을 위한 볼륨 마운트
       - redis_data:/data
     networks:
       - pulseticket-network
     healthcheck:
-      # Redis 준비 상태 확인
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      # Redis 준비 상태 확인 (포트는 docker-compose.override.yml에서 설정)
+      test: ["CMD", "redis-cli", "-p", "${REDIS_PORT:-6379}", "--raw", "incr", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -66,24 +68,24 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: pulseticket-app
+    env_file:
+      - .env
     environment:
-      # Spring Boot 애플리케이션 환경 변수
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pulseticket
-      SPRING_DATASOURCE_USERNAME: pulseticket
-      SPRING_DATASOURCE_PASSWORD: pulseticket_password
+      # Docker 네트워크 내부에서 사용하는 호스트명으로 변경
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      SPRING_DATA_REDIS_PASSWORD: pulseticket_redis_password
+      SPRING_DATA_REDIS_PORT: 16379
       # 프로파일 설정 (개발 환경)
       SPRING_PROFILES_ACTIVE: docker,dev
       # Spring Boot DevTools 활성화를 위한 설정
       SPRING_DEVTOOLS_RESTART_ENABLED: "true"
       SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
     ports:
-      # 호스트 포트:컨테이너 포트
-      - "8080:8080"
+      # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
+      - "${APP_HOST_PORT:-8080}:${SERVER_PORT:-8080}"
       # LiveReload 포트 (개발 모드)
-      - "35729:35729"
+      - "${LIVERELOAD_HOST_PORT:-35729}:35729"
     volumes:
       # 소스 코드를 볼륨으로 마운트하여 실시간 변경사항 반영
       - ./src:/app/src:rw
@@ -93,6 +95,8 @@ services:
       - ./gradle:/app/gradle:ro
       # Gradle 캐시 디렉토리 (빌드 속도 향상)
       - gradle_cache:/root/.gradle
+      # Gradle 사용자 홈 디렉토리 캐시 (익명 볼륨 방지)
+      - gradle_user_cache:/home/gradle/.gradle
     networks:
       - pulseticket-network
     depends_on:
@@ -122,5 +126,8 @@ volumes:
     driver: local
   # Gradle 캐시 볼륨 (개발 모드에서 빌드 속도 향상)
   gradle_cache:
+    driver: local
+  # Gradle 사용자 홈 디렉토리 캐시 볼륨
+  gradle_user_cache:
     driver: local
 

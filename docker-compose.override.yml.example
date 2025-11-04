@@ -1,0 +1,30 @@
+# ============================================================================
+# Docker Compose Override 파일 템플릿
+# 이 파일을 복사하여 docker-compose.override.yml을 생성하고 실제 값을 입력하세요
+# 
+# 사용법:
+#   cp docker-compose.override.yml.example docker-compose.override.yml
+#   # 그 다음 docker-compose.override.yml 파일을 열어서 실제 포트와 사용자명을 입력하세요
+# ============================================================================
+
+services:
+  postgres:
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+
+  redis:
+    command: redis-server --port ${REDIS_PORT:-6379} --appendonly yes --requirepass ${SPRING_DATA_REDIS_PASSWORD}
+    ports:
+      - "${REDIS_HOST_PORT:-6379}:${REDIS_PORT:-6379}"
+    environment:
+      REDIS_PORT: "${REDIS_PORT:-6379}"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "${REDIS_PORT:-6379}", "--raw", "incr", "ping"]
+
+  app:
+    ports:
+      - "${APP_HOST_PORT:-8080}:${SERVER_PORT:-8080}"
+      - "${LIVERELOAD_HOST_PORT:-35729}:35729"
+    environment:
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+
