@@ -1,0 +1,23 @@
+-- ============================================================================
+-- PulseTicket_User 생성 및 권한 부여
+-- 슈퍼유저로 데이터베이스가 초기화된 후, 실제 사용할 일반 사용자를 생성
+-- 
+-- 사용법:
+--   1. 이 파일을 01-create-user.sql로 복사
+--   2. 사용자명과 비밀번호를 .env 파일의 값과 일치하도록 수정
+-- ============================================================================
+
+-- 사용자 생성 (사용자명과 비밀번호는 .env 파일의 값과 일치해야 함)
+CREATE USER "PulseTicket_User" WITH PASSWORD 'your_postgres_password_here';
+
+-- 데이터베이스 소유권 변경
+ALTER DATABASE pulseticket OWNER TO "PulseTicket_User";
+
+-- pulseticket 데이터베이스에 대한 모든 권한 부여
+GRANT ALL PRIVILEGES ON DATABASE pulseticket TO "PulseTicket_User";
+
+-- public 스키마에 대한 권한 부여
+GRANT ALL ON SCHEMA public TO "PulseTicket_User";
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "PulseTicket_User";
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO "PulseTicket_User";
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO "PulseTicket_User";

@@ -1,0 +1,53 @@
+# ============================================================================
+# Docker 빌드 컨텍스트에서 제외할 파일 및 디렉토리 목록
+# 빌드 속도 향상 및 보안을 위해 불필요한 파일 제외
+# ============================================================================
+
+# 빌드 결과물 (이미지 내에서 새로 빌드됨)
+build/
+out/
+target/
+*.jar
+*.war
+*.ear
+
+# IDE 설정 파일
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Git 관련 파일
+.git/
+.gitignore
+.gitattributes
+
+# 운영체제 관련 파일
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# 로그 파일
+*.log
+logs/
+
+# 테스트 관련
+test-results/
+test-reports/
+
+# 문서 파일
+*.md
+!readme.md
+docs/
+
+# 기타 설정 파일
+.env
+.env.local
+*.properties.local
+
