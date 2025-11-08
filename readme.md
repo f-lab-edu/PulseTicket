@@ -30,7 +30,8 @@ PulseTicket - Ticketing System
 캐싱피드 논문 수식 정리 필요..  
 
 [도구]  
-intelliJ
+intelliJ   
+\+ Cursor, PostgreSQL MCP -> 코딩 X, DB 조작만
 
 [milestone]  
 → 기본적인 티켓팅 시스템 만들기  
