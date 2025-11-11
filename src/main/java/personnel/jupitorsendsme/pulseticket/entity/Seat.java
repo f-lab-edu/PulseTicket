@@ -2,6 +2,8 @@ package personnel.jupitorsendsme.pulseticket.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -57,6 +59,7 @@ public class Seat {
     /**
      * 좌석 상태 (AVAILABLE, RESERVED, CONFIRMED)
      */
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private String status;
 
