@@ -2,7 +2,7 @@ package personnel.jupitorsendsme.pulseticket.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import personnel.jupitorsendsme.pulseticket.service.reservationQuery.ReservationQueryA;
+import personnel.jupitorsendsme.pulseticket.service.reservationQuery.ReservationQueryServiceDefault;
 
 /**
  * ReservationQueryController 에서 사용될
@@ -12,7 +12,7 @@ import personnel.jupitorsendsme.pulseticket.service.reservationQuery.Reservation
 public class ReservationQueryConfig {
 
     @Bean("defaultReservationQueryA")
-    public ReservationQueryA defaultReservationBookingA () {
-        return new ReservationQueryA();
+    public ReservationQueryServiceDefault defaultReservationBookingA () {
+        return new ReservationQueryServiceDefault();
     }
 }

@@ -1,0 +1,12 @@
+package personnel.jupitorsendsme.pulseticket.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("api/event")
+public class EventManagementController {
+
+
+
+}
