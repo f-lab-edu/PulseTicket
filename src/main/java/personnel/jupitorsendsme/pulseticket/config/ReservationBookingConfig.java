@@ -2,7 +2,8 @@ package personnel.jupitorsendsme.pulseticket.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import personnel.jupitorsendsme.pulseticket.service.reservationBooking.ReservationBookingA;
+import org.springframework.context.annotation.Scope;
+import personnel.jupitorsendsme.pulseticket.service.reservationBooking.ReservationBookingServiceDefault;
 
 /**
  * ReservationBookingController 에서 사용될
@@ -11,8 +12,9 @@ import personnel.jupitorsendsme.pulseticket.service.reservationBooking.Reservati
 @Configuration
 public class ReservationBookingConfig {
 
-    @Bean("defaultReservationBookingA")
-    public ReservationBookingA defaultReservationBookingA () {
-        return new ReservationBookingA();
+    @Bean
+    @Scope("singleton")
+    public ReservationBookingServiceDefault reservationBookingServiceDefault() {
+        return new ReservationBookingServiceDefault();
     }
 }
