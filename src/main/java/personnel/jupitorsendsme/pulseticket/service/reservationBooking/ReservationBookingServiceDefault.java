@@ -2,6 +2,7 @@ package personnel.jupitorsendsme.pulseticket.service.reservationBooking;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
@@ -28,9 +29,11 @@ import java.time.LocalDateTime;
 public class ReservationBookingServiceDefault implements ReservationBookingService {
 
     @Autowired
+    @Qualifier("default")
     UserManagementService userManagementService;
 
     @Autowired
+    @Qualifier("default")
     ReservationQueryService reservationQueryService;
 
     @Autowired
@@ -46,10 +49,10 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
     @Transactional
     public ReservationBookingResponse book(String username, String password, Long eventId, Integer seatNumber) throws RuntimeException {
 
-        // 사용자 유효성 여부
+        // 사용자 유효성 여부 (User Entity 조회할때와 합칠 순 없나 ?)
         if (!userManagementService.isUserValid(username, password)) throw new RuntimeException();
 
-        // 시트 좌석 예약 가능 여부
+        // 시트 좌석 예약 가능 여부 (이것도 Seat Entity 조회시와 합칠 순 없나?)
         if (!reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber)) throw new RuntimeException();
 
         // User Entity 조회하여 키 습득
