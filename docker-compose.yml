@@ -79,8 +79,8 @@ services:
       # 프로파일 설정 (개발 환경)
       SPRING_PROFILES_ACTIVE: docker,dev
       # Spring Boot DevTools 활성화를 위한 설정
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
-      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
+      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "false"
     ports:
       # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
       - "${APP_HOST_PORT:-8080}:${SERVER_PORT:-8080}"
