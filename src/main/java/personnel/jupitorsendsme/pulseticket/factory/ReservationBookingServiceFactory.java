@@ -7,7 +7,7 @@ import personnel.jupitorsendsme.pulseticket.interfaces.ReservationBookingService
 import personnel.jupitorsendsme.pulseticket.service.reservationBooking.ReservationBookingServiceDefault;
 
 /**
- * ReservationBooking 구현체 factory method 컴포넌트
+ * ReservationBookingService 구현체 factory method pattern 컴포넌트
  * Request 에 따라 어떤 서비스를 쓸건지를 정해서 Controller 에게 넘겨주는 책임.
  */
 @Component

@@ -12,9 +12,9 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
 import personnel.jupitorsendsme.pulseticket.factory.ReservationBookingServiceFactory;
 
 /**
- * 좌석 예약 컨트롤러
- * HTTP 요청/응답 처리
- * 요청에 따른 예약방식을 설정하는 역할까지 포함함.
+ * 좌석 예약 컨트롤러</br>
+ * HTTP 요청/응답 처리</br>
+ * 요청에 따른 예약방식을 설정하는 역할까지 포함함.</br>
  */
 @RestController
 @RequestMapping("api/reservation/booking")

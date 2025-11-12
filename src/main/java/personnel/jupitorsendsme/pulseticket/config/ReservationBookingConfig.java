@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Scope;
 import personnel.jupitorsendsme.pulseticket.service.reservationBooking.ReservationBookingServiceDefault;
 
 /**
- * ReservationBookingController 에서 사용될
+ * ReservationBookingController 에서 사용될</br>
  * 생성자 설정을 위한 클래스 (Factory method pattern)
  */
 @Configuration
