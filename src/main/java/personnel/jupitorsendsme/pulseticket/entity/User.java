@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +24,8 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class User {
 
     /**
@@ -47,23 +51,11 @@ public class User {
      * 생성 일시
      */
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     /**
      * 사용자의 예약 목록
      */
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
-
-    /**
-     * User 생성자
-     *
-     * @param username 사용자명
-     * @param passwordHash 해시된 비밀번호
-     */
-    public User(String username, String passwordHash) {
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.createdAt = LocalDateTime.now();
-    }
 }
