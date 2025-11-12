@@ -13,7 +13,7 @@ public interface ReservationQueryService {
      * @param eventId 확인하려는 이벤트 id
      * @return 예약 가능 여부
      */
-    boolean isBookingEventAvailable (String eventId);
+    boolean isBookingEventAvailable (Long eventId);
 
     /**
      * 특정 이벤트의 예약 가능한 좌석 조회 - 시각적 표현 <br>
@@ -21,7 +21,7 @@ public interface ReservationQueryService {
      * @param eventId 확인하고자 하는 이벤트 id
      * @return Textual Diagram
      */
-    String availableSeatsOfTheEvent (String eventId);
+    String availableSeatsOfTheEvent (Long eventId);
 
     /**
      * 특정 이벤트의 특정 좌석이 예약 가능한지 판단
@@ -29,7 +29,7 @@ public interface ReservationQueryService {
      * @param seatNumber 알아보고자 하는 이벤트의 좌석 번호
      * @return 에약 가능 여부. (나중에는 유효하지 않은 예약 좌석일 경우 특정 메시지를 반환하도록 수정하는게 좋겠다)
      */
-    boolean isSpecificSeatAvailable (String eventId, Integer seatNumber);
+    boolean isSpecificSeatAvailable (Long eventId, Integer seatNumber);
 
     /**
      * 특정 사용자에 대한 예약 목록 조회

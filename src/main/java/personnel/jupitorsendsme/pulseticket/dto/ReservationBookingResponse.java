@@ -16,4 +16,9 @@ public class ReservationBookingResponse {
      * 예약 또는 예약 취소를 성공 했는지에 대한 flag
      */
     boolean isSuccess;
+
+    /**
+     * 예약 성공한 경우 예약 번호
+     */
+    Long reservationId;
 }

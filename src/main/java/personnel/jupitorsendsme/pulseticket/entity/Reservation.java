@@ -13,9 +13,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +29,8 @@ import java.time.LocalDateTime;
 @Table(name = "reservations")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 
@@ -55,7 +60,7 @@ public class Reservation {
      */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String status;
+    private ReservationConstants.ReservationStatus status;
 
     /**
      * 예약 생성 일시
@@ -80,19 +85,4 @@ public class Reservation {
      */
     @Column(name = "cancelled_at")
     private LocalDateTime cancelledAt;
-
-    /**
-     * Reservation 생성자
-     *
-     * @param user 예약한 사용자
-     * @param seat 예약된 좌석
-     * @param expiresAt 예약 만료 일시
-     */
-    public Reservation(User user, Seat seat, LocalDateTime expiresAt) {
-        this.user = user;
-        this.seat = seat;
-        this.status = "PENDING";
-        this.createdAt = LocalDateTime.now();
-        this.expiresAt = expiresAt;
-    }
 }
