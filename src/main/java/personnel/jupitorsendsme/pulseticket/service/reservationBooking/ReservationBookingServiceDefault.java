@@ -28,22 +28,25 @@ import java.time.LocalDateTime;
 @Service
 public class ReservationBookingServiceDefault implements ReservationBookingService {
 
-    @Autowired
-    @Qualifier("default")
-    UserManagementService userManagementService;
+    private final UserManagementService userManagementService;
+    private final ReservationQueryService reservationQueryService;
+    private final ReservationRepository reservationRepo;
+    private final UserRepository userRepo;
+    private final SeatRepository seatRepo;
 
     @Autowired
-    @Qualifier("default")
-    ReservationQueryService reservationQueryService;
-
-    @Autowired
-    ReservationRepository reservationRepo;
-
-    @Autowired
-    UserRepository userRepo;
-
-    @Autowired
-    SeatRepository seatRepo;
+    public ReservationBookingServiceDefault(
+            @Qualifier("default") UserManagementService userManagementService,
+            @Qualifier("default") ReservationQueryService reservationQueryService,
+            ReservationRepository reservationRepo,
+            UserRepository userRepo,
+            SeatRepository seatRepo) {
+        this.userManagementService = userManagementService;
+        this.reservationQueryService = reservationQueryService;
+        this.reservationRepo = reservationRepo;
+        this.userRepo = userRepo;
+        this.seatRepo = seatRepo;
+    }
 
     @Override
     @Transactional
