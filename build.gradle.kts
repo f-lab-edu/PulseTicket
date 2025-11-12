@@ -37,6 +37,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // Argon2id 비밀번호 해싱
+    implementation("org.springframework.security:spring-security-crypto")
 }
 
 tasks.withType<Test> {
