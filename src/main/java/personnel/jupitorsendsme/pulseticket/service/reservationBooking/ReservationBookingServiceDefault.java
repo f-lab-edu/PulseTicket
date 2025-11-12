@@ -46,14 +46,16 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 
     @Override
     @Transactional
-    public ReservationBookingResponse book(String username, String password, Long eventId, Integer seatNumber) throws RuntimeException {
+    public ReservationBookingResponse book(String username, String password, Long eventId, Integer seatNumber) {
 
-        // 사용자 유효성 여부 (User Entity 조회할때와 합칠 순 없나 ?)
-        if (!userManagementService.isUserValid(username, password)) throw new RuntimeException();
+        ReservationBookingResponse response = ReservationBookingResponse.builder()
+                .isSuccess(false)
+                .build();
 
-        // 시트 좌석 예약 가능 여부 (이것도 Seat Entity 조회시와 합칠 순 없나?)
-        if (!reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber)) throw new RuntimeException();
-
+        // 사용자 유효성 여부 (User Entity 조회할때와 합칠 순 없나 ?) + 시트 좌석 예약 가능 여부 (이것도 Seat Entity 조회시와 합칠 순 없나?)
+        if (!userManagementService.isUserValid(username, password) || !reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber)) {
+            return response;
+        }
         // User Entity 조회하여 키 습득
         User user = userRepo.findUserByUsername(username).orElseThrow(RuntimeException::new);
 
@@ -67,8 +69,11 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
                 .expiresAt(LocalDateTime.now().plusHours(24))
                 .build();
 
-        reservationRepo.save(reservation);
+        Reservation created = reservationRepo.save(reservation);
 
-        return null;
+        response.setReservationId(created.getId());
+        response.setSuccess(true);
+
+        return response;
     }
 }
