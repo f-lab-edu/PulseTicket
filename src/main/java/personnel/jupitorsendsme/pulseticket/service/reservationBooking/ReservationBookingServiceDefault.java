@@ -19,11 +19,7 @@ import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
 import java.time.LocalDateTime;
 
 /**
- * 얘의 역할은 뭐지? </br>
- * booking, 즉 예약 담당이다. </br>
- * 예약에는 여러가지 단계가 필요하다. </br>
- * </br>
- * 그걸 총괄하는 역할? </br>
+ * 기본 좌석 예약 서비스
  */
 @Service
 public class ReservationBookingServiceDefault implements ReservationBookingService {
