@@ -41,6 +41,6 @@ public class UserManagementServiceDefault implements UserManagementService {
 
     @Override
     public boolean isUserValid(String username, String password) {
-        return userRepo.exitsByUsernameAndPasswordHash(username, passwordHashingService.hash(password));
+        return userRepo.existsByUsernameAndPasswordHash(username, passwordHashingService.hash(password));
     }
 }

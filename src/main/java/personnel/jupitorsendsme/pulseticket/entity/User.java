@@ -50,12 +50,14 @@ public class User {
     /**
      * 생성 일시
      */
+    @Builder.Default
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     /**
      * 사용자의 예약 목록
      */
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 }

@@ -14,9 +14,12 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +36,9 @@ import java.time.LocalDateTime;
 )
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Seat {
 
     /**
@@ -61,7 +66,7 @@ public class Seat {
      */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String status;
+    private ReservationConstants.SeatStatus status;
 
     /**
      * 예약 만료 일시
@@ -86,18 +91,4 @@ public class Seat {
      */
     @OneToOne(mappedBy = "seat")
     private Reservation reservation;
-
-    /**
-     * Seat 생성자
-     *
-     * @param event 소속 이벤트
-     * @param seatNumber 좌석 번호
-     */
-    public Seat(Event event, Integer seatNumber) {
-        this.event = event;
-        this.seatNumber = seatNumber;
-        this.status = "AVAILABLE";
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
 }

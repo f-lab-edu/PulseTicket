@@ -1,6 +1,7 @@
 package personnel.jupitorsendsme.pulseticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 
 import java.util.Optional;
@@ -13,4 +14,6 @@ import java.util.Optional;
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     Optional<Seat> findSeatByEventIdAndSeatNumber (Long event_id, Integer seatNumber);
+
+    boolean existsSeatByEventIdAndStatus(Long event_id, ReservationConstants.SeatStatus status);
 }
