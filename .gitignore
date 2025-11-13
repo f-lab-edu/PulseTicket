@@ -57,3 +57,5 @@ docker-compose.override.yml
 ### PostgreSQL Init Scripts ###
 docker/postgres/init/*.sql
 !docker/postgres/init/*.sql.example
+docker/postgres/init/*.sh
+!docker/postgres/init/*.sh.example

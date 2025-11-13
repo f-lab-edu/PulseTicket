@@ -17,7 +17,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
-      - "${POSTGRES_HOST_PORT:-5432}:5432"
+      - "${POSTGRES_HOST_PORT:-5432}:${POSTGRES_PORT:-5432}"
     volumes:
       # 데이터 영속성을 위한 볼륨 마운트
       - postgres_data:/var/lib/postgresql/data
@@ -27,7 +27,7 @@ services:
       - pulseticket-network
     healthcheck:
       # 데이터베이스 준비 상태 확인
-      test: ["CMD-SHELL", "pg_isready -U PulseTicket_PostgreSQL_SuperUser"]
+      test: ["CMD-SHELL", "pg_isready -U PulseTicket_PostgreSQL_SuperUser -p ${POSTGRES_PORT:-5432}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -72,7 +72,7 @@ services:
       - .env
     environment:
       # Docker 네트워크 내부에서 사용하는 호스트명으로 변경
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: ${REDIS_PORT:-6379}
