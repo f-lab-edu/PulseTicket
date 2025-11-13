@@ -38,7 +38,9 @@ public class ReservationBookingController {
     @PostMapping
     ResponseEntity<ReservationBookingResponse> booking (@RequestBody ReservationBookingRequest request) {
 
-        ReservationBookingResponse response = reservationBookingServiceFactory.getReservationBookingService(request).book(request);
+        ReservationBookingResponse response = reservationBookingServiceFactory
+                .getReservationBookingService(request)
+                .book(request.getUsername(), request.getPassword(), request.getEventId(), request.getSeatNumber());
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
