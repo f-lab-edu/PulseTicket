@@ -16,4 +16,6 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     Optional<Seat> findSeatByEventIdAndSeatNumber (Long event_id, Integer seatNumber);
 
     boolean existsSeatByEventIdAndStatus(Long event_id, ReservationConstants.SeatStatus status);
+
+    boolean existsSeatByEventIdAndSeatNumberAndStatus(Long event_id, Integer seatNumber, ReservationConstants.SeatStatus status);
 }

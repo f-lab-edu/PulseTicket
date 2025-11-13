@@ -65,8 +65,9 @@ public class Reservation {
     /**
      * 예약 생성 일시
      */
+    @Builder.Default
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     /**
      * 예약 만료 일시

@@ -40,6 +40,7 @@ dependencies {
 
     // Argon2id 비밀번호 해싱
     implementation("org.springframework.security:spring-security-crypto")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.81")
 }
 
 tasks.withType<Test> {

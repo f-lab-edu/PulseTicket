@@ -29,7 +29,11 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
 
     @Override
     public boolean isSpecificSeatAvailable(Long eventId, Integer seatNumber) {
-        return false;
+        return seatRepo.existsSeatByEventIdAndSeatNumberAndStatus(
+                eventId,
+                seatNumber,
+                ReservationConstants.SeatStatus.AVAILABLE
+        );
     }
 
     @Override
