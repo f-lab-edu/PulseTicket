@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
@@ -46,7 +47,16 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 
     @Override
     @Transactional
-    public ReservationBookingResponse book(String username, String password, Long eventId, Integer seatNumber) {
+    public ReservationBookingResponse book(ReservationBookingRequest request) {
+
+        // 예약 신청자 이름
+        String username = request.getUsername();
+        // 예약 신청자의 패스워드
+        String password = request.getPassword();
+        // 예약 신청하고자 하는 event 의 고유 id
+        Long eventId = request.getEventId();
+        // 예약 신청하려고 하는 좌석 번호
+        Integer seatNumber = request.getSeatNumber();
 
         ReservationBookingResponse response = ReservationBookingResponse.builder()
                 .isSuccess(false)

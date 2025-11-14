@@ -39,8 +39,8 @@ public class ReservationBookingController {
     ResponseEntity<ReservationBookingResponse> booking (@RequestBody ReservationBookingRequest request) {
 
         ReservationBookingResponse response = reservationBookingServiceFactory
-                .getReservationBookingService(request)
-                .book(request.getUsername(), request.getPassword(), request.getEventId(), request.getSeatNumber());
+                .getReservationBookingService()
+                .book(request);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
