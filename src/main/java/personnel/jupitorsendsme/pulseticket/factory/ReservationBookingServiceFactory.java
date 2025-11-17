@@ -20,14 +20,9 @@ public class ReservationBookingServiceFactory {
     }
 
     /**
-//     * @param request Controller 로 부터 넘겨받은 ReservationBookingRequest
      * @return request 에 해당하는 BookingService 선택해서 반환
      */
-//    public ReservationBookingService getReservationBookingService (ReservationBookingRequest request) {
     public ReservationBookingService getReservationBookingService () {
-//        if (request.getUsername() != null) {
-//            return bookingServiceDefaultProvider.getObject();
-//        }
         // 찾을 수 없다면 Default
         return bookingServiceDefaultProvider.getObject();
     }
