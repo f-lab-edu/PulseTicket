@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "reservations")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
