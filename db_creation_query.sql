@@ -5,9 +5,10 @@
 -- USERS 테이블 생성
 CREATE TABLE users (
    id BIGSERIAL PRIMARY KEY,
-   username VARCHAR(50) UNIQUE NOT NULL,
+   user_id VARCHAR(50) UNIQUE NOT NULL,
    password_hash VARCHAR(255) NOT NULL,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- EVENTS 테이블 생성
@@ -27,7 +28,6 @@ CREATE TABLE seats (
    reserved_until TIMESTAMP NULL,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   CONSTRAINT fk_seats_event FOREIGN KEY (event_id) REFERENCES events(id),
    CONSTRAINT uk_seats_event_seat_number UNIQUE (event_id, seat_number)
 );
 
@@ -40,22 +40,5 @@ CREATE TABLE reservations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP NOT NULL,
     confirmed_at TIMESTAMP NULL,
-    cancelled_at TIMESTAMP NULL,
-    CONSTRAINT fk_reservations_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_reservations_seat FOREIGN KEY (seat_id) REFERENCES seats(id)
+    cancelled_at TIMESTAMP NULL
 );
-
--- updated_at 자동 업데이트를 위한 트리거 함수 생성 (아래 Trigger 를 위함)
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- seats 테이블의 updated_at 자동 업데이트 트리거
-CREATE TRIGGER trigger_seats_updated_at
-    BEFORE UPDATE ON seats
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
