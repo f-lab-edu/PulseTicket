@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Reservation {
 
     /**
