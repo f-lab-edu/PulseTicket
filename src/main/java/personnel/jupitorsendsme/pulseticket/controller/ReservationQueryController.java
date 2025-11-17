@@ -35,11 +35,9 @@ public class ReservationQueryController {
      * @return 예약 가능 여부
      */
     @GetMapping("isBookingEventAvailable")
-    public ResponseEntity<Boolean> isBookingEventAvailable (@RequestParam Long eventId) {
+    public Boolean isBookingEventAvailable (@RequestParam Long eventId) {
 
-        Boolean response = reservationQueryService.isBookingEventAvailable(eventId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return reservationQueryService.isBookingEventAvailable(eventId);
     }
 
     /**
@@ -49,10 +47,8 @@ public class ReservationQueryController {
      * @return Textual Diagram
      */
     @GetMapping("availableSeatsOfTheEvent")
-    public ResponseEntity<String> availableSeatsOfTheEvent (@RequestParam Long eventId) {
-        String response = reservationQueryService.availableSeatsOfTheEvent(eventId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public String availableSeatsOfTheEvent (@RequestParam Long eventId) {
+        return reservationQueryService.availableSeatsOfTheEvent(eventId);
     }
 
     /**
@@ -63,10 +59,8 @@ public class ReservationQueryController {
      */
 
     @GetMapping("isSpecificSeatAvailable")
-    public ResponseEntity<Boolean> isSpecificSeatAvailable (@RequestParam Long eventId, @RequestParam Integer seatNumber) {
-        Boolean response = reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public Boolean isSpecificSeatAvailable (@RequestParam Long eventId, @RequestParam Integer seatNumber) {
+        return reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber);
     }
 
 
@@ -77,10 +71,7 @@ public class ReservationQueryController {
      * @return 예약 목록이 담긴 DTO
      */
     @GetMapping("inquiryUserReservations")
-    public ResponseEntity<ReservationQueryResponse> inquiryUserReservations (@RequestParam String userId, @RequestParam String password) {
-
-        ReservationQueryResponse response = reservationQueryService.inquiryUserReservations(userId, password);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ReservationQueryResponse inquiryUserReservations (@RequestParam String userId, @RequestParam String password) {
+        return reservationQueryService.inquiryUserReservations(userId, password);
     }
 }

@@ -26,23 +26,17 @@ public class UserManagementController {
     }
 
     @GetMapping("doesUserExist")
-    ResponseEntity<Boolean> doesUserExist (@RequestParam String username) {
-        Boolean response = userManagementService.doesUserExist(username);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    Boolean doesUserExist (@RequestParam String username) {
+        return userManagementService.doesUserExist(username);
     }
 
     @PostMapping("registeringUser")
-    ResponseEntity<Boolean> registeringUser (@RequestBody UserManagementRequest request) {
-        Boolean response = userManagementService.registeringUser(request.getUserId(), request.getPassword());
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    Boolean registeringUser (@RequestBody UserManagementRequest request) {
+        return userManagementService.registeringUser(request.getUserId(), request.getPassword());
     }
 
     @GetMapping("isUserValid")
-    ResponseEntity<Boolean> isUserValid (@RequestParam String username, @RequestParam String password) {
-        Boolean response = userManagementService.isUserValid(username, password);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    Boolean isUserValid (@RequestParam String username, @RequestParam String password) {
+        return userManagementService.isUserValid(username, password);
     }
 }

@@ -1,8 +1,6 @@
 package personnel.jupitorsendsme.pulseticket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,19 +27,17 @@ public class ReservationBookingController {
     }
 
     /**
-     * 예약 신청을 하는 엔드 포인트
+     * 예약 청을 하는 엔드 포인트
      * 예약에 성공하면 Seats, Reservation 테이블에 데이터 저장
      *
      * @param request 예약 데이터 요청
      * @return 예약 성공 여부를 포함한 예약 관련 정보
      */
     @PostMapping
-    ResponseEntity<ReservationBookingResponse> booking (@RequestBody ReservationBookingRequest request) {
+    ReservationBookingResponse booking (@RequestBody ReservationBookingRequest request) {
 
-        ReservationBookingResponse response = reservationBookingServiceFactory
+        return reservationBookingServiceFactory
                 .getReservationBookingService()
                 .book(request);
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 }
