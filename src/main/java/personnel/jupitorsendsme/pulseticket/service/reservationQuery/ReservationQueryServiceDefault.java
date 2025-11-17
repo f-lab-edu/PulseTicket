@@ -37,7 +37,7 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
     }
 
     @Override
-    public ReservationQueryResponse inquiryUserReservations(String username, String password) {
+    public ReservationQueryResponse inquiryUserReservations(String userId, String password) {
         return null;
     }
 }

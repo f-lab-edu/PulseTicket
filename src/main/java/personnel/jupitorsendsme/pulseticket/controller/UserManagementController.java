@@ -34,7 +34,7 @@ public class UserManagementController {
 
     @PostMapping("registeringUser")
     ResponseEntity<Boolean> registeringUser (@RequestBody UserManagementRequest request) {
-        Boolean response = userManagementService.registeringUser(request.getUsername(), request.getPassword());
+        Boolean response = userManagementService.registeringUser(request.getUserId(), request.getPassword());
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -21,16 +21,16 @@ public class UserManagementServiceDefault implements UserManagementService {
     }
 
     @Override
-    public boolean doesUserExist(String username) {
-        return userRepo.existsByUsername(username);
+    public boolean doesUserExist(String userId) {
+        return userRepo.existsByUserId(userId);
     }
 
     @Override
-    public boolean registeringUser(String username, String password) {
-        if (this.doesUserExist(username)) return false;
+    public boolean registeringUser(String userId, String password) {
+        if (this.doesUserExist(userId)) return false;
 
         User user = User.builder()
-                .username(username)
+                .userId(userId)
                 .passwordHash(passwordHashingService.hash(password))
                 .build();
 
@@ -40,8 +40,8 @@ public class UserManagementServiceDefault implements UserManagementService {
     }
 
     @Override
-    public boolean isUserValid(String username, String password) {
-        return userRepo.findUserByUsername(username)
+    public boolean isUserValid(String userId, String password) {
+        return userRepo.findUserByUserId(userId)
                 .map(user -> passwordHashingService.verify(password, user.getPasswordHash()))
                 .orElse(false);
     }

@@ -6,12 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
-import personnel.jupitorsendsme.pulseticket.service.reservationQuery.ReservationQueryServiceDefault;
 
 /**
  * 좌석 조회 컨트롤러
@@ -75,14 +72,14 @@ public class ReservationQueryController {
 
     /**
      * 특정 사용자에 대한 예약 목록 조회
-     * @param username 확인하고자 하는 사용자의 id
+     * @param userId 확인하고자 하는 사용자의 id
      * @param password 확인하고자 하는 사용자의 password
      * @return 예약 목록이 담긴 DTO
      */
     @GetMapping("inquiryUserReservations")
-    public ResponseEntity<ReservationQueryResponse> inquiryUserReservations (@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<ReservationQueryResponse> inquiryUserReservations (@RequestParam String userId, @RequestParam String password) {
 
-        ReservationQueryResponse response = reservationQueryService.inquiryUserReservations(username, password);
+        ReservationQueryResponse response = reservationQueryService.inquiryUserReservations(userId, password);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

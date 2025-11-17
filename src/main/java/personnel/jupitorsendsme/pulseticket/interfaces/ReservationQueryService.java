@@ -33,9 +33,9 @@ public interface ReservationQueryService {
 
     /**
      * 특정 사용자에 대한 예약 목록 조회
-     * @param username 확인하고자 하는 사용자의 id
+     * @param userId 확인하고자 하는 사용자의 id
      * @param password 확인하고자 하는 사용자의 password
      * @return 예약 목록이 담긴 DTO
      */
-    ReservationQueryResponse inquiryUserReservations (String username, String password);
+    ReservationQueryResponse inquiryUserReservations (String userId, String password);
 }

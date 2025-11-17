@@ -12,7 +12,7 @@ public class ReservationBookingRequest {
     /**
      * 예약신청자 id
      */
-    private String username;
+    private String userId;
 
     /**
      * 예약신청자 password

@@ -10,7 +10,7 @@ public class UserManagementRequest {
     /**
      * 사용자 id
      */
-    private String username;
+    private String userId;
 
     /**
      * 사용자 password

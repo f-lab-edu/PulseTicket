@@ -38,8 +38,8 @@ public class User {
     /**
      * 사용자명 (중복 불가)
      */
-    @Column(nullable = false, unique = true, length = 50)
-    private String username;
+    @Column(name = "user_id", nullable = false, unique = true, length = 50)
+    private String userId;
 
     /**
      * 해시된 비밀번호
@@ -53,6 +53,13 @@ public class User {
     @Builder.Default
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    /**
+     * 최근 업데이트 시간
+     */
+    @Builder.Default
+    @Column(name = "updated_at", nullable = false, updatable = true)
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     /**
      * 사용자의 예약 목록

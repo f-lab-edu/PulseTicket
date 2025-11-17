@@ -12,7 +12,7 @@ public class ReservationQueryRequest {
     /**
      * 예약 관련 확인을 하고자 하는 사용자 id
      */
-    private String username;
+    private String userId;
 
     /**
      * 예약 관련 확인을 하고자 하는 사용자 password

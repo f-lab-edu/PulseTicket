@@ -50,7 +50,7 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
     public ReservationBookingResponse book(ReservationBookingRequest request) {
 
         // 예약 신청자 이름
-        String username = request.getUsername();
+        String userId = request.getUserId();
         // 예약 신청자의 패스워드
         String password = request.getPassword();
         // 예약 신청하고자 하는 event 의 고유 id
@@ -63,11 +63,11 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
                 .build();
 
         // 사용자 유효성 여부 (User Entity 조회할때와 합칠 순 없나 ?) + 시트 좌석 예약 가능 여부 (이것도 Seat Entity 조회시와 합칠 순 없나?)
-        if (!userManagementService.isUserValid(username, password) || !reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber)) {
+        if (!userManagementService.isUserValid(userId, password) || !reservationQueryService.isSpecificSeatAvailable(eventId, seatNumber)) {
             return response;
         }
         // User Entity 조회하여 키 습득
-        User user = userRepo.findUserByUsername(username).orElseThrow(RuntimeException::new);
+        User user = userRepo.findUserByUserId(userId).orElseThrow(RuntimeException::new);
 
         // 마찬가지 이유로 Seat Entity 조회
         Seat seat = seatRepo.findSeatByEventIdAndSeatNumber(eventId, seatNumber).orElseThrow(RuntimeException::new);
