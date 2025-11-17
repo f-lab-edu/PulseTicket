@@ -31,7 +31,8 @@ PulseTicket - Ticketing System
 
 [도구]  
 intelliJ   
-\+ Cursor, PostgreSQL MCP -> 코딩 X, DB 조작만
+\+ Cursor, PostgreSQL MCP -> 코딩 X, DB 조작만  
+\+ Grafana + Loki + Promtail (Spring 의 Docker Container 의 로그를 쉽게 보기위해)
 
 [milestone]  
 → 기본적인 티켓팅 시스템 만들기  
