@@ -13,10 +13,10 @@ public class ReservationInformation {
     /**
      * 예약 고유 번호
      */
-    Long reservationId;
+    private Long reservationId;
 
     /**
      * 예약 상태
      */
-    ReservationConstants.ReservationStatus status;
+    private ReservationConstants.ReservationStatus status;
 }

@@ -19,5 +19,5 @@ public class ReservationQueryResponse {
     /**
      * 예약 정보 리스트
      */
-    List<ReservationInformation> reservationInformationList;
+    private List<ReservationInformation> reservationInformationList;
 }
