@@ -7,7 +7,7 @@ public interface UserManagementService {
      * @param userId 등록되어있는지 체크하려는 사용자 id
      * @return true : 등록된 사용자, false : 미등록된 사용자
      */
-    boolean doesUserExist (String userId);
+    boolean isUserPresent (String userId);
 
     /**
      * 유저 등록

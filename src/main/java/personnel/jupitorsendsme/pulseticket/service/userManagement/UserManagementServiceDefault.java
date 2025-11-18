@@ -21,13 +21,13 @@ public class UserManagementServiceDefault implements UserManagementService {
     }
 
     @Override
-    public boolean doesUserExist(String userId) {
+    public boolean isUserPresent(String userId) {
         return userRepo.existsByUserId(userId);
     }
 
     @Override
     public boolean registeringUser(String userId, String password) {
-        if (this.doesUserExist(userId)) return false;
+        if (this.isUserPresent(userId)) return false;
 
         User user = User.builder()
                 .userId(userId)
