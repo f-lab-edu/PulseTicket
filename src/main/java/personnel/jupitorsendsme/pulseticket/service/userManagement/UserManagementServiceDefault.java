@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
@@ -15,6 +16,7 @@ import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
 @Service
 @Qualifier("default")
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserManagementServiceDefault implements UserManagementService {
 
 	final UserRepository userRepo;
@@ -28,6 +30,8 @@ public class UserManagementServiceDefault implements UserManagementService {
 	}
 
 	@Override
+	@SuppressWarnings("DefaultAnnotationParam")
+	@Transactional(readOnly = false)
 	public boolean registeringUser(ReservationBookingRequest request) {
 		if (this.isUserPresent(request))
 			return false;

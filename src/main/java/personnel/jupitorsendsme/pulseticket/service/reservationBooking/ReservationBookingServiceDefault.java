@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
@@ -24,6 +24,8 @@ import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
  */
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("DefaultAnnotationParam")
+@Transactional(readOnly = false)
 public class ReservationBookingServiceDefault implements ReservationBookingService {
 
 	@Qualifier("default")
@@ -33,11 +35,9 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 	private final ReservationRepository reservationRepo;
 
 	@Override
-	@Transactional
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 
 		Optional<User> user = userManagementService.findValidUser(request);
-
 		Optional<Seat> seat = reservationQueryService.findAvailableSeat(request);
 
 		if (user.isEmpty() || seat.isEmpty()) {

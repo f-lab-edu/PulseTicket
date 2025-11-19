@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
@@ -17,6 +18,7 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 @Service
 @Qualifier("default")
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReservationQueryServiceDefault implements ReservationQueryService {
 
 	private final SeatRepository seatRepo;
