@@ -21,16 +21,17 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 @Transactional(readOnly = true)
 public class ReservationQueryServiceDefault implements ReservationQueryService {
 
-	private final SeatRepository seatRepo;
+	private final SeatRepository seatRepository;
 
 	@Override
 	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
-		return seatRepo.existsByEvent_IdAndStatus(request.getEventId(), ReservationConstants.SeatStatus.AVAILABLE);
+		return seatRepository.existsByEvent_IdAndStatus(request.getEventId(),
+			ReservationConstants.SeatStatus.AVAILABLE);
 	}
 
 	@Override
 	public String textualDiagramOfSeatsOfTheEvent(ReservationBookingRequest request) {
-		List<Seat> seats = seatRepo.findByEvent_Id(request.getEventId());
+		List<Seat> seats = seatRepository.findByEvent_Id(request.getEventId());
 		StringBuilder diagram = new StringBuilder();
 
 		for (Seat seat : seats) {
@@ -50,7 +51,7 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
 
 	@Override
 	public boolean isSpecificSeatAvailable(ReservationBookingRequest request) {
-		return seatRepo.existsSeatByEvent_IdAndSeatNumberAndStatus(
+		return seatRepository.existsSeatByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
 			ReservationConstants.SeatStatus.AVAILABLE
@@ -59,7 +60,7 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
 
 	@Override
 	public Optional<Seat> findAvailableSeat(ReservationBookingRequest request) {
-		return seatRepo.findByEvent_IdAndSeatNumberAndStatus(
+		return seatRepository.findByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
 			ReservationConstants.SeatStatus.AVAILABLE

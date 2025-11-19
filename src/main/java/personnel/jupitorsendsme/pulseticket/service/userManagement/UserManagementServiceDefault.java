@@ -19,14 +19,14 @@ import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
 @Transactional(readOnly = true)
 public class UserManagementServiceDefault implements UserManagementService {
 
-	final UserRepository userRepo;
+	final UserRepository userRepository;
 
 	@Qualifier("argon2id")
 	final PasswordHashingService passwordHashingService;
 
 	@Override
 	public boolean isUserPresent(ReservationBookingRequest request) {
-		return userRepo.existsByUserId(request.getUserId());
+		return userRepository.existsByUserId(request.getUserId());
 	}
 
 	@Override
@@ -41,21 +41,21 @@ public class UserManagementServiceDefault implements UserManagementService {
 			.passwordHash(passwordHashingService.hash(request.getRawPassword()))
 			.build();
 
-		userRepo.save(user);
+		userRepository.save(user);
 
 		return true;
 	}
 
 	@Override
 	public boolean isUserValid(ReservationBookingRequest request) {
-		return userRepo.findUserByUserId(request.getUserId())
+		return userRepository.findUserByUserId(request.getUserId())
 			.map(user -> passwordHashingService.verify(request.getRawPassword(), user.getPasswordHash()))
 			.orElse(false);
 	}
 
 	@Override
 	public Optional<User> findValidUser(ReservationBookingRequest request) {
-		return userRepo.findUserByUserId(request.getUserId())
+		return userRepository.findUserByUserId(request.getUserId())
 			.filter(user -> passwordHashingService.verify(request.getRawPassword(), user.getPasswordHash()));
 	}
 }

@@ -32,7 +32,7 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 	private final UserManagementService userManagementService;
 	@Qualifier("default")
 	private final ReservationQueryService reservationQueryService;
-	private final ReservationRepository reservationRepo;
+	private final ReservationRepository reservationRepository;
 
 	@Override
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
@@ -53,7 +53,7 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 			.expiresAt(LocalDateTime.now().plus(ReservationConstants.RESERVATION_EXPIRATION))
 			.build();
 
-		Reservation created = reservationRepo.save(reservation);
+		Reservation created = reservationRepository.save(reservation);
 
 		return ReservationBookingResponse.builder()
 			.isSuccess(true)
