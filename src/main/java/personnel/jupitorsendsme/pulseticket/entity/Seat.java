@@ -1,6 +1,7 @@
 package personnel.jupitorsendsme.pulseticket.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -74,8 +75,8 @@ public class Seat extends BaseEntity {
 	private LocalDateTime reservedUntil;
 
 	/**
-	 * 해당 좌석의 예약
+	 * 해당 좌석의 예약 이력
 	 */
-	@OneToOne(mappedBy = "seat")
-	private Reservation reservation;
+	@OneToMany(mappedBy = "seat")
+	private List<Reservation> reservations;
 }
