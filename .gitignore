@@ -60,3 +60,6 @@ docker/postgres/init/*.sql
 !docker/postgres/init/*.sql.example
 docker/postgres/init/*.sh
 !docker/postgres/init/*.sh.example
+
+### docker gittree 관련 설정파일
+docker-up.sh
