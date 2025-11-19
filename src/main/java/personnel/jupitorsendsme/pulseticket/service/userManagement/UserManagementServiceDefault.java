@@ -45,13 +45,13 @@ public class UserManagementServiceDefault implements UserManagementService {
 	@Override
 	public boolean isUserValid(ReservationBookingRequest request) {
 		return userRepo.findUserByUserId(request.getUserId())
-			.map(user -> passwordHashingService.verify(request.getUserId(), user.getPasswordHash()))
+			.map(user -> passwordHashingService.verify(request.getRawPassword(), user.getPasswordHash()))
 			.orElse(false);
 	}
 
 	@Override
 	public Optional<User> findValidUser(ReservationBookingRequest request) {
 		return userRepo.findUserByUserId(request.getUserId())
-			.filter(user -> passwordHashingService.verify(request.getUserId(), user.getPasswordHash()));
+			.filter(user -> passwordHashingService.verify(request.getRawPassword(), user.getPasswordHash()));
 	}
 }

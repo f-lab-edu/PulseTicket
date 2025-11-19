@@ -31,8 +31,8 @@ public class UserManagementController {
 		return userManagementService.registeringUser(request);
 	}
 
-	@GetMapping("isUserValid")
-	Boolean isUserValid(@ModelAttribute ReservationBookingRequest request) {
+	@PostMapping("isUserValid")
+	Boolean isUserValid(@RequestBody ReservationBookingRequest request) {
 		return userManagementService.isUserValid(request);
 	}
 }
