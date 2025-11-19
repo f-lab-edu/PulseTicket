@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
@@ -17,16 +18,11 @@ import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
  */
 @RestController
 @RequestMapping("api/reservation/query")
+@RequiredArgsConstructor
 public class ReservationQueryController {
 
+	@Qualifier("default")
 	private final ReservationQueryService reservationQueryService;
-
-	public ReservationQueryController(
-		@Qualifier("default")
-		ReservationQueryService reservationQueryService) {
-
-		this.reservationQueryService = reservationQueryService;
-	}
 
 	/**
 	 * 특정 이벤트에 대한 예약 가능 여부. <br>
@@ -36,7 +32,6 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("isBookingEventAvailable")
 	public Boolean isBookingEventAvailable(@ModelAttribute ReservationBookingRequest request) {
-
 		return reservationQueryService.isBookingEventAvailable(request);
 	}
 
@@ -46,9 +41,9 @@ public class ReservationQueryController {
 	 * @param request 확인하고자 하는 이벤트 id 가 담긴 객체
 	 * @return Textual Diagram
 	 */
-	@GetMapping("availableSeatsOfTheEvent")
-	public String availableSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
-		return reservationQueryService.availableSeatsOfTheEvent(request);
+	@GetMapping("textualDiagramOfSeatsOfTheEvent")
+	public String textualDiagramOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
+		return reservationQueryService.textualDiagramOfSeatsOfTheEvent(request);
 	}
 
 	/**

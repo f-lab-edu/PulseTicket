@@ -2,11 +2,13 @@ package personnel.jupitorsendsme.pulseticket.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 예약/예약 취소시 Controller 의 request 객체
  */
 @Getter
+@Setter
 @NoArgsConstructor
 public class ReservationBookingRequest {
 	/**

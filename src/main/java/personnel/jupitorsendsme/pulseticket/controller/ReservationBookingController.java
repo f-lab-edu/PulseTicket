@@ -1,11 +1,11 @@
 package personnel.jupitorsendsme.pulseticket.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
 import personnel.jupitorsendsme.pulseticket.factory.ReservationBookingServiceFactory;
@@ -17,15 +17,10 @@ import personnel.jupitorsendsme.pulseticket.factory.ReservationBookingServiceFac
  */
 @RestController
 @RequestMapping("api/reservation/booking")
+@RequiredArgsConstructor
 public class ReservationBookingController {
 
 	private final ReservationBookingServiceFactory reservationBookingServiceFactory;
-
-	@Autowired
-	public ReservationBookingController(
-		ReservationBookingServiceFactory reservationBookingServiceFactory) {
-		this.reservationBookingServiceFactory = reservationBookingServiceFactory;
-	}
 
 	/**
 	 * 예약 청을 하는 엔드 포인트

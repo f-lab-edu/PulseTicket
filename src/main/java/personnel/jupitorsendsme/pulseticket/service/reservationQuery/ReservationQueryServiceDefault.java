@@ -1,5 +1,6 @@
 package personnel.jupitorsendsme.pulseticket.service.reservationQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,17 +23,32 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
 
 	@Override
 	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
-		return seatRepo.existsSeatByEventIdAndStatus(request.getEventId(), ReservationConstants.SeatStatus.AVAILABLE);
+		return seatRepo.existsByEvent_IdAndStatus(request.getEventId(), ReservationConstants.SeatStatus.AVAILABLE);
 	}
 
 	@Override
-	public String availableSeatsOfTheEvent(ReservationBookingRequest request) {
-		return "";
+	public String textualDiagramOfSeatsOfTheEvent(ReservationBookingRequest request) {
+		List<Seat> seats = seatRepo.findByEvent_Id(request.getEventId());
+		StringBuilder diagram = new StringBuilder();
+
+		for (Seat seat : seats) {
+			diagram.append("[");
+
+			switch (seat.getStatus()) {
+				case ReservationConstants.SeatStatus.RESERVED -> diagram.append("X");
+				case ReservationConstants.SeatStatus.SOLD -> diagram.append("~");
+				default -> diagram.append("O");
+			}
+
+			diagram.append("]");
+		}
+
+		return diagram.toString();
 	}
 
 	@Override
 	public boolean isSpecificSeatAvailable(ReservationBookingRequest request) {
-		return seatRepo.existsSeatByEventIdAndSeatNumberAndStatus(
+		return seatRepo.existsSeatByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
 			ReservationConstants.SeatStatus.AVAILABLE
@@ -41,7 +57,7 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
 
 	@Override
 	public Optional<Seat> findAvailableSeat(ReservationBookingRequest request) {
-		return seatRepo.findSeatByEventIdAndSeatNumberAndStatus(
+		return seatRepo.findByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
 			ReservationConstants.SeatStatus.AVAILABLE
