@@ -18,8 +18,6 @@ import personnel.jupitorsendsme.pulseticket.interfaces.ReservationBookingService
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
 import personnel.jupitorsendsme.pulseticket.interfaces.UserManagementService;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
-import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
-import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
 
 /**
  * 기본 좌석 예약 서비스
@@ -33,23 +31,20 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 	@Qualifier("default")
 	private final ReservationQueryService reservationQueryService;
 	private final ReservationRepository reservationRepo;
-	private final UserRepository userRepo;
-	private final SeatRepository seatRepo;
 
 	@Override
 	@Transactional
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 
-		ReservationBookingResponse response = ReservationBookingResponse.builder()
-			.isSuccess(false)
-			.build();
-
 		Optional<User> user = userManagementService.findValidUser(request);
 
 		Optional<Seat> seat = reservationQueryService.findAvailableSeat(request);
 
-		if (user.isEmpty() || seat.isEmpty())
-			return response;
+		if (user.isEmpty() || seat.isEmpty()) {
+			return ReservationBookingResponse.builder()
+				.isSuccess(false)
+				.build();
+		}
 
 		Reservation reservation = Reservation.builder()
 			.user(user.get())
@@ -60,9 +55,9 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 
 		Reservation created = reservationRepo.save(reservation);
 
-		response.setReservationId(created.getId());
-		response.setSuccess(true);
-
-		return response;
+		return ReservationBookingResponse.builder()
+			.isSuccess(true)
+			.reservationId(created.getId())
+			.build();
 	}
 }
