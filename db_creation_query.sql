@@ -28,7 +28,7 @@ CREATE TABLE seats (
    status VARCHAR(20) DEFAULT 'AVAILABLE',
    reserved_until TIMESTAMP NULL,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
    CONSTRAINT uk_seats_event_seat_number UNIQUE (event_id, seat_number)
 );
 
