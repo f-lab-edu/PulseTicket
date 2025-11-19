@@ -12,9 +12,7 @@ import personnel.jupitorsendsme.pulseticket.entity.User;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findUserByUserId(String userId);
+	Optional<User> findUserByLoginId(String loginId);
 
-	boolean existsByUserIdAndPasswordHash(String userId, String passwordHash);
-
-	boolean existsByUserId(String userId);
+	boolean existsByLoginId(String loginId);
 }

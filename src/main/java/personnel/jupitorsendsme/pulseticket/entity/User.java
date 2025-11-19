@@ -34,10 +34,10 @@ public class User extends BaseEntity {
 	private Long id;
 
 	/**
-	 * 사용자명 (중복 불가)
+	 * 로그인 ID (중복 불가)
 	 */
-	@Column(name = "user_id", nullable = false, unique = true, length = 50)
-	private String userId;
+	@Column(name = "login_id", nullable = false, unique = true, length = 50)
+	private String loginId;
 
 	/**
 	 * 해시된 비밀번호

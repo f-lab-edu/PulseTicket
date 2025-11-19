@@ -26,7 +26,7 @@ public class UserManagementServiceDefault implements UserManagementService {
 
 	@Override
 	public boolean isUserPresent(ReservationBookingRequest request) {
-		return userRepository.existsByUserId(request.getUserId());
+		return userRepository.existsByLoginId(request.getLoginId());
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class UserManagementServiceDefault implements UserManagementService {
 			return false;
 
 		User user = User.builder()
-			.userId(request.getUserId())
+			.loginId(request.getLoginId())
 			.passwordHash(passwordHashingService.hash(request.getPassword()))
 			.build();
 
@@ -48,14 +48,14 @@ public class UserManagementServiceDefault implements UserManagementService {
 
 	@Override
 	public boolean isUserValid(ReservationBookingRequest request) {
-		return userRepository.findUserByUserId(request.getUserId())
+		return userRepository.findUserByLoginId(request.getLoginId())
 			.map(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()))
 			.orElse(false);
 	}
 
 	@Override
 	public Optional<User> findValidUser(ReservationBookingRequest request) {
-		return userRepository.findUserByUserId(request.getUserId())
+		return userRepository.findUserByLoginId(request.getLoginId())
 			.filter(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()));
 	}
 }

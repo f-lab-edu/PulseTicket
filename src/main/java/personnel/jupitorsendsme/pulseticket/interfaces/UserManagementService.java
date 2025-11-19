@@ -24,7 +24,7 @@ public interface UserManagementService {
 	/**
 	 * 유효한 유저 id / password 인지 판단
 	 * @param request 유효한지 판단하고자 하는 사용자 id, password 다 담긴 객체
-	 * @return true : userId 이 존재하고 userId, password 가 일치함 / false : 불일치
+	 * @return true : loginId 이 존재하고 loginId, password 가 일치함 / false : 불일치
 	 */
 	boolean isUserValid(ReservationBookingRequest request);
 

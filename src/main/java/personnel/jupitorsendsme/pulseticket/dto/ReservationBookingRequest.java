@@ -12,9 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReservationBookingRequest {
 	/**
-	 * 예약신청자 id
+	 * 예약신청자 로그인 ID
 	 */
-	private String userId;
+	private String loginId;
 
 	/**
 	 * 예약신청자 password
