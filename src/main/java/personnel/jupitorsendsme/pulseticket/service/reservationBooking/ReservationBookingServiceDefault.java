@@ -50,7 +50,7 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 			.user(user.get())
 			.seat(seat.get())
 			.status(ReservationConstants.ReservationStatus.PENDING)
-			.expiresAt(LocalDateTime.now().plusHours(24))
+			.expiresAt(LocalDateTime.now().plus(ReservationConstants.RESERVATION_EXPIRATION))
 			.build();
 
 		Reservation created = reservationRepo.save(reservation);
