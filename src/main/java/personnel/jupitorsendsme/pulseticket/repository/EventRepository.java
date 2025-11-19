@@ -1,8 +1,8 @@
 package personnel.jupitorsendsme.pulseticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import personnel.jupitorsendsme.pulseticket.entity.Event;
 
+import personnel.jupitorsendsme.pulseticket.entity.Event;
 
 /**
  * Event 엔티티에 대한 데이터 접근 계층

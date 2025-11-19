@@ -7,6 +7,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/event")
 public class EventManagementController {
 
-
-
 }

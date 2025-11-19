@@ -1,6 +1,7 @@
 package personnel.jupitorsendsme.pulseticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 
 /**

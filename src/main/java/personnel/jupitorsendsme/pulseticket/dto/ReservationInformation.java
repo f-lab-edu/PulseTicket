@@ -10,13 +10,13 @@ import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 @AllArgsConstructor
 public class ReservationInformation {
 
-    /**
-     * 예약 고유 번호
-     */
-    private Long reservationId;
+	/**
+	 * 예약 고유 번호
+	 */
+	private Long reservationId;
 
-    /**
-     * 예약 상태
-     */
-    private ReservationConstants.ReservationStatus status;
+	/**
+	 * 예약 상태
+	 */
+	private ReservationConstants.ReservationStatus status;
 }

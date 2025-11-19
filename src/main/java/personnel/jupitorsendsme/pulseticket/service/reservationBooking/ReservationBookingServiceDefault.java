@@ -57,7 +57,7 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 			eventId, seatNumber)) {
 			return response;
 		}
-		
+
 		User user = userRepo.findUserByUserId(userId).orElseThrow(RuntimeException::new);
 
 		Seat seat = seatRepo.findSeatByEventIdAndSeatNumber(eventId, seatNumber).orElseThrow(RuntimeException::new);

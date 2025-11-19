@@ -2,6 +2,7 @@ package personnel.jupitorsendsme.pulseticket.factory;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Component;
+
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationBookingService;
 import personnel.jupitorsendsme.pulseticket.service.reservationBooking.ReservationBookingServiceDefault;
 
@@ -11,19 +12,19 @@ import personnel.jupitorsendsme.pulseticket.service.reservationBooking.Reservati
  */
 @Component
 public class ReservationBookingServiceFactory {
-    private final ObjectProvider<ReservationBookingServiceDefault> bookingServiceDefaultProvider;
+	private final ObjectProvider<ReservationBookingServiceDefault> bookingServiceDefaultProvider;
 
-    public ReservationBookingServiceFactory (
-            ObjectProvider<ReservationBookingServiceDefault> bookingServiceDefaultProvider
-    ) {
-        this.bookingServiceDefaultProvider = bookingServiceDefaultProvider;
-    }
+	public ReservationBookingServiceFactory(
+		ObjectProvider<ReservationBookingServiceDefault> bookingServiceDefaultProvider
+	) {
+		this.bookingServiceDefaultProvider = bookingServiceDefaultProvider;
+	}
 
-    /**
-     * @return request 에 해당하는 BookingService 선택해서 반환
-     */
-    public ReservationBookingService getReservationBookingService () {
-        // 찾을 수 없다면 Default
-        return bookingServiceDefaultProvider.getObject();
-    }
+	/**
+	 * @return request 에 해당하는 BookingService 선택해서 반환
+	 */
+	public ReservationBookingService getReservationBookingService() {
+		// 찾을 수 없다면 Default
+		return bookingServiceDefaultProvider.getObject();
+	}
 }

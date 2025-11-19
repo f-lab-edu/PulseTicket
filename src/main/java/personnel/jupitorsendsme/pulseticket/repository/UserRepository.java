@@ -1,10 +1,10 @@
 package personnel.jupitorsendsme.pulseticket.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import personnel.jupitorsendsme.pulseticket.entity.User;
-
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import personnel.jupitorsendsme.pulseticket.entity.User;
 
 /**
  * User 엔티티에 대한 데이터 접근 계층
@@ -12,9 +12,9 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findUserByUserId(String userId);
+	Optional<User> findUserByUserId(String userId);
 
-    boolean existsByUserIdAndPasswordHash(String userId, String passwordHash);
+	boolean existsByUserIdAndPasswordHash(String userId, String passwordHash);
 
-    boolean existsByUserId(String userId);
+	boolean existsByUserId(String userId);
 }

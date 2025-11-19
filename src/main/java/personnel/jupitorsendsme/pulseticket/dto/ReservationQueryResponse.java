@@ -1,11 +1,11 @@
 package personnel.jupitorsendsme.pulseticket.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * 예약 조회 서비스에 대한 응답 객체
@@ -16,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ReservationQueryResponse {
 
-    /**
-     * 예약 정보 리스트
-     */
-    private List<ReservationInformation> reservationInformationList;
+	/**
+	 * 예약 정보 리스트
+	 */
+	private List<ReservationInformation> reservationInformationList;
 }

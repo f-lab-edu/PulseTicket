@@ -1,11 +1,11 @@
 package personnel.jupitorsendsme.pulseticket.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
-import personnel.jupitorsendsme.pulseticket.entity.Seat;
-
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
+import personnel.jupitorsendsme.pulseticket.entity.Seat;
 
 /**
  * Seat 엔티티에 대한 데이터 접근 계층
@@ -13,9 +13,10 @@ import java.util.Optional;
  */
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
-    Optional<Seat> findSeatByEventIdAndSeatNumber (Long event_id, Integer seatNumber);
+	Optional<Seat> findSeatByEventIdAndSeatNumber(Long event_id, Integer seatNumber);
 
-    boolean existsSeatByEventIdAndStatus(Long event_id, ReservationConstants.SeatStatus status);
+	boolean existsSeatByEventIdAndStatus(Long event_id, ReservationConstants.SeatStatus status);
 
-    boolean existsSeatByEventIdAndSeatNumberAndStatus(Long event_id, Integer seatNumber, ReservationConstants.SeatStatus status);
+	boolean existsSeatByEventIdAndSeatNumberAndStatus(Long event_id, Integer seatNumber,
+		ReservationConstants.SeatStatus status);
 }

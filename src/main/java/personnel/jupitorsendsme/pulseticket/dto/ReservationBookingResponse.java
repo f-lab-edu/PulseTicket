@@ -14,13 +14,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReservationBookingResponse {
 
-    /**
-     * 예약 또는 예약 취소를 성공 했는지에 대한 flag
-     */
-    private boolean isSuccess;
+	/**
+	 * 예약 또는 예약 취소를 성공 했는지에 대한 flag
+	 */
+	private boolean isSuccess;
 
-    /**
-     * 예약 성공한 경우 예약 번호
-     */
-    private Long reservationId;
+	/**
+	 * 예약 성공한 경우 예약 번호
+	 */
+	private Long reservationId;
 }

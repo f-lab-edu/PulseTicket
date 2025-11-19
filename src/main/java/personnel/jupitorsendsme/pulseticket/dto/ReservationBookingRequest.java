@@ -9,23 +9,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReservationBookingRequest {
-    /**
-     * 예약신청자 id
-     */
-    private String userId;
+	/**
+	 * 예약신청자 id
+	 */
+	private String userId;
 
-    /**
-     * 예약신청자 password
-     */
-    private String password;
+	/**
+	 * 예약신청자 password
+	 */
+	private String password;
 
-    /**
-     * 예약하고자 하는 event id
-     */
-    private Long eventId;
+	/**
+	 * 예약하고자 하는 event id
+	 */
+	private Long eventId;
 
-    /**
-     * 예약하고자 하는 시트 번호
-     */
-    private Integer seatNumber;
+	/**
+	 * 예약하고자 하는 시트 번호
+	 */
+	private Integer seatNumber;
 }
