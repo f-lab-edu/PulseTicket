@@ -1,6 +1,5 @@
 package personnel.jupitorsendsme.pulseticket.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity {
 
 	/**
 	 * 사용자 고유 식별자
@@ -43,22 +42,9 @@ public class User {
 	/**
 	 * 해시된 비밀번호
 	 */
+	@SuppressWarnings("DefaultAnnotationParam")
 	@Column(name = "password_hash", nullable = false, length = 255)
 	private String passwordHash;
-
-	/**
-	 * 생성 일시
-	 */
-	@Builder.Default
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt = LocalDateTime.now();
-
-	/**
-	 * 최근 업데이트 시간
-	 */
-	@Builder.Default
-	@Column(name = "updated_at", nullable = false, updatable = true)
-	private LocalDateTime updatedAt = LocalDateTime.now();
 
 	/**
 	 * 사용자의 예약 목록

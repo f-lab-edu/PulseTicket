@@ -1,6 +1,5 @@
 package personnel.jupitorsendsme.pulseticket.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,9 +21,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "events")
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class Event {
-
+public class Event extends BaseEntity {
 	/**
 	 * 이벤트 고유 식별자
 	 */
@@ -33,6 +35,7 @@ public class Event {
 	/**
 	 * 이벤트명
 	 */
+	@SuppressWarnings("DefaultAnnotationParam")
 	@Column(nullable = false, length = 255)
 	private String name;
 
@@ -43,26 +46,8 @@ public class Event {
 	private Integer totalSeats;
 
 	/**
-	 * 생성 일시
-	 */
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
-
-	/**
 	 * 이벤트의 좌석 목록
 	 */
 	@OneToMany(mappedBy = "event")
 	private List<Seat> seats = new ArrayList<>();
-
-	/**
-	 * Event 생성자
-	 *
-	 * @param name 이벤트명
-	 * @param totalSeats 총 좌석 수
-	 */
-	public Event(String name, Integer totalSeats) {
-		this.name = name;
-		this.totalSeats = totalSeats;
-		this.createdAt = LocalDateTime.now();
-	}
 }

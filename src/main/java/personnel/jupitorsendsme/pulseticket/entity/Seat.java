@@ -38,7 +38,7 @@ import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Seat {
+public class Seat extends BaseEntity {
 
 	/**
 	 * 좌석 고유 식별자
@@ -72,18 +72,6 @@ public class Seat {
 	 */
 	@Column(name = "reserved_until")
 	private LocalDateTime reservedUntil;
-
-	/**
-	 * 생성 일시
-	 */
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
-
-	/**
-	 * 수정 일시
-	 */
-	@Column(name = "updated_at", nullable = false)
-	private LocalDateTime updatedAt;
 
 	/**
 	 * 해당 좌석의 예약
