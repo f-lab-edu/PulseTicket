@@ -63,3 +63,4 @@ docker/postgres/init/*.sh
 
 ### docker gittree 관련 설정파일
 docker-up.sh
+docker-rebuild.sh
