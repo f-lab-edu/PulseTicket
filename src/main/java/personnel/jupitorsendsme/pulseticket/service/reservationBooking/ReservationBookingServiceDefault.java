@@ -1,6 +1,7 @@
 package personnel.jupitorsendsme.pulseticket.service.reservationBooking;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -39,32 +40,20 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 	@Transactional
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 
-		// 예약 신청자 이름
-		String userId = request.getUserId();
-		// 예약 신청자의 패스워드
-		String password = request.getPassword();
-		// 예약 신청하고자 하는 event 의 고유 id
-		Long eventId = request.getEventId();
-		// 예약 신청하려고 하는 좌석 번호
-		Integer seatNumber = request.getSeatNumber();
-
 		ReservationBookingResponse response = ReservationBookingResponse.builder()
 			.isSuccess(false)
 			.build();
 
-		// 사용자 유효성 여부 (User Entity 조회할때와 합칠 순 없나 ?) + 시트 좌석 예약 가능 여부 (이것도 Seat Entity 조회시와 합칠 순 없나?)
-		if (!userManagementService.isUserValid(userId, password) || !reservationQueryService.isSpecificSeatAvailable(
-			eventId, seatNumber)) {
+		Optional<User> user = userManagementService.findValidUser(request);
+
+		Optional<Seat> seat = reservationQueryService.findAvailableSeat(request);
+
+		if (user.isEmpty() || seat.isEmpty())
 			return response;
-		}
-
-		User user = userRepo.findUserByUserId(userId).orElseThrow(RuntimeException::new);
-
-		Seat seat = seatRepo.findSeatByEventIdAndSeatNumber(eventId, seatNumber).orElseThrow(RuntimeException::new);
 
 		Reservation reservation = Reservation.builder()
-			.user(user)
-			.seat(seat)
+			.user(user.get())
+			.seat(seat.get())
 			.status(ReservationConstants.ReservationStatus.PENDING)
 			.expiresAt(LocalDateTime.now().plusHours(24))
 			.build();

@@ -1,13 +1,14 @@
 package personnel.jupitorsendsme.pulseticket.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import personnel.jupitorsendsme.pulseticket.dto.UserManagementRequest;
+import lombok.RequiredArgsConstructor;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.interfaces.UserManagementService;
 
 /**
@@ -16,25 +17,22 @@ import personnel.jupitorsendsme.pulseticket.interfaces.UserManagementService;
  */
 @RestController
 @RequestMapping("api/user")
+@RequiredArgsConstructor
 public class UserManagementController {
 	private final UserManagementService userManagementService;
 
-	public UserManagementController(UserManagementService userManagementService) {
-		this.userManagementService = userManagementService;
-	}
-
 	@GetMapping("doesUserExist")
-	Boolean doesUserExist(@RequestParam String username) {
-		return userManagementService.isUserPresent(username);
+	Boolean doesUserExist(@ModelAttribute ReservationBookingRequest request) {
+		return userManagementService.isUserPresent(request);
 	}
 
 	@PostMapping("registeringUser")
-	Boolean registeringUser(@RequestBody UserManagementRequest request) {
-		return userManagementService.registeringUser(request.getUserId(), request.getPassword());
+	Boolean registeringUser(@RequestBody ReservationBookingRequest request) {
+		return userManagementService.registeringUser(request);
 	}
 
 	@GetMapping("isUserValid")
-	Boolean isUserValid(@RequestParam String username, @RequestParam String password) {
-		return userManagementService.isUserValid(username, password);
+	Boolean isUserValid(@ModelAttribute ReservationBookingRequest request) {
+		return userManagementService.isUserValid(request);
 	}
 }

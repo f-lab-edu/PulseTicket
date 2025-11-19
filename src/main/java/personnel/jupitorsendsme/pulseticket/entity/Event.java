@@ -1,6 +1,5 @@
 package personnel.jupitorsendsme.pulseticket.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -49,5 +48,5 @@ public class Event extends BaseEntity {
 	 * 이벤트의 좌석 목록
 	 */
 	@OneToMany(mappedBy = "event")
-	private List<Seat> seats = new ArrayList<>();
+	private List<Seat> seats;
 }

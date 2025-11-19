@@ -1,9 +1,12 @@
 package personnel.jupitorsendsme.pulseticket.service.userManagement;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 import personnel.jupitorsendsme.pulseticket.interfaces.PasswordHashingService;
 import personnel.jupitorsendsme.pulseticket.interfaces.UserManagementService;
@@ -16,22 +19,22 @@ public class UserManagementServiceDefault implements UserManagementService {
 
 	final UserRepository userRepo;
 
-	@Qualifier("Argon2id")
+	@Qualifier("argon2id")
 	final PasswordHashingService passwordHashingService;
 
 	@Override
-	public boolean isUserPresent(String userId) {
-		return userRepo.existsByUserId(userId);
+	public boolean isUserPresent(ReservationBookingRequest request) {
+		return userRepo.existsByUserId(request.getUserId());
 	}
 
 	@Override
-	public boolean registeringUser(String userId, String password) {
-		if (this.isUserPresent(userId))
+	public boolean registeringUser(ReservationBookingRequest request) {
+		if (this.isUserPresent(request))
 			return false;
 
 		User user = User.builder()
-			.userId(userId)
-			.passwordHash(passwordHashingService.hash(password))
+			.userId(request.getUserId())
+			.passwordHash(passwordHashingService.hash(request.getRawPassword()))
 			.build();
 
 		userRepo.save(user);
@@ -40,9 +43,15 @@ public class UserManagementServiceDefault implements UserManagementService {
 	}
 
 	@Override
-	public boolean isUserValid(String userId, String password) {
-		return userRepo.findUserByUserId(userId)
-			.map(user -> passwordHashingService.verify(password, user.getPasswordHash()))
+	public boolean isUserValid(ReservationBookingRequest request) {
+		return userRepo.findUserByUserId(request.getUserId())
+			.map(user -> passwordHashingService.verify(request.getUserId(), user.getPasswordHash()))
 			.orElse(false);
+	}
+
+	@Override
+	public Optional<User> findValidUser(ReservationBookingRequest request) {
+		return userRepo.findUserByUserId(request.getUserId())
+			.filter(user -> passwordHashingService.verify(request.getUserId(), user.getPasswordHash()));
 	}
 }

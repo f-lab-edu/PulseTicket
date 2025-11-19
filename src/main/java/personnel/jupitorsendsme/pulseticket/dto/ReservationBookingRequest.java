@@ -17,7 +17,7 @@ public class ReservationBookingRequest {
 	/**
 	 * 예약신청자 password
 	 */
-	private String password;
+	private String rawPassword;
 
 	/**
 	 * 예약하고자 하는 event id
