@@ -38,7 +38,7 @@ public class UserManagementServiceDefault implements UserManagementService {
 
 		User user = User.builder()
 			.userId(request.getUserId())
-			.passwordHash(passwordHashingService.hash(request.getRawPassword()))
+			.passwordHash(passwordHashingService.hash(request.getPassword()))
 			.build();
 
 		userRepository.save(user);
@@ -49,13 +49,13 @@ public class UserManagementServiceDefault implements UserManagementService {
 	@Override
 	public boolean isUserValid(ReservationBookingRequest request) {
 		return userRepository.findUserByUserId(request.getUserId())
-			.map(user -> passwordHashingService.verify(request.getRawPassword(), user.getPasswordHash()))
+			.map(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()))
 			.orElse(false);
 	}
 
 	@Override
 	public Optional<User> findValidUser(ReservationBookingRequest request) {
 		return userRepository.findUserByUserId(request.getUserId())
-			.filter(user -> passwordHashingService.verify(request.getRawPassword(), user.getPasswordHash()));
+			.filter(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()));
 	}
 }
