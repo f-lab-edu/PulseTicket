@@ -18,6 +18,7 @@ import personnel.jupitorsendsme.pulseticket.interfaces.ReservationBookingService
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
 import personnel.jupitorsendsme.pulseticket.interfaces.UserManagementService;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
+import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
 /**
  * 기본 좌석 예약 서비스
@@ -33,6 +34,7 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 	@Qualifier("default")
 	private final ReservationQueryService reservationQueryService;
 	private final ReservationRepository reservationRepository;
+	private final SeatRepository seatRepository;
 
 	@Override
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
@@ -52,8 +54,10 @@ public class ReservationBookingServiceDefault implements ReservationBookingServi
 			.status(ReservationConstants.ReservationStatus.PENDING)
 			.expiresAt(LocalDateTime.now().plus(ReservationConstants.RESERVATION_EXPIRATION))
 			.build();
-
 		Reservation created = reservationRepository.save(reservation);
+
+		seat.get().setStatus(ReservationConstants.SeatStatus.RESERVED);
+		seatRepository.save(seat.get());
 
 		return ReservationBookingResponse.builder()
 			.isSuccess(true)

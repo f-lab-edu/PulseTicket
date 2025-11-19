@@ -28,5 +28,10 @@ public interface UserManagementService {
 	 */
 	boolean isUserValid(ReservationBookingRequest request);
 
+	/**
+	 * user id, password 입력값에 해당하는 유효한 회원 엔티티가 존재하는 경우 해당 엔티티 반환
+	 * @param request user id, password 가 담긴 객체
+	 * @return 유효한 회원 정보일 경우 회원 Entity 반환
+	 */
 	Optional<User> findValidUser(ReservationBookingRequest request);
 }
