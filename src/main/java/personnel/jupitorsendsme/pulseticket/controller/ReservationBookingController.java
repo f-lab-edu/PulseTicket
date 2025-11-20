@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
-import personnel.jupitorsendsme.pulseticket.factory.ReservationBookingServiceFactory;
+import personnel.jupitorsendsme.pulseticket.service.reservationBooking.ReservationBookingService;
 
 /**
  * 좌석 예약 컨트롤러</br>
@@ -20,7 +20,7 @@ import personnel.jupitorsendsme.pulseticket.factory.ReservationBookingServiceFac
 @RequiredArgsConstructor
 public class ReservationBookingController {
 
-	private final ReservationBookingServiceFactory reservationBookingServiceFactory;
+	private final ReservationBookingService reservationBookingService;
 
 	/**
 	 * 예약 청을 하는 엔드 포인트
@@ -32,8 +32,6 @@ public class ReservationBookingController {
 	@PostMapping
 	ReservationBookingResponse booking(@RequestBody ReservationBookingRequest request) {
 
-		return reservationBookingServiceFactory
-			.getReservationBookingService()
-			.book(request);
+		return reservationBookingService.book(request);
 	}
 }

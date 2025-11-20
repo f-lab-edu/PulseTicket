@@ -3,7 +3,6 @@ package personnel.jupitorsendsme.pulseticket.service.reservationBooking;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +13,10 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.User;
-import personnel.jupitorsendsme.pulseticket.interfaces.ReservationBookingService;
-import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
-import personnel.jupitorsendsme.pulseticket.interfaces.UserManagementService;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
+import personnel.jupitorsendsme.pulseticket.service.reservationQuery.ReservationQueryService;
+import personnel.jupitorsendsme.pulseticket.service.userManagement.UserManagementService;
 
 /**
  * 기본 좌석 예약 서비스
@@ -27,16 +25,18 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 @RequiredArgsConstructor
 @SuppressWarnings("DefaultAnnotationParam")
 @Transactional(readOnly = false)
-public class ReservationBookingServiceDefault implements ReservationBookingService {
+public class ReservationBookingService {
 
-	@Qualifier("default")
 	private final UserManagementService userManagementService;
-	@Qualifier("default")
 	private final ReservationQueryService reservationQueryService;
 	private final ReservationRepository reservationRepository;
 	private final SeatRepository seatRepository;
 
-	@Override
+	/**
+	 * 좌석 예약
+	 * @param request 예약에 필요한 정보
+	 * @return 예약 성공여부 (isSuccess), 예약 번호 (reservationId)
+	 */
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 
 		Optional<User> user = userManagementService.findValidUser(request);

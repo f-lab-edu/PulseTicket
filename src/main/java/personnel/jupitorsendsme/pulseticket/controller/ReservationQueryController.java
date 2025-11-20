@@ -2,7 +2,6 @@ package personnel.jupitorsendsme.pulseticket.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.entity.ReservationResponse;
-import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
+import personnel.jupitorsendsme.pulseticket.service.reservationQuery.ReservationQueryService;
 
 /**
  * 좌석 조회 컨트롤러
@@ -23,7 +22,6 @@ import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
 @RequiredArgsConstructor
 public class ReservationQueryController {
 
-	@Qualifier("default")
 	private final ReservationQueryService reservationQueryService;
 
 	/**
