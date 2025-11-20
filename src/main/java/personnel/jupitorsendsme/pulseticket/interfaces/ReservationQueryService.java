@@ -1,9 +1,10 @@
 package personnel.jupitorsendsme.pulseticket.interfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.entity.ReservationResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 
 /**
@@ -46,5 +47,5 @@ public interface ReservationQueryService {
 	 * @param request 확인하고자 하는 사용자의 id 와 password 가 담긴 객체 <br>
 	 * @return 예약 목록이 담긴 DTO <br>
 	 */
-	ReservationQueryResponse inquiryUserReservations(ReservationBookingRequest request);
+	List<ReservationResponse> inquiryUserReservations(ReservationBookingRequest request);
 }

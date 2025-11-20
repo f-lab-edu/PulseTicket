@@ -2,6 +2,7 @@ package personnel.jupitorsendsme.pulseticket.service.reservationQuery;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.entity.Reservation;
+import personnel.jupitorsendsme.pulseticket.entity.ReservationResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
+import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
 @Service
@@ -22,6 +25,7 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 public class ReservationQueryServiceDefault implements ReservationQueryService {
 
 	private final SeatRepository seatRepository;
+	private final ReservationRepository reservationRepository;
 
 	@Override
 	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
@@ -68,8 +72,11 @@ public class ReservationQueryServiceDefault implements ReservationQueryService {
 	}
 
 	@Override
-	public ReservationQueryResponse inquiryUserReservations(ReservationBookingRequest request) {
+	public List<ReservationResponse> inquiryUserReservations(ReservationBookingRequest request) {
+		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
 
-		return null;
+		return reservations.stream()
+			.map(ReservationResponse::from)
+			.collect(Collectors.toList());
 	}
 }

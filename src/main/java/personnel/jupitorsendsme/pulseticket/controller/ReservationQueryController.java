@@ -1,5 +1,7 @@
 package personnel.jupitorsendsme.pulseticket.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.entity.ReservationResponse;
 import personnel.jupitorsendsme.pulseticket.interfaces.ReservationQueryService;
 
 /**
@@ -63,7 +65,7 @@ public class ReservationQueryController {
 	 * @return 예약 목록이 담긴 DTO
 	 */
 	@GetMapping("inquiryUserReservations")
-	public ReservationQueryResponse inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
+	public List<ReservationResponse> inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
 		return reservationQueryService.inquiryUserReservations(request);
 	}
 }
