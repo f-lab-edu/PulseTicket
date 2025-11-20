@@ -52,6 +52,13 @@ public class Reservation extends BaseEntity {
 	private Seat seat;
 
 	/**
+	 * 예약 대상 이벤트
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "event_id", nullable = false)
+	private Event event;
+
+	/**
 	 * 예약 상태 (PENDING, CONFIRMED, CANCELLED)
 	 */
 	@Enumerated(EnumType.STRING)
