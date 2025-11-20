@@ -33,8 +33,9 @@ public class UserManagementServiceDefault implements UserManagementService {
 	@SuppressWarnings("DefaultAnnotationParam")
 	@Transactional(readOnly = false)
 	public boolean registeringUser(ReservationBookingRequest request) {
-		if (this.isUserPresent(request))
+		if (this.isUserPresent(request)) {
 			return false;
+		}
 
 		User user = User.builder()
 			.loginId(request.getLoginId())

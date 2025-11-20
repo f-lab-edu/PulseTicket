@@ -29,7 +29,6 @@ import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reservation extends BaseEntity {
-
 	/**
 	 * 예약 고유 식별자
 	 */
@@ -64,7 +63,7 @@ public class Reservation extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
 	private ReservationConstants.ReservationStatus status;
-	
+
 	/**
 	 * 예약 만료 일시
 	 */

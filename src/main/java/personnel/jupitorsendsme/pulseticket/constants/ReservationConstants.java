@@ -8,6 +8,12 @@ import java.time.Duration;
 public class ReservationConstants {
 
 	/**
+	 * 예약 만료 시간
+	 * 임시로 24시간으로 설정
+	 */
+	public static final Duration RESERVATION_EXPIRATION = Duration.ofHours(24);
+
+	/**
 	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
 	 * Available : 예약 가능 <br>
 	 * Reserved : 예약된 상태 <br>
@@ -31,10 +37,4 @@ public class ReservationConstants {
 		CANCELLED,
 		EXPIRED
 	}
-
-	/**
-	 * 예약 만료 시간
-	 * 임시로 24시간으로 설정
-	 */
-	public static final Duration RESERVATION_EXPIRATION = Duration.ofHours(24);
 }

@@ -11,7 +11,6 @@ import lombok.Getter;
 @MappedSuperclass
 @Getter
 public class BaseEntity {
-
 	/**
 	 * 생성 일시
 	 */
