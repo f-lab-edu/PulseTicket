@@ -38,6 +38,7 @@ CREATE TABLE reservations (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
     seat_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
     status VARCHAR(20) DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -45,5 +46,6 @@ CREATE TABLE reservations (
     confirmed_at TIMESTAMP NULL,
     cancelled_at TIMESTAMP NULL,
     CONSTRAINT fk_reservations_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_reservations_seat FOREIGN KEY (seat_id) REFERENCES seats(id)
+    CONSTRAINT fk_reservations_seat FOREIGN KEY (seat_id) REFERENCES seats(id),
+    CONSTRAINT fk_reservations_event_id FOREIGN KEY (event_id) REFERENCES events(id)
 );
