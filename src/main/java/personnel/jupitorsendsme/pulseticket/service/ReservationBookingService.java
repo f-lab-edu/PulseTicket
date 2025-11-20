@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.service.reservationBooking;
+package personnel.jupitorsendsme.pulseticket.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,8 +15,6 @@ import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
-import personnel.jupitorsendsme.pulseticket.service.reservationQuery.ReservationQueryService;
-import personnel.jupitorsendsme.pulseticket.service.userManagement.UserManagementService;
 
 /**
  * 기본 좌석 예약 서비스

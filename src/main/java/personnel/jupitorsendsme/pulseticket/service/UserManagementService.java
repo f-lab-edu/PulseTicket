@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.service.userManagement;
+package personnel.jupitorsendsme.pulseticket.service;
 
 import java.util.Optional;
 
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
-import personnel.jupitorsendsme.pulseticket.service.hashingService.HashingServiceArgon2id;
 
 @Service
 @RequiredArgsConstructor

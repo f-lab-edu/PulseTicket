@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
-import personnel.jupitorsendsme.pulseticket.service.userManagement.UserManagementService;
+import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 
 /**
  * 사용자 관련 컨트롤러</br>

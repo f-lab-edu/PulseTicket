@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.service.reservationQuery;
+package personnel.jupitorsendsme.pulseticket.service;
 
 import java.util.List;
 import java.util.Optional;

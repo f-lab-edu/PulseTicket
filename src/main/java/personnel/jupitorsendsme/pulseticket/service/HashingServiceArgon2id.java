@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.service.hashingService;
+package personnel.jupitorsendsme.pulseticket.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
