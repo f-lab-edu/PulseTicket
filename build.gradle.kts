@@ -43,7 +43,16 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk18on:1.81")
 }
 
+// ============================================================================
+// UTF-8 인코딩 설정
+// 모든 컴파일 작업에서 UTF-8 인코딩 사용
+// ============================================================================
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
 tasks.withType<Test> {
+    systemProperty("file.encoding", "UTF-8")
     useJUnitPlatform()
 }
 
