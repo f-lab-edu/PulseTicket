@@ -3,7 +3,7 @@ package personnel.jupitorsendsme.pulseticket.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
+import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 
 @Getter
 @Builder
@@ -18,5 +18,5 @@ public class ReservationInformation {
 	/**
 	 * 예약 상태
 	 */
-	private ReservationConstants.ReservationStatus status;
+	private Reservation.ReservationStatus status;
 }

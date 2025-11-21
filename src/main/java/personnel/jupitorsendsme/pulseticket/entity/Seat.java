@@ -21,7 +21,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 
 /**
  * 좌석 정보를 관리하는 엔티티
@@ -40,6 +39,36 @@ import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Seat extends BaseEntity {
+
+	/**
+	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
+	 * Available : 예약 가능 <br>
+	 * Reserved : 예약된 상태 <br>
+	 * Sold : 예약이 구매된 상태 (paid)
+	 */
+	public enum SeatStatus {
+
+		AVAILABLE,
+		RESERVED,
+		SOLD;
+
+		public SeatStatus reserve() {
+			switch (this) {
+				case RESERVED -> throw new IllegalStateException("이미 예약된 좌석");
+				case SOLD -> throw new IllegalStateException("이미 결제완료된 좌석");
+			}
+
+			return RESERVED;
+		}
+
+		public SeatStatus sold() {
+			switch (this) {
+				case AVAILABLE -> throw new IllegalStateException("예약 가능한 좌석 상태. 예약이 되고 나서 결제해야 함");
+				case SOLD -> throw new IllegalStateException("이미 판매됨");
+			}
+			return SOLD;
+		}
+	}
 
 	/**
 	 * 좌석 고유 식별자
@@ -66,7 +95,7 @@ public class Seat extends BaseEntity {
 	 */
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
-	private ReservationConstants.SeatStatus status;
+	private SeatStatus status;
 
 	/**
 	 * 예약 만료 일시

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.ReservationResponse;
@@ -32,7 +31,7 @@ public class ReservationQueryService {
 	 */
 	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
 		return seatRepository.existsByEvent_IdAndStatus(request.getEventId(),
-			ReservationConstants.SeatStatus.AVAILABLE);
+			Seat.SeatStatus.AVAILABLE);
 	}
 
 	/**
@@ -49,8 +48,8 @@ public class ReservationQueryService {
 			diagram.append("[");
 
 			switch (seat.getStatus()) {
-				case ReservationConstants.SeatStatus.RESERVED -> diagram.append("X");
-				case ReservationConstants.SeatStatus.SOLD -> diagram.append("~");
+				case Seat.SeatStatus.RESERVED -> diagram.append("X");
+				case Seat.SeatStatus.SOLD -> diagram.append("~");
 				default -> diagram.append("O");
 			}
 
@@ -69,7 +68,7 @@ public class ReservationQueryService {
 		return seatRepository.existsSeatByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
-			ReservationConstants.SeatStatus.AVAILABLE
+			Seat.SeatStatus.AVAILABLE
 		);
 	}
 
@@ -82,7 +81,7 @@ public class ReservationQueryService {
 		return seatRepository.findByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
-			ReservationConstants.SeatStatus.AVAILABLE
+			Seat.SeatStatus.AVAILABLE
 		);
 	}
 

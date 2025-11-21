@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.constants.ReservationConstants;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
@@ -49,12 +48,12 @@ public class ReservationBookingService {
 		Reservation reservation = Reservation.builder()
 			.user(user.get())
 			.seat(seat.get())
-			.status(ReservationConstants.ReservationStatus.PENDING)
-			.expiresAt(LocalDateTime.now().plus(ReservationConstants.RESERVATION_EXPIRATION))
+			.status(Reservation.ReservationStatus.PENDING)
+			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
 			.build();
 		Reservation created = reservationRepository.save(reservation);
 
-		seat.get().setStatus(ReservationConstants.SeatStatus.RESERVED);
+		seat.get().setStatus(Seat.SeatStatus.RESERVED);
 		seatRepository.save(seat.get());
 
 		return ReservationBookingResponse.builder()
