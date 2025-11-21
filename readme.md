@@ -1,6 +1,5 @@
-프로젝트 스펙
-[개요]
-
+프로젝트 스펙  
+[개요]  
 PulseTicket - Ticketing System 
 
 개요 : 짧은 시간 내에 수많은 사람들이 동시에 티켓 예메 버튼을 누르는 상황을 가정하고 만드는 시스템  
@@ -8,20 +7,19 @@ PulseTicket - Ticketing System
 → 캐싱 성능 + 캐싱 알고리즘 테스트 + 캐싱스탬피드 논문 효율성 입증 + 동시성 제어까지 해볼 수 있을 것.  
 
 [스펙]
-
 * Spring Boot
 * Redis → 당연히 캐싱, 잔여 좌석 수, 대기열 순번, 예약 상태를 보여주는 좌석배치도 등을 캐싱할 용도.
-* PostgreSQL → 다른 DB 말고 이걸 쓰는 이유? → 그냥 쓰고 싶어서?
+* PostgreSQL → 다른 DB 말고 이걸 쓰는 이유? → 그냥 쓰고 싶어서?  
     * MVCC 로 동시성에 강함
     * DB 를 써야 하는 이유?
 
-→ 잔여 좌석 조회, 좌석 선택 검증 (진짜 비어있나?), 예약 만료 처리 (만료된 예약 찾아서 좌석 해제)
+→ 잔여 좌석 조회, 좌석 선택 검증 (진짜 비어있나?), 예약 만료 처리 (만료된 예약 찾아서 좌석 해제)  
 → 애초에 좌석이 예약되면 예약된 정보를 저장해야 함
 
-* Docker → 써보고 싶어서 + 다중 환경에서 동일한 실행을 위해
-* 캐싱 스탬피드 발생 예상 지점 → 다 Redis 가 사용되는 부분
-    * 잔여 좌석 수 조회
-    * 대기열 순번 조회
+* Docker → 써보고 싶어서 + 다중 환경에서 동일한 실행을 위해  
+* 캐싱 스탬피드 발생 예상 지점 → 다 Redis 가 사용되는 부분  
+    * 잔여 좌석 수 조회  
+    * 대기열 순번 조회  
     * 좌석 배치도 조회 등등...
 * 성능 부하기 : k6 ? Apache JMetter ?
 * 성능 모니터링 : Prometheus + Grafana ?
@@ -31,8 +29,10 @@ PulseTicket - Ticketing System
 일단 시작은 작게, 나중에 기능이나 스펙, 컨셉을 늘리는 방향으로..  
 캐싱피드 논문 수식 정리 필요..  
 
-[도구]
-intelliJ + Cursor + PostgreSQL MCP + serena MCP + Claude Code
+[도구]  
+intelliJ   
+\+ Cursor, PostgreSQL MCP -> 코딩 X, DB 조작만  
+\+ Grafana + Loki + Promtail (Spring 의 Docker Container 의 로그를 쉽게 보기위해)
 
 [milestone]  
 → 기본적인 티켓팅 시스템 만들기  
