@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
-import personnel.jupitorsendsme.pulseticket.entity.ReservationResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;

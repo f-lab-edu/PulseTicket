@@ -50,24 +50,7 @@ public class Seat extends BaseEntity {
 
 		AVAILABLE,
 		RESERVED,
-		SOLD;
-
-		public SeatStatus reserve() {
-			switch (this) {
-				case RESERVED -> throw new IllegalStateException("이미 예약된 좌석");
-				case SOLD -> throw new IllegalStateException("이미 결제완료된 좌석");
-			}
-
-			return RESERVED;
-		}
-
-		public SeatStatus sold() {
-			switch (this) {
-				case AVAILABLE -> throw new IllegalStateException("예약 가능한 좌석 상태. 예약이 되고 나서 결제해야 함");
-				case SOLD -> throw new IllegalStateException("이미 판매됨");
-			}
-			return SOLD;
-		}
+		SOLD
 	}
 
 	/**
@@ -108,4 +91,23 @@ public class Seat extends BaseEntity {
 	 */
 	@OneToMany(mappedBy = "seat")
 	private List<Reservation> reservations;
+
+	/**
+	 * 해당 좌석 예약 처리
+	 */
+	public void reserve() {
+		switch (this.status) {
+			case RESERVED -> throw new IllegalStateException("이미 예약된 좌석");
+			case SOLD -> throw new IllegalStateException("이미 결제완료된 좌석");
+		}
+		this.status = SeatStatus.RESERVED;
+	}
+
+	public void sold() {
+		switch (this.status) {
+			case AVAILABLE -> throw new IllegalStateException("예약 가능한 좌석 상태. 예약이 되고 나서 결제해야 함");
+			case SOLD -> throw new IllegalStateException("이미 판매됨");
+		}
+		this.status = SeatStatus.SOLD;
+	}
 }

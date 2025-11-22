@@ -1,8 +1,5 @@
 package personnel.jupitorsendsme.pulseticket.service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,29 +33,16 @@ public class ReservationBookingService {
 	 */
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 
-		Optional<User> user = userManagementService.findValidUser(request);
-		Optional<Seat> seat = reservationQueryService.findAvailableSeat(request);
+		User user = userManagementService.findValidUser(request)
+			.orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 정보"));
+		Seat seat = reservationQueryService.findAvailableSeat(request)
+			.orElseThrow(() -> new IllegalStateException("예약이 불가능한 좌석"));
 
-		if (user.isEmpty() || seat.isEmpty()) {
-			return ReservationBookingResponse.builder()
-				.isSuccess(false)
-				.build();
-		}
+		Reservation reserve = Reservation.reserve(user, seat);
+		Reservation created = reservationRepository.save(reserve);
 
-		Reservation reservation = Reservation.builder()
-			.user(user.get())
-			.seat(seat.get())
-			.status(Reservation.ReservationStatus.PENDING)
-			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
-			.build();
-		Reservation created = reservationRepository.save(reservation);
+		seat.reserve();
 
-		seat.get().setStatus(Seat.SeatStatus.RESERVED);
-		seatRepository.save(seat.get());
-
-		return ReservationBookingResponse.builder()
-			.isSuccess(true)
-			.reservationId(created.getId())
-			.build();
+		return ReservationBookingResponse.success(created);
 	}
 }

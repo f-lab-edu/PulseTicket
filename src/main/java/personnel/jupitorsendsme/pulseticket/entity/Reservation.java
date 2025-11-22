@@ -44,34 +44,10 @@ public class Reservation extends BaseEntity {
 	 * Expired : 예약은 했으나 일정시간 결제를 안해서 만료된 상태.
 	 */
 	public enum ReservationStatus {
-
 		PENDING,
 		CONFIRMED,
 		CANCELLED,
-		EXPIRED;
-
-		public ReservationStatus confirm() {
-			if (this != PENDING) {
-				throw new IllegalStateException("예약 대기가 아닌 상태에서 예약 확정 불가, 현재 상태 : " + this);
-			}
-			return CONFIRMED;
-		}
-
-		public ReservationStatus cancel() {
-			switch (this) {
-				case CANCELLED -> throw new IllegalStateException("취소된 예약");
-				case EXPIRED -> throw new IllegalStateException("만료된 예약");
-			}
-			return CANCELLED;
-		}
-
-		public ReservationStatus expire() {
-			switch (this) {
-				case CONFIRMED -> throw new IllegalStateException("이미 결제된 예약");
-				case EXPIRED -> throw new IllegalStateException("만료된 예약");
-			}
-			return EXPIRED;
-		}
+		EXPIRED
 	}
 
 	/**
@@ -126,4 +102,51 @@ public class Reservation extends BaseEntity {
 	 */
 	@Column(name = "cancelled_at")
 	private LocalDateTime cancelledAt;
+
+	/**
+	 * JPA 영속화를 위해 Reservation 객체를 리턴하는 메서드
+	 * @param user 저장할 User 정보
+	 * @param seat 저장할 Seat 정보
+	 * @return 저장할 Reservation 객체
+	 */
+	public static Reservation reserve(User user, Seat seat) {
+		return Reservation.builder()
+			.user(user)
+			.seat(seat)
+			.status(Reservation.ReservationStatus.PENDING)
+			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
+			.build();
+	}
+
+	/**
+	 * 현제 예약 상태를 예약 확인 상태로 변경
+	 */
+	public void confirm() {
+		if (this.status != ReservationStatus.PENDING) {
+			throw new IllegalStateException("예약 대기가 아닌 상태에서 예약 확정 불가, 현재 상태 : " + this);
+		}
+		this.status = ReservationStatus.CONFIRMED;
+	}
+
+	/**
+	 * 예약 상태를 취소로 변경
+	 */
+	public void cancel() {
+		switch (this.status) {
+			case CANCELLED -> throw new IllegalStateException("취소된 예약");
+			case EXPIRED -> throw new IllegalStateException("만료된 예약");
+		}
+		this.status = ReservationStatus.CANCELLED;
+	}
+
+	/**
+	 * 예약 상태를 만료로 변경
+	 */
+	public void expire() {
+		switch (this.status) {
+			case CONFIRMED -> throw new IllegalStateException("이미 결제된 예약");
+			case EXPIRED -> throw new IllegalStateException("만료된 예약");
+		}
+		this.status = ReservationStatus.EXPIRED;
+	}
 }
