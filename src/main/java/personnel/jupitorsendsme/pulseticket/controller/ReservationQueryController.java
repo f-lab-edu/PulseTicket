@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
 
 /**
@@ -32,6 +32,7 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("isBookingEventAvailable")
 	public Boolean isBookingEventAvailable(@ModelAttribute ReservationBookingRequest request) {
+
 		return reservationQueryService.isBookingEventAvailable(request);
 	}
 
@@ -43,6 +44,7 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("textualDiagramOfSeatsOfTheEvent")
 	public String textualDiagramOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
+
 		return reservationQueryService.textualDiagramOfSeatsOfTheEvent(request);
 	}
 
@@ -54,6 +56,7 @@ public class ReservationQueryController {
 
 	@GetMapping("isSpecificSeatAvailable")
 	public Boolean isSpecificSeatAvailable(@ModelAttribute ReservationBookingRequest request) {
+
 		return reservationQueryService.isSpecificSeatAvailable(request);
 	}
 
@@ -63,7 +66,8 @@ public class ReservationQueryController {
 	 * @return 예약 목록이 담긴 DTO
 	 */
 	@GetMapping("inquiryUserReservations")
-	public List<ReservationResponse> inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
+	public List<ReservationQueryResponse> inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
+
 		return reservationQueryService.inquiryUserReservations(request);
 	}
 }

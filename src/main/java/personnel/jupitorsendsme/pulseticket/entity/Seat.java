@@ -43,51 +43,33 @@ import lombok.Setter;
 public class Seat extends BaseEntity {
 
 	/**
-	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
-	 * Available : 예약 가능 <br>
-	 * Reserved : 예약된 상태 <br>
-	 * Sold : 예약이 구매된 상태 (paid)
-	 */
-	public enum SeatStatus {
-
-		AVAILABLE,
-		RESERVED,
-		SOLD
-	}
-
-	/**
 	 * 좌석 고유 식별자
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	/**
 	 * 소속 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Event event;
-
 	/**
 	 * 좌석 번호
 	 */
 	@Column(name = "seat_number", nullable = false)
 	private Integer seatNumber;
-
 	/**
 	 * 좌석 상태 (AVAILABLE, RESERVED, CONFIRMED)
 	 */
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
 	private SeatStatus status;
-
 	/**
 	 * 예약 만료 일시
 	 */
 	@Column(name = "reserved_until")
 	private LocalDateTime reservedUntil;
-
 	/**
 	 * 해당 좌석의 예약 이력
 	 */
@@ -111,5 +93,18 @@ public class Seat extends BaseEntity {
 			case SOLD -> throw new IllegalStateException("이미 판매됨");
 		}
 		this.status = SeatStatus.SOLD;
+	}
+
+	/**
+	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
+	 * Available : 예약 가능 <br>
+	 * Reserved : 예약된 상태 <br>
+	 * Sold : 예약이 구매된 상태 (paid)
+	 */
+	public enum SeatStatus {
+
+		AVAILABLE,
+		RESERVED,
+		SOLD
 	}
 }

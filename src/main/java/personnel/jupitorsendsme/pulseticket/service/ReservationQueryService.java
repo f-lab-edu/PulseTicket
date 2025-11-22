@@ -2,14 +2,13 @@ package personnel.jupitorsendsme.pulseticket.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
@@ -30,8 +29,7 @@ public class ReservationQueryService {
 	 * @return 예약 가능 여부 <br>
 	 */
 	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
-		return seatRepository.existsByEvent_IdAndStatus(request.getEventId(),
-			Seat.SeatStatus.AVAILABLE);
+		return seatRepository.existsByEvent_IdAndStatus(request.getEventId(), Seat.SeatStatus.AVAILABLE);
 	}
 
 	/**
@@ -41,6 +39,7 @@ public class ReservationQueryService {
 	 * @return Textual Diagram <br>
 	 */
 	public String textualDiagramOfSeatsOfTheEvent(ReservationBookingRequest request) {
+
 		List<Seat> seats = seatRepository.findByEvent_Id(request.getEventId());
 		StringBuilder diagram = new StringBuilder();
 
@@ -90,12 +89,9 @@ public class ReservationQueryService {
 	 * @param request 확인하고자 하는 사용자의 id 와 password 가 담긴 객체 <br>
 	 * @return 예약 목록이 담긴 DTO <br>
 	 */
-	public List<ReservationResponse> inquiryUserReservations(ReservationBookingRequest request) {
+	public List<ReservationQueryResponse> inquiryUserReservations(ReservationBookingRequest request) {
 		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
 
-		return reservations
-			.stream()
-			.map(ReservationResponse::from)
-			.collect(Collectors.toList());
+		return ReservationQueryResponse.from(reservations);
 	}
 }
