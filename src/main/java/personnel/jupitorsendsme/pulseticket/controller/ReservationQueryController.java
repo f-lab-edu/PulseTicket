@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
 
 /**
@@ -37,15 +38,14 @@ public class ReservationQueryController {
 	}
 
 	/**
-	 * 특정 이벤트의 예약 가능한 좌석 조회 - 시각적 표현 <br>
-	 * 일단 행바꿈을 '\n' 캐릭터를 써서 전체 좌석을 String 으로 나타내기
-	 * @param request 확인하고자 하는 이벤트 id 가 담긴 객체
-	 * @return Textual Diagram
+	 * 특정 이벤트의 좌석 현황 리스트
+	 * @param request 확인하고자 하는 이벤트 id 가 담긴 객체 <br>
+	 * @return 특정 이벤트의 좌석 정보 리스트
 	 */
-	@GetMapping("textualDiagramOfSeatsOfTheEvent")
-	public String textualDiagramOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
+	@GetMapping("statusOfSeatsOfTheEvent")
+	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
 
-		return reservationQueryService.textualDiagramOfSeatsOfTheEvent(request);
+		return reservationQueryService.statusOfSeatsOfTheEvent(request);
 	}
 
 	/**

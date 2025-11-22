@@ -11,6 +11,7 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
+import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
@@ -38,24 +39,11 @@ public class ReservationQueryService {
 	 * @param request 확인하고자 하는 이벤트 id 가 담긴 객체 <br>
 	 * @return Textual Diagram <br>
 	 */
-	public String textualDiagramOfSeatsOfTheEvent(ReservationBookingRequest request) {
+	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(ReservationBookingRequest request) {
 
 		List<Seat> seats = seatRepository.findByEvent_Id(request.getEventId());
-		StringBuilder diagram = new StringBuilder();
 
-		for (Seat seat : seats) {
-			diagram.append("[");
-
-			switch (seat.getStatus()) {
-				case Seat.SeatStatus.RESERVED -> diagram.append("X");
-				case Seat.SeatStatus.SOLD -> diagram.append("~");
-				default -> diagram.append("O");
-			}
-
-			diagram.append("]");
-		}
-
-		return diagram.toString();
+		return SeatStatusResponse.from(seats);
 	}
 
 	/**
