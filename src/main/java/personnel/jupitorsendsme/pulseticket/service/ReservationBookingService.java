@@ -10,7 +10,6 @@ import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
-import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
 /**
  * 기본 좌석 예약 서비스
@@ -24,7 +23,6 @@ public class ReservationBookingService {
 	private final UserManagementService userManagementService;
 	private final ReservationQueryService reservationQueryService;
 	private final ReservationRepository reservationRepository;
-	private final SeatRepository seatRepository;
 
 	/**
 	 * 좌석 예약
