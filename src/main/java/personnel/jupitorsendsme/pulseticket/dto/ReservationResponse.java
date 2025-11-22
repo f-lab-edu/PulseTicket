@@ -1,10 +1,12 @@
 package personnel.jupitorsendsme.pulseticket.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 
 @Getter
+@AllArgsConstructor
 public class ReservationResponse {
 
 	/**
@@ -34,18 +36,11 @@ public class ReservationResponse {
 	 * @return 변환된 ReservationResponse 객체
 	 */
 	public static ReservationResponse from(Reservation reservation) {
-		return new ReservationResponse(reservation);
-	}
 
-	/**
-	 * Reservation 객체로부터 생성하는 생성자
-	 * @param reservation 정보가 담긴 Reservation 객체
-	 */
-	ReservationResponse(Reservation reservation) {
-
-		this.reservationId = reservation.getId();
-		this.eventId = reservation.getEvent().getId();
-		this.seatNumber = reservation.getSeat().getSeatNumber();
-		this.seatStatus = reservation.getSeat().getStatus();
+		return new ReservationResponse(
+			reservation.getId(),
+			reservation.getEvent().getId(),
+			reservation.getSeat().getSeatNumber(),
+			reservation.getSeat().getStatus());
 	}
 }
