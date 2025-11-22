@@ -11,10 +11,41 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HashingServiceArgon2id {
 
+	/**
+	 * Salt 길이 (바이트)
+	 */
+	private static final int SALT_LENGTH = 16;
+
+	/**
+	 * 해시 결과 길이 (바이트)
+	 */
+	private static final int HASH_LENGTH = 32;
+
+	/**
+	 * 병렬 처리 스레드 수
+	 */
+	private static final int PARALLELISM = 1;
+
+	/**
+	 * 메모리 사용량 (KB 단위, 15MB)
+	 */
+	private static final int MEMORY_COST_KB = 15 * 1024;
+
+	/**
+	 * 해싱 반복 횟수
+	 */
+	private static final int ITERATIONS = 2;
+
 	private final Argon2PasswordEncoder encoder;
 
 	public HashingServiceArgon2id() {
-		this.encoder = new Argon2PasswordEncoder(16, 32, 1, 15 * 1024, 2);
+		this.encoder = new Argon2PasswordEncoder(
+			SALT_LENGTH,
+			HASH_LENGTH,
+			PARALLELISM,
+			MEMORY_COST_KB,
+			ITERATIONS
+		);
 	}
 
 	/**

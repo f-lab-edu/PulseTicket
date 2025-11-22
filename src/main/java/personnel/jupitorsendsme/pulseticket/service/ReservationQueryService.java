@@ -93,7 +93,8 @@ public class ReservationQueryService {
 	public List<ReservationResponse> inquiryUserReservations(ReservationBookingRequest request) {
 		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
 
-		return reservations.stream()
+		return reservations
+			.stream()
 			.map(ReservationResponse::from)
 			.collect(Collectors.toList());
 	}
