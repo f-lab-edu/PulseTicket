@@ -1,0 +1,78 @@
+# ============================================================================
+# Docker Compose 테스트 환경 설정 파일
+# 통합 테스트용 PostgreSQL 데이터베이스 서비스
+# 실제 포트는 docker-compose.test.override.yml에서 설정
+# ============================================================================
+
+name: pulseticket
+
+services:
+  # ============================================================================
+  # PostgreSQL 테스트 데이터베이스 서비스
+  # 데이터 영속성을 위한 볼륨 사용
+  # @Transactional 없이 테스트 시 데이터 유지 가능
+  # ============================================================================
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: pulseticket-postgres-test
+    mem_limit: 100m
+    mem_reservation: 50m
+    command: -p ${TEST_POSTGRES_INTERNAL_PORT:-5432}
+    environment:
+      POSTGRES_DB: ${TEST_POSTGRES_DB:-pulseticket_test}
+      POSTGRES_USER: ${TEST_POSTGRES_USER:-testuser}
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD:-testpass}
+      POSTGRES_PORT: "${TEST_POSTGRES_INTERNAL_PORT:-5432}"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      # 데이터 영속성을 위한 볼륨 마운트
+      - postgres_test_data:/var/lib/postgresql/data
+    networks:
+      - pulseticket-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h localhost -p ${TEST_POSTGRES_INTERNAL_PORT:-5432} -U ${TEST_POSTGRES_USER:-testuser} -d ${TEST_POSTGRES_DB:-pulseticket_test}" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # ============================================================================
+  # Redis 테스트 캐시 서비스
+  # 데이터 영속성을 위한 볼륨 사용
+  # ============================================================================
+  redis-test:
+    image: redis:7-alpine
+    container_name: pulseticket-redis-test
+    mem_limit: 50m
+    mem_reservation: 25m
+    command: sh -c 'redis-server --port $TEST_REDIS_INTERNAL_PORT --appendonly yes --requirepass "$TEST_REDIS_PASSWORD"'
+    volumes:
+      # 데이터 영속성을 위한 볼륨 마운트
+      - redis_test_data:/data
+    networks:
+      - pulseticket-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-p", "${TEST_REDIS_INTERNAL_PORT:-6379}", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+# ============================================================================
+# 네트워크 설정
+# 테스트 전용 네트워크 생성
+# ============================================================================
+networks:
+  pulseticket-network:
+    name: pulseticket-test-network
+    driver: bridge
+
+# ============================================================================
+# 볼륨 설정
+# 테스트 데이터 영속성을 위한 볼륨 정의
+# ============================================================================
+volumes:
+  postgres_test_data:
+    driver: local
+  redis_test_data:
+    driver: local

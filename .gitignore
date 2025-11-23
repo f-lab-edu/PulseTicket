@@ -39,12 +39,14 @@ qodana.yaml
 .vscode/
 
 
-### MCP ###
+### AI Tool ###
 .serena
 CLAUDE.md
 .cursor
 .claude
 .mcp.json
+AGENTS.md
+.codex
 
 ### Temp Files ###
 cookies.txt
@@ -54,6 +56,7 @@ cookies.txt
 
 ### Docker Compose Override ###
 docker-compose.override.yml
+docker-compose.test.override.yml
 
 ### PostgreSQL Init Scripts ###
 docker/postgres/init/*.sql
