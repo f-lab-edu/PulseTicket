@@ -31,7 +31,6 @@ public class ReservationBookingController {
 	 */
 	@PostMapping
 	ReservationBookingResponse booking(@RequestBody ReservationBookingRequest request) {
-
 		return reservationBookingService.book(request);
 	}
 }

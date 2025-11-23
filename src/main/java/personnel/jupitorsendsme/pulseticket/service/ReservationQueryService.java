@@ -29,7 +29,6 @@ public class ReservationQueryService {
 	 * @return 예약 가능 여부 <br>
 	 */
 	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
-		
 		return seatRepository.existsByEvent_IdAndStatus(request.getEventId(), Seat.SeatStatus.AVAILABLE);
 	}
 
@@ -40,9 +39,7 @@ public class ReservationQueryService {
 	 * @return Textual Diagram <br>
 	 */
 	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(ReservationBookingRequest request) {
-
 		List<Seat> seats = seatRepository.findByEvent_Id(request.getEventId());
-
 		return SeatStatusResponse.from(seats);
 	}
 
@@ -52,7 +49,6 @@ public class ReservationQueryService {
 	 * @return 에약 가능 여부. (나중에는 유효하지 않은 예약 좌석일 경우 특정 메시지를 반환하도록 수정하는게 좋겠다) <br>
 	 */
 	public boolean isSpecificSeatAvailable(ReservationBookingRequest request) {
-
 		return seatRepository.existsSeatByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
@@ -66,7 +62,6 @@ public class ReservationQueryService {
 	 * @return 예약이 가능하면 Seat , 불가능하면 null <br>
 	 */
 	public Seat findAvailableSeat(ReservationBookingRequest request) {
-
 		return seatRepository.findByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
@@ -80,9 +75,7 @@ public class ReservationQueryService {
 	 * @return 예약 목록이 담긴 DTO <br>
 	 */
 	public List<ReservationQueryResponse> inquiryUserReservations(ReservationBookingRequest request) {
-
 		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
-
 		return ReservationQueryResponse.from(reservations);
 	}
 }

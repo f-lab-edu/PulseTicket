@@ -30,7 +30,6 @@ public class ReservationBookingService {
 	 * @return 예약 성공여부 (isSuccess), 예약 번호 (reservationId)
 	 */
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
-
 		User user = loadUser(request);
 		Seat seat = loadSeat(request);
 
@@ -40,17 +39,14 @@ public class ReservationBookingService {
 	}
 
 	private User loadUser(ReservationBookingRequest request) {
-
 		return userManagementService.findValidUser(request);
 	}
 
 	private Seat loadSeat(ReservationBookingRequest request) {
-
 		return reservationQueryService.findAvailableSeat(request);
 	}
 
 	private Reservation makeReservation(User user, Seat seat) {
-
 		Reservation reserve = Reservation.reserve(user, seat);
 		Reservation created = reservationRepository.save(reserve);
 

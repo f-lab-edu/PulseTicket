@@ -22,7 +22,6 @@ public class UserManagementService {
 	 * @return true : 등록된 사용자, false : 미등록된 사용자
 	 */
 	public boolean isUserPresent(ReservationBookingRequest request) {
-
 		return userRepository.existsByLoginId(request.getLoginId());
 	}
 
@@ -34,7 +33,6 @@ public class UserManagementService {
 	@SuppressWarnings("DefaultAnnotationParam")
 	@Transactional(readOnly = false)
 	public boolean registeringUser(ReservationBookingRequest request) {
-
 		if (this.isUserPresent(request)) {
 			return false;
 		}
@@ -55,7 +53,6 @@ public class UserManagementService {
 	 * @return true : loginId 이 존재하고 loginId, password 가 일치함 / false : 불일치
 	 */
 	public boolean isUserValid(ReservationBookingRequest request) {
-
 		return userRepository.findUserByLoginId(request.getLoginId())
 			.map(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()))
 			.orElse(false);
@@ -67,7 +64,6 @@ public class UserManagementService {
 	 * @return 유효한 회원 정보일 경우 회원 Entity 반환
 	 */
 	public User findValidUser(ReservationBookingRequest request) {
-		
 		return userRepository.findUserByLoginId(request.getLoginId())
 			.filter(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()))
 			.orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 정보"));

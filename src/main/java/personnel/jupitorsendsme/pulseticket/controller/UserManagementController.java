@@ -23,19 +23,16 @@ public class UserManagementController {
 
 	@GetMapping("doesUserExist")
 	Boolean doesUserExist(@ModelAttribute ReservationBookingRequest request) {
-
 		return userManagementService.isUserPresent(request);
 	}
 
 	@PostMapping("registeringUser")
 	Boolean registeringUser(@RequestBody ReservationBookingRequest request) {
-		
 		return userManagementService.registeringUser(request);
 	}
 
 	@PostMapping("isUserValid")
 	Boolean isUserValid(@RequestBody ReservationBookingRequest request) {
-
 		return userManagementService.isUserValid(request);
 	}
 }

@@ -33,7 +33,6 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("isBookingEventAvailable")
 	public Boolean isBookingEventAvailable(@ModelAttribute ReservationBookingRequest request) {
-
 		return reservationQueryService.isBookingEventAvailable(request);
 	}
 
@@ -44,7 +43,6 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("statusOfSeatsOfTheEvent")
 	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
-
 		return reservationQueryService.statusOfSeatsOfTheEvent(request);
 	}
 
@@ -56,7 +54,6 @@ public class ReservationQueryController {
 
 	@GetMapping("isSpecificSeatAvailable")
 	public Boolean isSpecificSeatAvailable(@ModelAttribute ReservationBookingRequest request) {
-
 		return reservationQueryService.isSpecificSeatAvailable(request);
 	}
 
@@ -67,7 +64,6 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("inquiryUserReservations")
 	public List<ReservationQueryResponse> inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
-
 		return reservationQueryService.inquiryUserReservations(request);
 	}
 }
