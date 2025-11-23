@@ -1,50 +1,50 @@
--- ============================================================================
 -- PulseTicket 데이터베이스 테이블 생성
 -- ============================================================================
 
--- USERS 테이블 생성
+-- USERS 테이블
 CREATE TABLE users
 (
     id            BIGSERIAL PRIMARY KEY,
-    user_id       VARCHAR(50) UNIQUE NOT NULL,
+    login_id      VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255)       NOT NULL,
-    created_at    TIMESTAMP                   DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at    TIMESTAMP          NOT NULL,
+    updated_at    TIMESTAMP          NOT NULL
 );
 
--- EVENTS 테이블 생성
+-- EVENTS 테이블
 CREATE TABLE events
 (
     id          BIGSERIAL PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
     total_seats INT          NOT NULL,
-    created_at  TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at  TIMESTAMP    NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL
 );
 
--- SEATS 테이블 생성
+-- SEATS 테이블
 CREATE TABLE seats
 (
     id             BIGSERIAL PRIMARY KEY,
-    event_id       BIGINT    NOT NULL,
-    seat_number    INT       NOT NULL,
-    status         VARCHAR(20) DEFAULT 'AVAILABLE',
-    reserved_until TIMESTAMP NULL,
-    created_at     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
+    event_id       BIGINT      NOT NULL, -- FK -> events.id
+    seat_number    INT         NOT NULL,
+    status         VARCHAR(20) NOT NULL,
+    reserved_until TIMESTAMP   NULL,
+    created_at     TIMESTAMP   NOT NULL,
+    updated_at     TIMESTAMP   NOT NULL,
     CONSTRAINT uk_seats_event_seat_number UNIQUE (event_id, seat_number)
 );
 
--- RESERVATIONS 테이블 생성
+-- RESERVATIONS 테이블
 CREATE TABLE reservations
 (
     id           BIGSERIAL PRIMARY KEY,
-    user_id      BIGINT    NOT NULL,
-    seat_id      BIGINT    NOT NULL UNIQUE,
-    status       VARCHAR(20)        DEFAULT 'PENDING',
-    created_at   TIMESTAMP          DEFAULT CURRENT_TIMESTAMP,
-    updated_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    expires_at   TIMESTAMP NOT NULL,
-    confirmed_at TIMESTAMP NULL,
-    cancelled_at TIMESTAMP NULL
+    user_id      BIGINT      NOT NULL, -- FK -> users.id
+    seat_id      BIGINT      NOT NULL, -- FK -> seats.id
+    event_id     BIGINT      NOT NULL, -- FK -> events.id
+    status       VARCHAR(20) NOT NULL,
+    expires_at   TIMESTAMP   NOT NULL,
+    confirmed_at TIMESTAMP   NULL,
+    cancelled_at TIMESTAMP   NULL,
+    created_at   TIMESTAMP   NOT NULL,
+    updated_at   TIMESTAMP   NOT NULL
 );
