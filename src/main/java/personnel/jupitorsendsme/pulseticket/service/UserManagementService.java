@@ -34,7 +34,7 @@ public class UserManagementService {
 	 */
 	@SuppressWarnings("DefaultAnnotationParam")
 	@Transactional(readOnly = false)
-	public boolean registeringUser(ReservationBookingRequest request) {
+	public boolean registerUser(ReservationBookingRequest request) {
 		if (this.isUserPresent(request)) {
 			return false;
 		}

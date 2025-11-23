@@ -26,9 +26,9 @@ public class UserManagementController {
 		return userManagementService.isUserPresent(request);
 	}
 
-	@PostMapping("registeringUser")
-	Boolean registeringUser(@RequestBody ReservationBookingRequest request) {
-		return userManagementService.registeringUser(request);
+	@PostMapping("registerUser")
+	Boolean registerUser(@RequestBody ReservationBookingRequest request) {
+		return userManagementService.registerUser(request);
 	}
 
 	@PostMapping("isUserValid")
