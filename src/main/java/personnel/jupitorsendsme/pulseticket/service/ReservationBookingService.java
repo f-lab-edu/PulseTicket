@@ -16,7 +16,6 @@ import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ReservationBookingService {
 
 	private final UserManagementService userManagementService;
@@ -28,6 +27,7 @@ public class ReservationBookingService {
 	 * @param request 예약에 필요한 정보
 	 * @return 예약 성공여부 (isSuccess), 예약 번호 (reservationId)
 	 */
+	@Transactional
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 		User user = loadUser(request);
 		Seat seat = loadSeat(request);
