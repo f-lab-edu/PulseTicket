@@ -143,4 +143,15 @@ public class Reservation extends BaseEntity {
 		CANCELLED,
 		EXPIRED
 	}
+
+	/**
+	 * Reservation Entity 영속화시 상태 초기화
+	 * status가 없으면 PENDING으로 설정
+	 */
+	@Override
+	protected void prePersistHook() {
+		if (this.status == null) {
+			this.status = ReservationStatus.PENDING;
+		}
+	}
 }

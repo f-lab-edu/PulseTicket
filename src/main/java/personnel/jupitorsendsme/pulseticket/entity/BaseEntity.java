@@ -31,6 +31,14 @@ public class BaseEntity {
 		LocalDateTime now = LocalDateTime.now();
 		this.createdAt = now;
 		this.updatedAt = now;
+
+		this.prePersistHook();
+	}
+
+	/**
+	 * 하위 엔티티에서 prePersist 시 추가 동작을 위한 메서드
+	 */
+	protected void prePersistHook() {
 	}
 
 	/**
