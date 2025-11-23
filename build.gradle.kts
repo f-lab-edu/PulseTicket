@@ -37,9 +37,22 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // Argon2id 비밀번호 해싱
+    implementation("org.springframework.security:spring-security-crypto")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.81")
+}
+
+// ============================================================================
+// UTF-8 인코딩 설정
+// 모든 컴파일 작업에서 UTF-8 인코딩 사용
+// ============================================================================
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
 }
 
 tasks.withType<Test> {
+    systemProperty("file.encoding", "UTF-8")
     useJUnitPlatform()
 }
 

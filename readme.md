@@ -1,10 +1,10 @@
 프로젝트 스펙  
 [개요]  
-PulseTicket - Ticketing System 
+PulseTicket - Ticketing System  
 
 개요 : 짧은 시간 내에 수많은 사람들이 동시에 티켓 예메 버튼을 누르는 상황을 가정하고 만드는 시스템  
 → 프론트 없이 API 서버로 만들자  
-→ 캐싱 성능 + 캐싱 알고리즘 테스트 + 캐싱스탬피드 논문 효율성 입증 + 동시성 제어까지 해볼 수 있을 것.  
+→ 캐싱 성능 + 캐싱 알고리즘 테스트 + 캐싱스탬피드 논문 효율성 입증 + 동시성 제어까지 해볼 수 있을 것.
 
 [스펙]
 * Spring Boot
@@ -24,10 +24,9 @@ PulseTicket - Ticketing System
 * 성능 부하기 : k6 ? Apache JMetter ?
 * 성능 모니터링 : Prometheus + Grafana ?
 
-
 이름은.. 뭘로 짓지...  
 일단 시작은 작게, 나중에 기능이나 스펙, 컨셉을 늘리는 방향으로..  
-캐싱피드 논문 수식 정리 필요..  
+캐싱피드 논문 수식 정리 필요..
 
 [도구]  
 intelliJ   

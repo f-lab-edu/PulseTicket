@@ -12,6 +12,8 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: pulseticket-postgres
+    mem_limit: 100m
+    mem_reservation: 50m
     env_file:
       - .env
     environment:
@@ -19,7 +21,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
-      - "${POSTGRES_HOST_PORT:-5432}:5432"
+      - "${POSTGRES_HOST_PORT:-5432}:${POSTGRES_PORT:-5432}"
     volumes:
       # 데이터 영속성을 위한 볼륨 마운트
       - postgres_data:/var/lib/postgresql/data
@@ -29,10 +31,14 @@ services:
       - pulseticket-network
     healthcheck:
       # 데이터베이스 준비 상태 확인
-      test: ["CMD-SHELL", "pg_isready -U PulseTicket_PostgreSQL_SuperUser"]
+      test: [ "CMD-SHELL", "pg_isready -h localhost -p ${POSTGRES_PORT:-5432} -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    labels:
+      # Promtail이 이 컨테이너의 로그를 수집하도록 설정
+      logging: "promtail"
+      logging_jobname: "pulseticket-postgres"
     restart: unless-stopped
 
   # ============================================================================
@@ -41,6 +47,8 @@ services:
   redis:
     image: redis:7-alpine
     container_name: pulseticket-redis
+    mem_limit: 50m
+    mem_reservation: 25m
     env_file:
       - .env
     command: redis-server --port ${REDIS_PORT:-6379} --appendonly yes --requirepass ${SPRING_DATA_REDIS_PASSWORD}
@@ -54,10 +62,14 @@ services:
       - pulseticket-network
     healthcheck:
       # Redis 준비 상태 확인 (포트는 docker-compose.override.yml에서 설정)
-      test: ["CMD", "redis-cli", "-p", "${REDIS_PORT:-6379}", "--raw", "incr", "ping"]
+      test: [ "CMD", "redis-cli", "-p", "${REDIS_PORT:-6379}", "--raw", "incr", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    labels:
+      # Promtail이 이 컨테이너의 로그를 수집하도록 설정
+      logging: "promtail"
+      logging_jobname: "pulseticket-redis"
     restart: unless-stopped
 
   # ============================================================================
@@ -70,24 +82,23 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: pulseticket-app
+    mem_limit: 1536m
+    mem_reservation: 768m
     env_file:
       - .env
     environment:
+      # JVM 힙 메모리 설정 (컨테이너 limit보다 작게 설정)
+      JAVA_OPTS: "-Xms512m -Xmx1200m"
       # Docker 네트워크 내부에서 사용하는 호스트명으로 변경
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 16379
+      SPRING_DATA_REDIS_PORT: ${REDIS_PORT:-6379}
       # 프로파일 설정 (개발 환경)
       SPRING_PROFILES_ACTIVE: docker,dev
       # Spring Boot DevTools 활성화를 위한 설정
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
-      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
-    ports:
-      # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
-      - "${APP_HOST_PORT:-8080}:${SERVER_PORT:-8080}"
-      # LiveReload 포트 (개발 모드)
-      - "${LIVERELOAD_HOST_PORT:-35729}:35729"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
+      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "false"
     volumes:
       # 소스 코드를 볼륨으로 마운트하여 실시간 변경사항 반영
       - ./src:/app/src:rw
@@ -107,6 +118,75 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    labels:
+      # Promtail이 이 컨테이너의 로그를 수집하도록 설정
+      logging: "promtail"
+      logging_jobname: "pulseticket-app"
+    restart: unless-stopped
+
+  # ============================================================================
+  # Grafana 서비스
+  # 로그 시각화 및 모니터링 대시보드
+  # ============================================================================
+  grafana:
+    image: grafana/grafana:11.3.0
+    container_name: pulseticket-grafana
+    mem_limit: 150m
+    mem_reservation: 75m
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      # 데이터 영속성을 위한 볼륨 마운트
+      - grafana_data:/var/lib/grafana
+      # 커스텀 설정 파일 마운트
+      - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - pulseticket-network
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+  # ============================================================================
+  # Loki 서비스
+  # 로그 수집 및 저장
+  # ============================================================================
+  loki:
+    image: grafana/loki:3.3.0
+    container_name: pulseticket-loki
+    mem_limit: 150m
+    mem_reservation: 75m
+    ports:
+      - "${LOKI_PORT:-3100}:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./docker/loki/loki-config.yaml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    networks:
+      - pulseticket-network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Promtail 서비스
+  # Docker 컨테이너 로그 수집 및 Loki로 전송
+  # ============================================================================
+  promtail:
+    image: grafana/promtail:3.3.0
+    container_name: pulseticket-promtail
+    mem_limit: 70m
+    mem_reservation: 35m
+    command: -config.file=/etc/promtail/promtail.yaml
+    volumes:
+      - ./docker/promtail/promtail.yaml:/etc/promtail/promtail.yaml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      - pulseticket-network
+    depends_on:
+      - loki
     restart: unless-stopped
 
 # ============================================================================
@@ -131,5 +211,11 @@ volumes:
     driver: local
   # Gradle 사용자 홈 디렉토리 캐시 볼륨
   gradle_user_cache:
+    driver: local
+  # Grafana 데이터 볼륨
+  grafana_data:
+    driver: local
+  # Loki 데이터 볼륨
+  loki_data:
     driver: local
 
