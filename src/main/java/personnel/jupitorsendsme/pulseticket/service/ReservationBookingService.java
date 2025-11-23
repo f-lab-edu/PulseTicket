@@ -31,10 +31,8 @@ public class ReservationBookingService {
 	 */
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
 
-		User user = userManagementService.findValidUser(request)
-			.orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 정보"));
-		Seat seat = reservationQueryService.findAvailableSeat(request)
-			.orElseThrow(() -> new IllegalStateException("예약이 불가능한 좌석"));
+		User user = userManagementService.findValidUser(request);
+		Seat seat = reservationQueryService.findAvailableSeat(request);
 
 		Reservation reserve = Reservation.reserve(user, seat);
 		Reservation created = reservationRepository.save(reserve);

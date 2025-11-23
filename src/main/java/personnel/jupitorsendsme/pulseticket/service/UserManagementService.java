@@ -1,7 +1,5 @@
 package personnel.jupitorsendsme.pulseticket.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,9 +66,10 @@ public class UserManagementService {
 	 * @param request user id, password 가 담긴 객체
 	 * @return 유효한 회원 정보일 경우 회원 Entity 반환
 	 */
-	public Optional<User> findValidUser(ReservationBookingRequest request) {
+	public User findValidUser(ReservationBookingRequest request) {
 		
 		return userRepository.findUserByLoginId(request.getLoginId())
-			.filter(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()));
+			.filter(user -> passwordHashingService.verify(request.getPassword(), user.getPasswordHash()))
+			.orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자 정보"));
 	}
 }
