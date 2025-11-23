@@ -21,8 +21,8 @@ import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 public class UserManagementController {
 	private final UserManagementService userManagementService;
 
-	@GetMapping("doesUserExist")
-	Boolean doesUserExist(@ModelAttribute ReservationBookingRequest request) {
+	@GetMapping("isUserPresent")
+	Boolean isUserPresent(@ModelAttribute ReservationBookingRequest request) {
 		return userManagementService.isUserPresent(request);
 	}
 
