@@ -34,8 +34,7 @@ public class Event extends BaseEntity {
 	/**
 	 * 이벤트명
 	 */
-	@SuppressWarnings("DefaultAnnotationParam")
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false)
 	private String name;
 
 	/**

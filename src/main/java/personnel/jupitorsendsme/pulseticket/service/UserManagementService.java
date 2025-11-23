@@ -32,8 +32,7 @@ public class UserManagementService {
 	 * @param request 등록하고자 하는 사용자 id, password 가 담긴 객체
 	 * @return 등록 성공 여부
 	 */
-	@SuppressWarnings("DefaultAnnotationParam")
-	@Transactional(readOnly = false)
+	@Transactional
 	public boolean registerUser(ReservationBookingRequest request) {
 		if (this.isUserPresent(request)) {
 			return false;

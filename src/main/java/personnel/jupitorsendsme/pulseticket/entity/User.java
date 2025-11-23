@@ -42,8 +42,7 @@ public class User extends BaseEntity {
 	/**
 	 * 해시된 비밀번호
 	 */
-	@SuppressWarnings("DefaultAnnotationParam")
-	@Column(name = "password_hash", nullable = false, length = 255)
+	@Column(name = "password_hash", nullable = false)
 	private String passwordHash;
 
 	/**

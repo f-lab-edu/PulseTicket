@@ -16,8 +16,7 @@ import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
  */
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings("DefaultAnnotationParam")
-@Transactional(readOnly = false)
+@Transactional
 public class ReservationBookingService {
 
 	private final UserManagementService userManagementService;
