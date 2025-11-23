@@ -39,7 +39,7 @@ public class ReservationBookingService {
 	}
 
 	private User loadUser(ReservationBookingRequest request) {
-		return userManagementService.findValidUser(request);
+		return userManagementService.getValidUser(request);
 	}
 
 	private Seat loadSeat(ReservationBookingRequest request) {
