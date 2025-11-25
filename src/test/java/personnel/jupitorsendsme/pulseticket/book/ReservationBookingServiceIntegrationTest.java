@@ -54,15 +54,12 @@ public class ReservationBookingServiceIntegrationTest {
 			.build();
 		testSeat = seatRepository.save(testSeat);
 
-		final String testUserLoginId = "ReservationBookingServiceIntegrationTestUserLoginId";
-		final String testUserPassword = "ReservationBookingServiceIntegrationTestUserPassword";
-
 		request = ReservationBookingRequest
 			.builder()
 			.eventId(testEvent.getId())
 			.seatNumber(testSeat.getSeatNumber())
-			.loginId(testUserLoginId)
-			.password(testUserPassword)
+			.loginId("ReservationBookingServiceIntegrationTestUserLoginId")
+			.password("ReservationBookingServiceIntegrationTestUserPassword")
 			.build();
 
 		userManagementService.createUser(request);
