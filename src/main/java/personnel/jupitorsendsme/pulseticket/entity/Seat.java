@@ -140,7 +140,7 @@ public class Seat extends BaseEntity {
 	}
 
 	@Converter
-	public static class SeatStatusConverter implements AttributeConverter<SeatStatus, Short> {
+	private static class SeatStatusConverter implements AttributeConverter<SeatStatus, Short> {
 		@Override
 		public Short convertToDatabaseColumn(SeatStatus attribute) {
 			if (attribute == null) {

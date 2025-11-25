@@ -180,7 +180,7 @@ public class Reservation extends BaseEntity {
 	}
 
 	@Converter
-	public static class ReservationStatusConverter implements AttributeConverter<ReservationStatus, Short> {
+	private static class ReservationStatusConverter implements AttributeConverter<ReservationStatus, Short> {
 		@Override
 		public Short convertToDatabaseColumn(ReservationStatus attribute) {
 			if (attribute == null) {
