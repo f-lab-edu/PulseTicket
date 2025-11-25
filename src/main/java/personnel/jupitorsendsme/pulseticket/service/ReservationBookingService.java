@@ -35,15 +35,16 @@ public class ReservationBookingService {
 
 		User user = userManagementService.getValidUser(request);
 		Seat seat = reservationQueryService.getAvailableSeat(request);
-		Event eventProxy = entityManager.getReference(Event.class, seat.getEventId());
 
-		Reservation created = makeReservation(user, seat, eventProxy);
+		Reservation created = makeReservation(user, seat);
 
 		return ReservationBookingResponse.success(created);
 	}
 
-	private Reservation makeReservation(User user, Seat seat, Event event) {
-		Reservation reserve = Reservation.reserve(user, seat, event);
+	private Reservation makeReservation(User user, Seat seat) {
+		Event eventProxy = entityManager.getReference(Event.class, seat.getEventId());
+		
+		Reservation reserve = Reservation.reserve(user, seat, eventProxy);
 		Reservation created = reservationRepository.save(reserve);
 
 		seat.reserve();
