@@ -47,6 +47,7 @@ public class UserManagementService {
 	 * User 엔티티 생성 & 저장
 	 * @param request login Id, 해싱할 password
 	 */
+	@Transactional
 	public void createUser(ReservationBookingRequest request) {
 		User user = User
 			.builder()

@@ -55,6 +55,7 @@ cookies.txt
 
 ### Environment Variables ###
 .env
+gradle.properties
 
 ### Docker Compose Override ###
 docker-compose.override.yml

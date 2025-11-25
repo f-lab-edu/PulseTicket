@@ -30,4 +30,9 @@ public class ReservationBookingRequest {
 	 * 예약하고자 하는 시트 번호
 	 */
 	private Integer seatNumber;
+
+	public ReservationBookingRequest(String loginId, String password) {
+		this.loginId = loginId;
+		this.password = password;
+	}
 }
