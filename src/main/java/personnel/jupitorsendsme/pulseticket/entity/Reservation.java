@@ -3,11 +3,12 @@ package personnel.jupitorsendsme.pulseticket.entity;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -64,8 +65,8 @@ public class Reservation extends BaseEntity {
 	/**
 	 * 예약 상태 (PENDING, CONFIRMED, CANCELLED)
 	 */
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Convert(converter = ReservationStatusConverter.class)
+	@Column(columnDefinition = "smallint", nullable = false)
 	private ReservationStatus status;
 	/**
 	 * 예약 만료 일시
@@ -138,11 +139,48 @@ public class Reservation extends BaseEntity {
 	 * CANCELLED : 예약이 취소된 상태 <br>
 	 * Expired : 예약은 했으나 일정시간 결제를 안해서 만료된 상태.
 	 */
+	@Getter
 	public enum ReservationStatus {
-		PENDING,
-		CONFIRMED,
-		CANCELLED,
-		EXPIRED
+		PENDING((short)1),
+		CONFIRMED((short)2),
+		CANCELLED((short)3),
+		EXPIRED((short)4);
+
+		private final short dbValue;
+
+		ReservationStatus(short dbValue) {
+			this.dbValue = dbValue;
+		}
+
+		public static ReservationStatus fromDbValue(int dbValue) {
+			return switch (dbValue) {
+				case 1 -> ReservationStatus.PENDING;
+				case 2 -> ReservationStatus.CONFIRMED;
+				case 3 -> ReservationStatus.CANCELLED;
+				case 4 -> ReservationStatus.EXPIRED;
+				default -> throw new IllegalStateException("Unknown reservation status dbValue: " + dbValue);
+			};
+		}
+	}
+
+	@Converter
+	public static class ReservationStatusConverter implements AttributeConverter<ReservationStatus, Short> {
+
+		@Override
+		public Short convertToDatabaseColumn(ReservationStatus attribute) {
+			if (attribute == null) {
+				return null;
+			}
+			return attribute.getDbValue();
+		}
+
+		@Override
+		public ReservationStatus convertToEntityAttribute(Short dbData) {
+			if (dbData == null) {
+				return null;
+			}
+			return ReservationStatus.fromDbValue(dbData);
+		}
 	}
 
 	/**

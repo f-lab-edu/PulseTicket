@@ -41,7 +41,7 @@ CREATE TABLE reservations
     user_id      BIGINT      NOT NULL, -- FK -> users.id
     seat_id      BIGINT      NOT NULL, -- FK -> seats.id
     event_id     BIGINT      NOT NULL, -- FK -> events.id
-    status       VARCHAR(20) NOT NULL,
+    status       SMALLINT    NOT NULL, -- 1: PENDING, 2: CONFIRMED, 3: CANCELLED, 4: EXPIRED
     expires_at   TIMESTAMP   NOT NULL,
     confirmed_at TIMESTAMP   NULL,
     cancelled_at TIMESTAMP   NULL,
