@@ -2,7 +2,6 @@ package personnel.jupitorsendsme.pulseticket.book;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,10 +34,11 @@ public class ReservationBookingServiceIntegrationTest {
 	private final EventRepository eventRepository;
 	private final SeatRepository seatRepository;
 
-	private ReservationBookingRequest request;
-
-	@BeforeEach
-	void setUp() {
+	/**
+	 * 예약 테스트 <br>
+	 */
+	@Test
+	public void bookTest() {
 		Event testEvent = Event
 			.builder()
 			.name("TestConcert")
@@ -54,7 +54,7 @@ public class ReservationBookingServiceIntegrationTest {
 			.build();
 		testSeat = seatRepository.save(testSeat);
 
-		request = ReservationBookingRequest
+		ReservationBookingRequest request = ReservationBookingRequest
 			.builder()
 			.eventId(testEvent.getId())
 			.seatNumber(testSeat.getSeatNumber())
@@ -63,13 +63,8 @@ public class ReservationBookingServiceIntegrationTest {
 			.build();
 
 		userManagementService.createUser(request);
-	}
 
-	/**
-	 * 예약 테스트 <br>
-	 */
-	@Test
-	public void bookTest() {
+		// 테스트 시작
 		ReservationBookingResponse response = reservationBookingService.book(request);
 
 		// reservation 데이터 확인
