@@ -55,6 +55,11 @@ public class Seat extends BaseEntity {
 	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Event event;
 	/**
+	 * 소속 이벤트의 id
+	 */
+	@Column(name = "event_id", insertable = false, updatable = false)
+	private Long eventId;
+	/**
 	 * 좌석 번호
 	 */
 	@Column(name = "seat_number", nullable = false)

@@ -11,6 +11,8 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
+import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotAvailableException;
+import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotFoundException;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
@@ -40,6 +42,7 @@ public class ReservationQueryService {
 	 */
 	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(ReservationBookingRequest request) {
 		List<Seat> seats = seatRepository.findByEvent_Id(request.getEventId());
+
 		return SeatStatusResponse.from(seats);
 	}
 
@@ -57,16 +60,30 @@ public class ReservationQueryService {
 	}
 
 	/**
+	 * 좌석 엔티티를 찾는 메서드 <br>
+	 * @param request eventId, seatNumber <br>
+	 * @return 찾은 Seat Entity <br>
+	 */
+	public Seat getSeat(ReservationBookingRequest request) {
+		Long eventId = request.getEventId();
+		Integer seatNumber = request.getSeatNumber();
+
+		return seatRepository.findByEvent_IdAndSeatNumber(eventId, seatNumber)
+			.orElseThrow(() -> new SeatNotFoundException(eventId, seatNumber));
+	}
+
+	/**
 	 * 특정 이벤트의 예약 가능한 좌석 리턴 <br>
 	 * @param request 알아보고자 하는 이벤트의 id 와 좌석번호가 담긴 request 객체 <br>
 	 * @return 예약이 가능하면 Seat , 불가능하면 null <br>
 	 */
-	public Seat findAvailableSeat(ReservationBookingRequest request) {
-		return seatRepository.findByEvent_IdAndSeatNumberAndStatus(
-			request.getEventId(),
-			request.getSeatNumber(),
-			Seat.SeatStatus.AVAILABLE
-		).orElseThrow(() -> new IllegalStateException("예약이 불가능한 좌석"));
+	public Seat getAvailableSeat(ReservationBookingRequest request) {
+		Seat seat = getSeat(request);
+
+		if (seat.getStatus() != Seat.SeatStatus.AVAILABLE)
+			throw new SeatNotAvailableException(seat);
+
+		return seat;
 	}
 
 	/**
@@ -76,6 +93,7 @@ public class ReservationQueryService {
 	 */
 	public List<ReservationQueryResponse> inquiryUserReservations(ReservationBookingRequest request) {
 		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
+
 		return ReservationQueryResponse.from(reservations);
 	}
 }

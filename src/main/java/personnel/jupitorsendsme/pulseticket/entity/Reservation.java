@@ -59,7 +59,7 @@ public class Reservation extends BaseEntity {
 	 * 예약 대상 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "event_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Event event;
 	/**
 	 * 예약 상태 (PENDING, CONFIRMED, CANCELLED)
@@ -89,10 +89,11 @@ public class Reservation extends BaseEntity {
 	 * @param seat 저장할 Seat 정보
 	 * @return 저장할 Reservation 객체
 	 */
-	public static Reservation reserve(User user, Seat seat) {
+	public static Reservation reserve(User user, Seat seat, Event event) {
 		return Reservation.builder()
 			.user(user)
 			.seat(seat)
+			.event(event)
 			.status(Reservation.ReservationStatus.PENDING)
 			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
 			.build();

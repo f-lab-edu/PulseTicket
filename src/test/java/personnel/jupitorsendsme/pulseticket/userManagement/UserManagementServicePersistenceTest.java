@@ -19,8 +19,8 @@ public class UserManagementServicePersistenceTest {
 
 	@Test
 	public void createUserTest() {
-		String testUserLoginId = "testUser6";
-		String testUserRawPassword = "testUserPassword6";
+		String testUserLoginId = "testUser8";
+		String testUserRawPassword = "testUserPassword8";
 		ReservationBookingRequest request = new ReservationBookingRequest(testUserLoginId, testUserRawPassword);
 
 		assertThatNoException().isThrownBy(() ->

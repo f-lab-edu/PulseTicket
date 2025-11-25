@@ -3,9 +3,11 @@ package personnel.jupitorsendsme.pulseticket.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
+import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.User;
@@ -21,6 +23,7 @@ public class ReservationBookingService {
 	private final UserManagementService userManagementService;
 	private final ReservationQueryService reservationQueryService;
 	private final ReservationRepository reservationRepository;
+	private final EntityManager entityManager;
 
 	/**
 	 * 좌석 예약
@@ -29,24 +32,18 @@ public class ReservationBookingService {
 	 */
 	@Transactional
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
-		User user = loadUser(request);
-		Seat seat = loadSeat(request);
 
-		Reservation created = makeReservation(user, seat);
+		User user = userManagementService.getValidUser(request);
+		Seat seat = reservationQueryService.getAvailableSeat(request);
+		Event eventProxy = entityManager.getReference(Event.class, seat.getEventId());
+
+		Reservation created = makeReservation(user, seat, eventProxy);
 
 		return ReservationBookingResponse.success(created);
 	}
 
-	private User loadUser(ReservationBookingRequest request) {
-		return userManagementService.getValidUser(request);
-	}
-
-	private Seat loadSeat(ReservationBookingRequest request) {
-		return reservationQueryService.findAvailableSeat(request);
-	}
-
-	private Reservation makeReservation(User user, Seat seat) {
-		Reservation reserve = Reservation.reserve(user, seat);
+	private Reservation makeReservation(User user, Seat seat, Event event) {
+		Reservation reserve = Reservation.reserve(user, seat, event);
 		Reservation created = reservationRepository.save(reserve);
 
 		seat.reserve();
