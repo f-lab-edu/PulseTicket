@@ -23,7 +23,12 @@ public class UserManagementServiceTest {
 	public void createUserTest() {
 		String testUserLoginId = "testUser1";
 		String testUserRawPassword = "testUserPassword1";
-		ReservationBookingRequest request = new ReservationBookingRequest(testUserLoginId, testUserRawPassword);
+		ReservationBookingRequest request =
+			ReservationBookingRequest
+				.builder()
+				.loginId(testUserLoginId)
+				.password(testUserRawPassword)
+				.build();
 
 		assertThatNoException().isThrownBy(() ->
 			userManagementService.createUser(request)

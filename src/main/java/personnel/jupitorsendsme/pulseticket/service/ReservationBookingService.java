@@ -32,7 +32,6 @@ public class ReservationBookingService {
 	 */
 	@Transactional
 	public ReservationBookingResponse book(ReservationBookingRequest request) {
-
 		User user = userManagementService.getValidUser(request);
 		Seat seat = reservationQueryService.getAvailableSeat(request);
 

@@ -55,12 +55,12 @@ public class Seat extends BaseEntity {
 	 * 소속 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "event_id", insertable = false, updatable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Event event;
 	/**
 	 * 소속 이벤트의 id
 	 */
-	@Column(name = "event_id", insertable = false, updatable = false)
+	@Column(name = "event_id", nullable = false)
 	private Long eventId;
 	/**
 	 * 좌석 번호
@@ -101,7 +101,7 @@ public class Seat extends BaseEntity {
 		if (next == null) {
 			throw new IllegalSeatPhaseException(this);
 		}
-		
+
 		this.status = next;
 	}
 

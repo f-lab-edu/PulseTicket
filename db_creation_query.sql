@@ -5,7 +5,7 @@
 CREATE TABLE users
 (
     id            BIGSERIAL PRIMARY KEY,
-    login_id      VARCHAR(50) UNIQUE NOT NULL,
+    login_id      VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255)       NOT NULL,
     created_at    TIMESTAMP          NOT NULL,
     updated_at    TIMESTAMP          NOT NULL
