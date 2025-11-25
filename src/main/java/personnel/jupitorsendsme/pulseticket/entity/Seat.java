@@ -24,6 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatPhaseException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatStatusDbValueException;
 
 /**
@@ -84,25 +85,6 @@ public class Seat extends BaseEntity {
 	private List<Reservation> reservations;
 
 	/**
-	 * 해당 좌석 예약 처리
-	 */
-	public void reserve() {
-		switch (this.status) {
-			case RESERVED -> throw new IllegalStateException("이미 예약된 좌석");
-			case SOLD -> throw new IllegalStateException("이미 결제완료된 좌석");
-		}
-		this.status = SeatStatus.RESERVED;
-	}
-
-	public void sold() {
-		switch (this.status) {
-			case AVAILABLE -> throw new IllegalStateException("예약 가능한 좌석 상태. 예약이 되고 나서 결제해야 함");
-			case SOLD -> throw new IllegalStateException("이미 판매됨");
-		}
-		this.status = SeatStatus.SOLD;
-	}
-
-	/**
 	 * Seats Entity 영속화시 상태 초기화
 	 * status가 없으면 AVAILABLE 로 설정
 	 */
@@ -113,6 +95,16 @@ public class Seat extends BaseEntity {
 		}
 	}
 
+	public void proceed() {
+		SeatStatus next = this.getStatus().nextPhase();
+
+		if (next == null) {
+			throw new IllegalSeatPhaseException(this);
+		}
+		
+		this.status = next;
+	}
+
 	/**
 	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
 	 * Available : 예약 가능 <br>
@@ -121,14 +113,16 @@ public class Seat extends BaseEntity {
 	 */
 	@Getter
 	public enum SeatStatus {
-		AVAILABLE((short)1),
-		RESERVED((short)2),
-		SOLD((short)3);
+		SOLD((short)3, null),
+		RESERVED((short)2, SOLD),
+		AVAILABLE((short)1, RESERVED);
 
 		private final short dbValue;
+		private final SeatStatus next;
 
-		SeatStatus(short dbValue) {
+		SeatStatus(short dbValue, SeatStatus next) {
 			this.dbValue = dbValue;
+			this.next = next;
 		}
 
 		public static SeatStatus toEnum(int dbValue) {
@@ -138,6 +132,10 @@ public class Seat extends BaseEntity {
 				case 3 -> SeatStatus.SOLD;
 				default -> throw new IllegalSeatStatusDbValueException(dbValue);
 			};
+		}
+
+		public SeatStatus nextPhase() {
+			return this.next;
 		}
 	}
 

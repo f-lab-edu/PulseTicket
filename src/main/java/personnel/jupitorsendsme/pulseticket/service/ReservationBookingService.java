@@ -43,11 +43,11 @@ public class ReservationBookingService {
 
 	private Reservation makeReservation(User user, Seat seat) {
 		Event eventProxy = entityManager.getReference(Event.class, seat.getEventId());
-		
+
 		Reservation reserve = Reservation.reserve(user, seat, eventProxy);
 		Reservation created = reservationRepository.save(reserve);
 
-		seat.reserve();
+		seat.proceed();
 
 		return created;
 	}
