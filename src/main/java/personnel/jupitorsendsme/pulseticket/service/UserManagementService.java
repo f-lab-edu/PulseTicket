@@ -38,22 +38,23 @@ public class UserManagementService {
 			return false;
 		}
 
-		userRepository.save(createUser(request));
+		createUser(request);
 
 		return true;
 	}
 
 	/**
-	 * User 엔티티 생성
+	 * User 엔티티 생성 & 저장
 	 * @param request login Id, 해싱할 password
-	 * @return 생긴 User 객체
 	 */
-	public User createUser(ReservationBookingRequest request) {
-		return User
+	public void createUser(ReservationBookingRequest request) {
+		User user = User
 			.builder()
 			.loginId(request.getLoginId())
 			.passwordHash(passwordHashingService.hash(request.getPassword()))
 			.build();
+
+		userRepository.save(user);
 	}
 
 	/**
