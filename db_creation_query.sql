@@ -27,7 +27,7 @@ CREATE TABLE seats
     id             BIGSERIAL PRIMARY KEY,
     event_id       BIGINT      NOT NULL, -- FK -> events.id
     seat_number    INT         NOT NULL,
-    status         VARCHAR(20) NOT NULL,
+    status         SMALLINT    NOT NULL, -- 1: AVAILABLE, 2: RESERVED, 3: SOLD
     reserved_until TIMESTAMP   NULL,
     created_at     TIMESTAMP   NOT NULL,
     updated_at     TIMESTAMP   NOT NULL,

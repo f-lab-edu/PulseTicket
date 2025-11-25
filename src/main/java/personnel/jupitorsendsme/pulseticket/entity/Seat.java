@@ -3,11 +3,12 @@ package personnel.jupitorsendsme.pulseticket.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatStatusDbValueException;
 
 /**
  * 좌석 정보를 관리하는 엔티티
@@ -65,10 +67,10 @@ public class Seat extends BaseEntity {
 	@Column(name = "seat_number", nullable = false)
 	private Integer seatNumber;
 	/**
-	 * 좌석 상태 (AVAILABLE, RESERVED, CONFIRMED)
+	 * 좌석 상태 (AVAILABLE, RESERVED, SOLD)
 	 */
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Convert(converter = SeatStatusConverter.class)
+	@Column(columnDefinition = "smallint", nullable = false)
 	private SeatStatus status;
 	/**
 	 * 예약 만료 일시
@@ -101,25 +103,60 @@ public class Seat extends BaseEntity {
 	}
 
 	/**
-	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
-	 * Available : 예약 가능 <br>
-	 * Reserved : 예약된 상태 <br>
-	 * Sold : 예약이 구매된 상태 (paid)
-	 */
-	public enum SeatStatus {
-		AVAILABLE,
-		RESERVED,
-		SOLD
-	}
-
-	/**
 	 * Seats Entity 영속화시 상태 초기화
-	 * status가 없으면 PENDING으로 설정
+	 * status가 없으면 AVAILABLE 로 설정
 	 */
 	@Override
 	protected void prePersistHook() {
 		if (this.status == null) {
 			this.status = SeatStatus.AVAILABLE;
+		}
+	}
+
+	/**
+	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
+	 * Available : 예약 가능 <br>
+	 * Reserved : 예약된 상태 <br>
+	 * Sold : 예약이 구매된 상태 (paid)
+	 */
+	@Getter
+	public enum SeatStatus {
+		AVAILABLE((short)1),
+		RESERVED((short)2),
+		SOLD((short)3);
+
+		private final short dbValue;
+
+		SeatStatus(short dbValue) {
+			this.dbValue = dbValue;
+		}
+
+		public static SeatStatus toEnum(int dbValue) {
+			return switch (dbValue) {
+				case 1 -> SeatStatus.AVAILABLE;
+				case 2 -> SeatStatus.RESERVED;
+				case 3 -> SeatStatus.SOLD;
+				default -> throw new IllegalSeatStatusDbValueException(dbValue);
+			};
+		}
+	}
+
+	@Converter
+	public static class SeatStatusConverter implements AttributeConverter<SeatStatus, Short> {
+		@Override
+		public Short convertToDatabaseColumn(SeatStatus attribute) {
+			if (attribute == null) {
+				return null;
+			}
+			return attribute.getDbValue();
+		}
+
+		@Override
+		public SeatStatus convertToEntityAttribute(Short dbData) {
+			if (dbData == null) {
+				return null;
+			}
+			return SeatStatus.toEnum(dbData);
 		}
 	}
 }
