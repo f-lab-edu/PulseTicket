@@ -106,11 +106,11 @@ public class Reservation extends BaseEntity {
 	 * @param seat 저장할 Seat 정보
 	 * @return 저장할 Reservation 객체
 	 */
-	public static Reservation reserve(User user, Seat seat, Event event) {
+	public static Reservation reserve(User user, Seat seat) {
 		return Reservation.builder()
 			.userId(user.getId())
 			.seatId(seat.getId())
-			.eventId(event.getId())
+			.eventId(seat.getEventId())
 			.status(Reservation.ReservationStatus.PENDING)
 			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
 			.build();
