@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
+import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberDuplicateException;
+import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberOutOfRangeException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
 import personnel.jupitorsendsme.pulseticket.service.SeatManagementService;
 
@@ -44,6 +46,7 @@ public class SeatManagementServiceTest {
 	 */
 	@Test
 	void createValidSeat_success() {
+
 		Seat seat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(10)
@@ -53,7 +56,7 @@ public class SeatManagementServiceTest {
 	}
 
 	/**
-	 * 존재하지 않는 이벤트 ID면 InvalidForeignKeyException 발생해야 함
+	 * 존재하지 않는 이벤트 ID면 에러가 발생해야 함
 	 */
 	@Test
 	void createValidSeat_InvalidForeignKey() {
@@ -70,38 +73,41 @@ public class SeatManagementServiceTest {
 	}
 
 	/**
-	 * 좌석번호가 1 미만이면 IllegalArgumentException 발생해야 함
+	 * 좌석번호가 1 미만이면 SeatNumberOutOfRangeException 발생해야 함
 	 */
 	@Test
 	void createValidSeat_seatNumberBelowMinimum_throws() {
+
 		Seat seat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(0)
 			.build();
 
 		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
-			.isInstanceOf(IllegalArgumentException.class);
+			.isInstanceOf(SeatNumberOutOfRangeException.class);
 	}
 
 	/**
-	 * 좌석번호가 totalSeats 초과면 IllegalArgumentException 발생해야 함
+	 * 좌석번호가 totalSeats 초과면 에러가 발생해야 함
 	 */
 	@Test
 	void createValidSeat_seatNumberAboveTotal_throws() {
+
 		Seat seat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(11)
 			.build();
 
 		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
-			.isInstanceOf(IllegalArgumentException.class);
+			.isInstanceOf(SeatNumberOutOfRangeException.class);
 	}
 
 	/**
-	 * 동일 이벤트에서 좌석번호가 중복되면 IllegalArgumentException 발생해야 함
+	 * 동일 이벤트에서 좌석번호가 중복되면 에러가 발생해야 함
 	 */
 	@Test
 	void createValidSeat_seatNumberDuplicate_throws() {
+
 		Seat firstSeat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(1)
@@ -114,6 +120,6 @@ public class SeatManagementServiceTest {
 			.build();
 
 		assertThatThrownBy(() -> seatManagementService.createValidSeat(duplicateSeat))
-			.isInstanceOf(IllegalArgumentException.class);
+			.isInstanceOf(SeatNumberDuplicateException.class);
 	}
 }

@@ -11,6 +11,8 @@ import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
+import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberDuplicateException;
+import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberOutOfRangeException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotAvailableException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotFoundException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
@@ -86,11 +88,11 @@ public class SeatManagementService {
 
 		Integer seatNumber = seat.getSeatNumber();
 		if (seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats()) {
-			throw new IllegalArgumentException("유효하지 않은 좌석 번호");
+			throw new SeatNumberOutOfRangeException(event.getId(), seatNumber, event.getTotalSeats());
 		}
 
 		if (seatRepository.existsByEvent_IdAndSeatNumber(event.getId(), seatNumber)) {
-			throw new IllegalArgumentException("해당 좌석번호에 해당하는 데이터가 이미 존재함");
+			throw new SeatNumberDuplicateException(event.getId(), seatNumber);
 		}
 
 		return seatRepository.save(seat);
