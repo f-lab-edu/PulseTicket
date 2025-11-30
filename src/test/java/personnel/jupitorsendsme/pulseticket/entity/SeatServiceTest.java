@@ -39,6 +39,9 @@ public class SeatServiceTest {
 		testEventId = eventRepository.save(testEvent).getId();
 	}
 
+	/**
+	 * 유효한 이벤트와 좌석번호면 저장 성공해야 함
+	 */
 	@Test
 	void createValidSeat_success() {
 		Seat seat = Seat.builder()
@@ -49,6 +52,9 @@ public class SeatServiceTest {
 		seatService.createValidSeat(seat);
 	}
 
+	/**
+	 * 존재하지 않는 이벤트 ID면 InvalidForeignKeyException 발생해야 함
+	 */
 	@Test
 	void createValidSeat_InvalidForeignKey() {
 
@@ -63,7 +69,9 @@ public class SeatServiceTest {
 			.isInstanceOf(InvalidForeignKeyException.class);
 	}
 
-	// 좌석번호 범위 및 중복 검증
+	/**
+	 * 좌석번호가 1 미만이면 IllegalArgumentException 발생해야 함
+	 */
 	@Test
 	void createValidSeat_seatNumberBelowMinimum_throws() {
 		Seat seat = Seat.builder()
@@ -75,6 +83,9 @@ public class SeatServiceTest {
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
+	/**
+	 * 좌석번호가 totalSeats 초과면 IllegalArgumentException 발생해야 함
+	 */
 	@Test
 	void createValidSeat_seatNumberAboveTotal_throws() {
 		Seat seat = Seat.builder()
@@ -86,6 +97,9 @@ public class SeatServiceTest {
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
+	/**
+	 * 동일 이벤트에서 좌석번호가 중복되면 IllegalArgumentException 발생해야 함
+	 */
 	@Test
 	void createValidSeat_seatNumberDuplicate_throws() {
 		Seat firstSeat = Seat.builder()
