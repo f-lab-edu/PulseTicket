@@ -6,9 +6,9 @@ CREATE TABLE users
 (
     id            BIGSERIAL PRIMARY KEY,
     login_id      VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255)       NOT NULL,
-    created_at    TIMESTAMP          NOT NULL,
-    updated_at    TIMESTAMP          NOT NULL
+    password_hash VARCHAR(255)        NOT NULL,
+    created_at    TIMESTAMP           NOT NULL,
+    updated_at    TIMESTAMP           NOT NULL
 );
 
 -- EVENTS 테이블
@@ -25,12 +25,12 @@ CREATE TABLE events
 CREATE TABLE seats
 (
     id             BIGSERIAL PRIMARY KEY,
-    event_id       BIGINT      NOT NULL, -- FK -> events.id
-    seat_number    INT         NOT NULL,
-    status         SMALLINT    NOT NULL, -- 1: AVAILABLE, 2: RESERVED, 3: SOLD
-    reserved_until TIMESTAMP   NULL,
-    created_at     TIMESTAMP   NOT NULL,
-    updated_at     TIMESTAMP   NOT NULL,
+    event_id       BIGINT    NOT NULL, -- FK -> events.id
+    seat_number    INT       NOT NULL,
+    status         SMALLINT  NOT NULL, -- 1: AVAILABLE, 2: RESERVED, 3: SOLD
+    reserved_until TIMESTAMP NULL,
+    created_at     TIMESTAMP NOT NULL,
+    updated_at     TIMESTAMP NOT NULL,
     CONSTRAINT uk_seats_event_seat_number UNIQUE (event_id, seat_number)
 );
 
@@ -38,13 +38,13 @@ CREATE TABLE seats
 CREATE TABLE reservations
 (
     id           BIGSERIAL PRIMARY KEY,
-    user_id      BIGINT      NOT NULL, -- FK -> users.id
-    seat_id      BIGINT      NOT NULL, -- FK -> seats.id
-    event_id     BIGINT      NOT NULL, -- FK -> events.id
-    status       SMALLINT    NOT NULL, -- 1: PENDING, 2: CONFIRMED, 3: CANCELLED, 4: EXPIRED
-    expires_at   TIMESTAMP   NOT NULL,
-    confirmed_at TIMESTAMP   NULL,
-    cancelled_at TIMESTAMP   NULL,
-    created_at   TIMESTAMP   NOT NULL,
-    updated_at   TIMESTAMP   NOT NULL
+    user_id      BIGINT    NOT NULL, -- FK -> users.id
+    seat_id      BIGINT    NOT NULL, -- FK -> seats.id
+    event_id     BIGINT    NOT NULL, -- FK -> events.id
+    status       SMALLINT  NOT NULL, -- 1: PENDING, 2: CONFIRMED, 3: CANCELLED, 4: EXPIRED
+    expires_at   TIMESTAMP NOT NULL,
+    confirmed_at TIMESTAMP NULL,
+    cancelled_at TIMESTAMP NULL,
+    created_at   TIMESTAMP NOT NULL,
+    updated_at   TIMESTAMP NOT NULL
 );
