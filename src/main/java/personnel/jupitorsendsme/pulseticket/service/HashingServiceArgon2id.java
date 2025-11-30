@@ -5,7 +5,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 
 @Service
@@ -69,7 +69,7 @@ public class HashingServiceArgon2id {
 		return encoder.matches(rawPassword, hashedPassword);
 	}
 
-	public boolean verify(ReservationBookingRequest request, User user) {
+	public boolean verify(ReservationRequest request, User user) {
 		return this.verify(request.getPassword(), user.getPasswordHash());
 	}
 }

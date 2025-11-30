@@ -1,5 +1,7 @@
 package personnel.jupitorsendsme.pulseticket.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +11,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
-public class ReservationBookingRequest {
+@AllArgsConstructor
+public class ReservationRequest {
 	/**
 	 * 예약신청자 로그인 ID
 	 */

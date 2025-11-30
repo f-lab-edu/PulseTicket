@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.service.ReservationBookingService;
 
 /**
@@ -30,7 +30,7 @@ public class ReservationBookingController {
 	 * @return 예약 성공 여부를 포함한 예약 관련 정보
 	 */
 	@PostMapping
-	ReservationBookingResponse booking(@RequestBody ReservationBookingRequest request) {
+	ReservationBookingResponse booking(@RequestBody ReservationRequest request) {
 		return reservationBookingService.book(request);
 	}
 }

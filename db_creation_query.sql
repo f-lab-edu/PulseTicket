@@ -5,7 +5,7 @@
 CREATE TABLE users
 (
     id            BIGSERIAL PRIMARY KEY,
-    login_id      VARCHAR(50) UNIQUE NOT NULL,
+    login_id      VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255)       NOT NULL,
     created_at    TIMESTAMP          NOT NULL,
     updated_at    TIMESTAMP          NOT NULL
@@ -27,7 +27,7 @@ CREATE TABLE seats
     id             BIGSERIAL PRIMARY KEY,
     event_id       BIGINT      NOT NULL, -- FK -> events.id
     seat_number    INT         NOT NULL,
-    status         VARCHAR(20) NOT NULL,
+    status         SMALLINT    NOT NULL, -- 1: AVAILABLE, 2: RESERVED, 3: SOLD
     reserved_until TIMESTAMP   NULL,
     created_at     TIMESTAMP   NOT NULL,
     updated_at     TIMESTAMP   NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE reservations
     user_id      BIGINT      NOT NULL, -- FK -> users.id
     seat_id      BIGINT      NOT NULL, -- FK -> seats.id
     event_id     BIGINT      NOT NULL, -- FK -> events.id
-    status       VARCHAR(20) NOT NULL,
+    status       SMALLINT    NOT NULL, -- 1: PENDING, 2: CONFIRMED, 3: CANCELLED, 4: EXPIRED
     expires_at   TIMESTAMP   NOT NULL,
     confirmed_at TIMESTAMP   NULL,
     cancelled_at TIMESTAMP   NULL,

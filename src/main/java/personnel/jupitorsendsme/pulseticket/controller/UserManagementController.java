@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 
 /**
@@ -22,17 +22,17 @@ public class UserManagementController {
 	private final UserManagementService userManagementService;
 
 	@GetMapping("isUserPresent")
-	Boolean isUserPresent(@ModelAttribute ReservationBookingRequest request) {
+	Boolean isUserPresent(@ModelAttribute ReservationRequest request) {
 		return userManagementService.isUserPresent(request);
 	}
 
 	@PostMapping("registerUser")
-	Boolean registerUser(@RequestBody ReservationBookingRequest request) {
+	Boolean registerUser(@RequestBody ReservationRequest request) {
 		return userManagementService.registerUser(request);
 	}
 
 	@PostMapping("isUserValid")
-	Boolean isUserValid(@RequestBody ReservationBookingRequest request) {
+	Boolean isUserValid(@RequestBody ReservationRequest request) {
 		return userManagementService.isUserValid(request);
 	}
 }

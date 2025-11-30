@@ -3,13 +3,12 @@ package personnel.jupitorsendsme.pulseticket.entity;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import personnel.jupitorsendsme.pulseticket.exception.reservation.IllegalReservationStatusDbValueException;
 
 /**
  * 예약 정보를 관리하는 엔티티
@@ -47,25 +47,40 @@ public class Reservation extends BaseEntity {
 	 * 예약한 사용자
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	private User user;
+	/**
+	 * 예약한 사용자의 id
+	 */
+	@Column(name = "user_id", nullable = false)
+	private Long userId;
 	/**
 	 * 예약된 좌석
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "seat_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "seat_id", insertable = false, updatable = false)
 	private Seat seat;
+	/**
+	 * 예약된 좌석의 id
+	 */
+	@Column(name = "seat_id", nullable = false)
+	private Long seatId;
 	/**
 	 * 예약 대상 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "event_id", insertable = false, updatable = false)
 	private Event event;
+	/**
+	 * 예약 대상 이벤트의 id
+	 */
+	@Column(name = "event_id", nullable = false)
+	private Long eventId;
 	/**
 	 * 예약 상태 (PENDING, CONFIRMED, CANCELLED)
 	 */
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Convert(converter = ReservationStatusConverter.class)
+	@Column(columnDefinition = "smallint", nullable = false)
 	private ReservationStatus status;
 	/**
 	 * 예약 만료 일시
@@ -91,8 +106,9 @@ public class Reservation extends BaseEntity {
 	 */
 	public static Reservation reserve(User user, Seat seat) {
 		return Reservation.builder()
-			.user(user)
-			.seat(seat)
+			.userId(user.getId())
+			.seatId(seat.getId())
+			.eventId(seat.getEventId())
 			.status(Reservation.ReservationStatus.PENDING)
 			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
 			.build();
@@ -137,11 +153,47 @@ public class Reservation extends BaseEntity {
 	 * CANCELLED : 예약이 취소된 상태 <br>
 	 * Expired : 예약은 했으나 일정시간 결제를 안해서 만료된 상태.
 	 */
+	@Getter
 	public enum ReservationStatus {
-		PENDING,
-		CONFIRMED,
-		CANCELLED,
-		EXPIRED
+		PENDING((short)1),
+		CONFIRMED((short)2),
+		CANCELLED((short)3),
+		EXPIRED((short)4);
+
+		private final short dbValue;
+
+		ReservationStatus(short dbValue) {
+			this.dbValue = dbValue;
+		}
+
+		public static ReservationStatus fromDbValue(int dbValue) {
+			return switch (dbValue) {
+				case 1 -> ReservationStatus.PENDING;
+				case 2 -> ReservationStatus.CONFIRMED;
+				case 3 -> ReservationStatus.CANCELLED;
+				case 4 -> ReservationStatus.EXPIRED;
+				default -> throw new IllegalReservationStatusDbValueException(dbValue);
+			};
+		}
+	}
+
+	@Converter
+	private static class ReservationStatusConverter implements AttributeConverter<ReservationStatus, Short> {
+		@Override
+		public Short convertToDatabaseColumn(ReservationStatus attribute) {
+			if (attribute == null) {
+				return null;
+			}
+			return attribute.getDbValue();
+		}
+
+		@Override
+		public ReservationStatus convertToEntityAttribute(Short dbData) {
+			if (dbData == null) {
+				return null;
+			}
+			return ReservationStatus.fromDbValue(dbData);
+		}
 	}
 
 	/**
