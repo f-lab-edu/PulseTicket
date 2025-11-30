@@ -31,7 +31,6 @@ public class SeatManagementServiceTest {
 
 	@BeforeAll
 	void setUp() {
-
 		Event testEvent = Event
 			.builder()
 			.name("TestEvent")
@@ -42,25 +41,23 @@ public class SeatManagementServiceTest {
 	}
 
 	/**
-	 * 유효한 이벤트와 좌석번호면 저장 성공해야 함
+	 * 좌석 생성 기본 테스트
 	 */
 	@Test
-	void createValidSeat_success() {
-
+	void createSeat_success() {
 		Seat seat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(10)
 			.build();
 
-		seatManagementService.createValidSeat(seat);
+		seatManagementService.createSeat(seat);
 	}
 
 	/**
-	 * 존재하지 않는 이벤트 ID면 에러가 발생해야 함
+	 * 좌석 생성 - F key 위반
 	 */
 	@Test
-	void createValidSeat_InvalidForeignKey() {
-
+	void createSeat_InvalidForeignKey() {
 		Long invalidEventId = -1L;
 
 		Seat seat = Seat.builder()
@@ -68,58 +65,55 @@ public class SeatManagementServiceTest {
 			.seatNumber(10)
 			.build();
 
-		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
+		assertThatThrownBy(() -> seatManagementService.createSeat(seat))
 			.isInstanceOf(InvalidForeignKeyException.class);
 	}
 
 	/**
-	 * 좌석번호가 1 미만이면 SeatNumberOutOfRangeException 발생해야 함
+	 * 좌석 생성 - 좌석번호가 1 미만
 	 */
 	@Test
-	void createValidSeat_seatNumberBelowMinimum_throws() {
-
+	void createSeat_seatNumberBelowMinimum_throws() {
 		Seat seat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(0)
 			.build();
 
-		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
+		assertThatThrownBy(() -> seatManagementService.createSeat(seat))
 			.isInstanceOf(SeatNumberOutOfRangeException.class);
 	}
 
 	/**
-	 * 좌석번호가 totalSeats 초과면 에러가 발생해야 함
+	 * 좌석 생성 - 좌석 번호 초과
 	 */
 	@Test
-	void createValidSeat_seatNumberAboveTotal_throws() {
-
+	void createSeat_seatNumberAboveTotal_throws() {
 		Seat seat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(11)
 			.build();
 
-		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
+		assertThatThrownBy(() -> seatManagementService.createSeat(seat))
 			.isInstanceOf(SeatNumberOutOfRangeException.class);
 	}
 
 	/**
-	 * 동일 이벤트에서 좌석번호가 중복되면 에러가 발생해야 함
+	 * 좌석 생성 - 중복 좌석일 경우
 	 */
 	@Test
-	void createValidSeat_seatNumberDuplicate_throws() {
-
+	void createSeat_seatNumberDuplicate_throws() {
 		Seat firstSeat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(1)
 			.build();
-		seatManagementService.createValidSeat(firstSeat);
+		seatManagementService.createSeat(firstSeat);
 
 		Seat duplicateSeat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(1)
 			.build();
 
-		assertThatThrownBy(() -> seatManagementService.createValidSeat(duplicateSeat))
+		assertThatThrownBy(() -> seatManagementService.createSeat(duplicateSeat))
 			.isInstanceOf(SeatNumberDuplicateException.class);
 	}
 }

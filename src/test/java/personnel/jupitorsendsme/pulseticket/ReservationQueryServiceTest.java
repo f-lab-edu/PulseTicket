@@ -41,8 +41,11 @@ public class ReservationQueryServiceTest {
 			.build());
 	}
 
+	/**
+	 * 이벤트가 예약 가능한지에 대한 기본 테스트
+	 */
 	@Test
-	void isBookingEventAvailable_returnsTrueWhenAvailableSeatExists() {
+	void isBookingEventAvailable_success() {
 
 		ReservationRequest request = ReservationRequest.builder()
 			.eventId(testEvent.getId())

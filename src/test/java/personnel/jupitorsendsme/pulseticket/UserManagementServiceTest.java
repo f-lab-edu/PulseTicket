@@ -19,8 +19,11 @@ import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 public class UserManagementServiceTest {
 	private final UserManagementService userManagementService;
 
+	/**
+	 * 유저 생성 기본
+	 */
 	@Test
-	public void createUserTest() {
+	public void createUser_success() {
 		String testUserLoginId = "testUser1";
 		String testUserRawPassword = "testUserPassword1";
 		ReservationRequest request =

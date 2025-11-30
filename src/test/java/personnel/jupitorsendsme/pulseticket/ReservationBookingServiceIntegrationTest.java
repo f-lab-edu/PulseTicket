@@ -35,7 +35,7 @@ public class ReservationBookingServiceIntegrationTest {
 	private final SeatRepository seatRepository;
 
 	/**
-	 * 예약 테스트 <br>
+	 * 예약 테스트
 	 */
 	@Test
 	public void bookTest() {
