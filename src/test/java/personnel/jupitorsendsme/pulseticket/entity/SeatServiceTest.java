@@ -62,4 +62,44 @@ public class SeatServiceTest {
 		assertThatThrownBy(() -> seatService.createValidSeat(seat))
 			.isInstanceOf(InvalidForeignKeyException.class);
 	}
+
+	// 좌석번호 범위 및 중복 검증
+	@Test
+	void createValidSeat_seatNumberBelowMinimum_throws() {
+		Seat seat = Seat.builder()
+			.eventId(testEventId)
+			.seatNumber(0)
+			.build();
+
+		assertThatThrownBy(() -> seatService.createValidSeat(seat))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	void createValidSeat_seatNumberAboveTotal_throws() {
+		Seat seat = Seat.builder()
+			.eventId(testEventId)
+			.seatNumber(11)
+			.build();
+
+		assertThatThrownBy(() -> seatService.createValidSeat(seat))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	void createValidSeat_seatNumberDuplicate_throws() {
+		Seat firstSeat = Seat.builder()
+			.eventId(testEventId)
+			.seatNumber(1)
+			.build();
+		seatService.createValidSeat(firstSeat);
+
+		Seat duplicateSeat = Seat.builder()
+			.eventId(testEventId)
+			.seatNumber(1)
+			.build();
+
+		assertThatThrownBy(() -> seatService.createValidSeat(duplicateSeat))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
 }

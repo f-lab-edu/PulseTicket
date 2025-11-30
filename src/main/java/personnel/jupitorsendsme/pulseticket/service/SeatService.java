@@ -75,6 +75,9 @@ public class SeatService {
 		return seat;
 	}
 
+	/**
+	 * 좌석 생성 시 FK와 좌석번호 검증 후 저장
+	 */
 	@Transactional
 	public Seat createValidSeat(Seat seat) {
 		Event event = eventRepository.findById(seat.getEventId())
