@@ -17,26 +17,20 @@ services:
     env_file:
       - .env
     environment:
-      # 로케일 설정
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
       - "${POSTGRES_HOST_PORT:-5432}:${POSTGRES_PORT:-5432}"
     volumes:
-      # 데이터 영속성을 위한 볼륨 마운트
       - postgres_data:/var/lib/postgresql/data
-      # 초기화 스크립트 마운트
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
     networks:
       - pulseticket-network
     healthcheck:
-      # 데이터베이스 준비 상태 확인
       test: [ "CMD-SHELL", "pg_isready -h localhost -p ${POSTGRES_PORT:-5432} -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
     labels:
-      # Promtail이 이 컨테이너의 로그를 수집하도록 설정
       logging: "promtail"
       logging_jobname: "pulseticket-postgres"
     restart: unless-stopped
@@ -56,7 +50,6 @@ services:
       # 호스트 포트:컨테이너 포트 (docker-compose.override.yml에서 설정)
       - "${REDIS_HOST_PORT:-6379}:${REDIS_PORT:-6379}"
     volumes:
-      # 데이터 영속성을 위한 볼륨 마운트
       - redis_data:/data
     networks:
       - pulseticket-network
@@ -191,7 +184,6 @@ services:
 
 # ============================================================================
 # 네트워크 설정
-# 서비스 간 통신을 위한 내부 네트워크 생성
 # ============================================================================
 networks:
   pulseticket-network:
@@ -199,7 +191,6 @@ networks:
 
 # ============================================================================
 # 볼륨 설정
-# 데이터 영속성을 위한 볼륨 정의
 # ============================================================================
 volumes:
   postgres_data:

@@ -46,6 +46,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testCompileOnly("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")
+    testRuntimeOnly("com.h2database:h2")
+    testImplementation("com.github.codemonstur:embedded-redis:1.4.3")
 
     // Mockito agent (Java 21+ 지원)
     mockitoAgent("org.mockito:mockito-core") { isTransitive = false }
