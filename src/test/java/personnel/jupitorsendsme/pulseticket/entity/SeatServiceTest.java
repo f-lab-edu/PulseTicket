@@ -13,13 +13,12 @@ import org.springframework.test.context.ActiveProfiles;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
-import personnel.jupitorsendsme.pulseticket.service.ForeignKeyValidator;
 import personnel.jupitorsendsme.pulseticket.service.SeatService;
 
 @DataJpaTest
 @ActiveProfiles("test")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Import({SeatService.class, ForeignKeyValidator.class})
+@Import(SeatService.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SeatServiceTest {
 

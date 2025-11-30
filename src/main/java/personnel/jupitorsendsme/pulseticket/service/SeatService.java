@@ -10,6 +10,7 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
+import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotAvailableException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotFoundException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
@@ -21,7 +22,6 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 public class SeatService {
 	private final SeatRepository seatRepository;
 	private final EventRepository eventRepository;
-	private final ForeignKeyValidator foreignKeyValidator;
 
 	/**
 	 * 특정 이벤트의 예약 가능한 좌석 조회 - 시각적 표현 <br>
@@ -77,8 +77,19 @@ public class SeatService {
 
 	@Transactional
 	public Seat createValidSeat(Seat seat) {
-		foreignKeyValidator.validateExists(eventRepository, seat, Event.class, seat.getEventId(), "event_id");
-		
+		Event event = eventRepository.findById(seat.getEventId())
+			.orElseThrow(
+				() -> new InvalidForeignKeyException(seat, Event.class, String.valueOf(seat.getEventId()), "event_id"));
+
+		Integer seatNumber = seat.getSeatNumber();
+		if (seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats()) {
+			throw new IllegalArgumentException("유효하지 않은 좌석 번호");
+		}
+
+		if (seatRepository.existsByEvent_IdAndSeatNumber(event.getId(), seatNumber)) {
+			throw new IllegalArgumentException("해당 좌석번호에 해당하는 데이터가 이미 존재함");
+		}
+
 		return seatRepository.save(seat);
 	}
 }
