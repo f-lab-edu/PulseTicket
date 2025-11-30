@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
@@ -44,7 +44,7 @@ public class ReservationQueryServiceTest {
 	@Test
 	void isBookingEventAvailable_returnsTrueWhenAvailableSeatExists() {
 
-		ReservationBookingRequest request = ReservationBookingRequest.builder()
+		ReservationRequest request = ReservationRequest.builder()
 			.eventId(testEvent.getId())
 			.build();
 

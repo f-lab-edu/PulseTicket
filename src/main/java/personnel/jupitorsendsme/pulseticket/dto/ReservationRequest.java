@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationBookingRequest {
+public class ReservationRequest {
 	/**
 	 * 예약신청자 로그인 ID
 	 */

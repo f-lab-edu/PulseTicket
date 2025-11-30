@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.User;
@@ -28,7 +28,7 @@ public class ReservationBookingService {
 	 * @return 예약 성공여부 (isSuccess), 예약 번호 (reservationId)
 	 */
 	@Transactional
-	public ReservationBookingResponse book(ReservationBookingRequest request) {
+	public ReservationBookingResponse book(ReservationRequest request) {
 		User user = userManagementService.getValidUser(request);
 		Seat seat = reservationQueryService.getAvailableSeat(request);
 

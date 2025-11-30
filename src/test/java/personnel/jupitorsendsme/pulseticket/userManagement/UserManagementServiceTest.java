@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 
 @SpringBootTest
@@ -23,8 +23,8 @@ public class UserManagementServiceTest {
 	public void createUserTest() {
 		String testUserLoginId = "testUser1";
 		String testUserRawPassword = "testUserPassword1";
-		ReservationBookingRequest request =
-			ReservationBookingRequest
+		ReservationRequest request =
+			ReservationRequest
 				.builder()
 				.loginId(testUserLoginId)
 				.password(testUserRawPassword)

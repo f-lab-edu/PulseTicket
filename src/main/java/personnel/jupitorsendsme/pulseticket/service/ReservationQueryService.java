@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
@@ -30,7 +30,7 @@ public class ReservationQueryService {
 	 * @param request 확인하려는 이벤트 id 가 담긴 request <br>
 	 * @return 예약 가능 여부 <br>
 	 */
-	public boolean isBookingEventAvailable(ReservationBookingRequest request) {
+	public boolean isBookingEventAvailable(ReservationRequest request) {
 		return seatRepository.existsByEvent_IdAndStatus(request.getEventId(), Seat.SeatStatus.AVAILABLE);
 	}
 
@@ -40,7 +40,7 @@ public class ReservationQueryService {
 	 * @param request 확인하고자 하는 이벤트 id 가 담긴 객체 <br>
 	 * @return Textual Diagram <br>
 	 */
-	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(ReservationBookingRequest request) {
+	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(ReservationRequest request) {
 		List<Seat> seats = seatRepository.findByEvent_Id(request.getEventId());
 
 		return SeatStatusResponse.from(seats);
@@ -51,7 +51,7 @@ public class ReservationQueryService {
 	 * @param request 알아보고자 하는 이벤트의 id 와 좌석번호가 담긴 request 객체 <br>
 	 * @return 에약 가능 여부. (나중에는 유효하지 않은 예약 좌석일 경우 특정 메시지를 반환하도록 수정하는게 좋겠다) <br>
 	 */
-	public boolean isSpecificSeatAvailable(ReservationBookingRequest request) {
+	public boolean isSpecificSeatAvailable(ReservationRequest request) {
 		return seatRepository.existsSeatByEvent_IdAndSeatNumberAndStatus(
 			request.getEventId(),
 			request.getSeatNumber(),
@@ -64,7 +64,7 @@ public class ReservationQueryService {
 	 * @param request eventId, seatNumber <br>
 	 * @return 찾은 Seat Entity <br>
 	 */
-	public Seat getSeat(ReservationBookingRequest request) {
+	public Seat getSeat(ReservationRequest request) {
 		Long eventId = request.getEventId();
 		Integer seatNumber = request.getSeatNumber();
 
@@ -77,7 +77,7 @@ public class ReservationQueryService {
 	 * @param request 알아보고자 하는 이벤트의 id 와 좌석번호가 담긴 request 객체 <br>
 	 * @return 예약이 가능하면 Seat , 불가능하면 null <br>
 	 */
-	public Seat getAvailableSeat(ReservationBookingRequest request) {
+	public Seat getAvailableSeat(ReservationRequest request) {
 		Seat seat = getSeat(request);
 
 		if (seat.getStatus() != Seat.SeatStatus.AVAILABLE)
@@ -91,7 +91,7 @@ public class ReservationQueryService {
 	 * @param request 확인하고자 하는 사용자의 id 와 password 가 담긴 객체 <br>
 	 * @return 예약 목록이 담긴 DTO <br>
 	 */
-	public List<ReservationQueryResponse> inquiryUserReservations(ReservationBookingRequest request) {
+	public List<ReservationQueryResponse> inquiryUserReservations(ReservationRequest request) {
 		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
 
 		return ReservationQueryResponse.from(reservations);

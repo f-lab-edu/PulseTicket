@@ -9,8 +9,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
@@ -54,7 +54,7 @@ public class ReservationBookingServiceIntegrationTest {
 			.build();
 		testSeat = seatRepository.save(testSeat);
 
-		ReservationBookingRequest request = ReservationBookingRequest
+		ReservationRequest request = ReservationRequest
 			.builder()
 			.eventId(testEvent.getId())
 			.seatNumber(testSeat.getSeatNumber())

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
 
@@ -32,7 +32,7 @@ public class ReservationQueryController {
 	 * @return 예약 가능 여부
 	 */
 	@GetMapping("isBookingEventAvailable")
-	public Boolean isBookingEventAvailable(@ModelAttribute ReservationBookingRequest request) {
+	public Boolean isBookingEventAvailable(@ModelAttribute ReservationRequest request) {
 		return reservationQueryService.isBookingEventAvailable(request);
 	}
 
@@ -42,7 +42,7 @@ public class ReservationQueryController {
 	 * @return 특정 이벤트의 좌석 정보 리스트
 	 */
 	@GetMapping("statusOfSeatsOfTheEvent")
-	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
+	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(@ModelAttribute ReservationRequest request) {
 		return reservationQueryService.statusOfSeatsOfTheEvent(request);
 	}
 
@@ -53,7 +53,7 @@ public class ReservationQueryController {
 	 */
 
 	@GetMapping("isSpecificSeatAvailable")
-	public Boolean isSpecificSeatAvailable(@ModelAttribute ReservationBookingRequest request) {
+	public Boolean isSpecificSeatAvailable(@ModelAttribute ReservationRequest request) {
 		return reservationQueryService.isSpecificSeatAvailable(request);
 	}
 
@@ -63,7 +63,7 @@ public class ReservationQueryController {
 	 * @return 예약 목록이 담긴 DTO
 	 */
 	@GetMapping("inquiryUserReservations")
-	public List<ReservationQueryResponse> inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
+	public List<ReservationQueryResponse> inquiryUserReservations(@ModelAttribute ReservationRequest request) {
 		return reservationQueryService.inquiryUserReservations(request);
 	}
 }

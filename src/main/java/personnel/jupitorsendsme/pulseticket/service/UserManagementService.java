@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 import personnel.jupitorsendsme.pulseticket.exception.user.InvalidCredentialException;
 import personnel.jupitorsendsme.pulseticket.exception.user.UserNotFoundException;
@@ -23,7 +23,7 @@ public class UserManagementService {
 	 * @param request 등록되어있는지 체크하려는 사용자 id 가 담긴 객체
 	 * @return true : 등록된 사용자, false : 미등록된 사용자
 	 */
-	public boolean isUserPresent(ReservationBookingRequest request) {
+	public boolean isUserPresent(ReservationRequest request) {
 		return userRepository.existsByLoginId(request.getLoginId());
 	}
 
@@ -33,7 +33,7 @@ public class UserManagementService {
 	 * @return 등록 성공 여부
 	 */
 	@Transactional
-	public boolean registerUser(ReservationBookingRequest request) {
+	public boolean registerUser(ReservationRequest request) {
 		if (this.isUserPresent(request)) {
 			return false;
 		}
@@ -48,7 +48,7 @@ public class UserManagementService {
 	 * @param request login Id, 해싱할 password
 	 */
 	@Transactional
-	public void createUser(ReservationBookingRequest request) {
+	public void createUser(ReservationRequest request) {
 		User user = User
 			.builder()
 			.loginId(request.getLoginId())
@@ -63,7 +63,7 @@ public class UserManagementService {
 	 * @param request 유효한지 판단하고자 하는 사용자 id, password 다 담긴 객체
 	 * @return true : loginId 이 존재하고 loginId, password 가 일치함 / false : 불일치
 	 */
-	public boolean isUserValid(ReservationBookingRequest request) {
+	public boolean isUserValid(ReservationRequest request) {
 		this.getValidUser(request);
 		return true;
 	}
@@ -73,7 +73,7 @@ public class UserManagementService {
 	 * @param request user id, password 가 담긴 객체
 	 * @return 유효한 회원 정보일 경우 회원 Entity 반환
 	 */
-	public User getValidUser(ReservationBookingRequest request) {
+	public User getValidUser(ReservationRequest request) {
 		User user = findUserByLoginId(request);
 
 		if (!passwordHashingService.verify(request, user))
@@ -82,7 +82,7 @@ public class UserManagementService {
 		return user;
 	}
 
-	public User findUserByLoginId(ReservationBookingRequest request) {
+	public User findUserByLoginId(ReservationRequest request) {
 		return userRepository.findUserByLoginId(request.getLoginId())
 			.orElseThrow(() -> new UserNotFoundException(request.getLoginId()));
 	}
