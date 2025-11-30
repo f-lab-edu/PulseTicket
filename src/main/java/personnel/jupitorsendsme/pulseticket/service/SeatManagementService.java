@@ -19,7 +19,7 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class SeatService {
+public class SeatManagementService {
 	private final SeatRepository seatRepository;
 	private final EventRepository eventRepository;
 

@@ -13,16 +13,16 @@ import org.springframework.test.context.ActiveProfiles;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
-import personnel.jupitorsendsme.pulseticket.service.SeatService;
+import personnel.jupitorsendsme.pulseticket.service.SeatManagementService;
 
 @DataJpaTest
 @ActiveProfiles("test")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Import(SeatService.class)
+@Import(SeatManagementService.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SeatServiceTest {
+public class SeatManagementServiceTest {
 
-	private final SeatService seatService;
+	private final SeatManagementService seatManagementService;
 	private final EventRepository eventRepository;
 
 	private Long testEventId;
@@ -49,7 +49,7 @@ public class SeatServiceTest {
 			.seatNumber(10)
 			.build();
 
-		seatService.createValidSeat(seat);
+		seatManagementService.createValidSeat(seat);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class SeatServiceTest {
 			.seatNumber(10)
 			.build();
 
-		assertThatThrownBy(() -> seatService.createValidSeat(seat))
+		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
 			.isInstanceOf(InvalidForeignKeyException.class);
 	}
 
@@ -79,7 +79,7 @@ public class SeatServiceTest {
 			.seatNumber(0)
 			.build();
 
-		assertThatThrownBy(() -> seatService.createValidSeat(seat))
+		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -93,7 +93,7 @@ public class SeatServiceTest {
 			.seatNumber(11)
 			.build();
 
-		assertThatThrownBy(() -> seatService.createValidSeat(seat))
+		assertThatThrownBy(() -> seatManagementService.createValidSeat(seat))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -106,14 +106,14 @@ public class SeatServiceTest {
 			.eventId(testEventId)
 			.seatNumber(1)
 			.build();
-		seatService.createValidSeat(firstSeat);
+		seatManagementService.createValidSeat(firstSeat);
 
 		Seat duplicateSeat = Seat.builder()
 			.eventId(testEventId)
 			.seatNumber(1)
 			.build();
 
-		assertThatThrownBy(() -> seatService.createValidSeat(duplicateSeat))
+		assertThatThrownBy(() -> seatManagementService.createValidSeat(duplicateSeat))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 }

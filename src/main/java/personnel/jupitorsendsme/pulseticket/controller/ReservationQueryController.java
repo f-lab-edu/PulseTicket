@@ -12,7 +12,7 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
-import personnel.jupitorsendsme.pulseticket.service.SeatService;
+import personnel.jupitorsendsme.pulseticket.service.SeatManagementService;
 
 /**
  * 좌석 조회 컨트롤러
@@ -25,7 +25,7 @@ import personnel.jupitorsendsme.pulseticket.service.SeatService;
 public class ReservationQueryController {
 
 	private final ReservationQueryService reservationQueryService;
-	private final SeatService seatService;
+	private final SeatManagementService seatManagementService;
 
 	/**
 	 * 특정 이벤트에 대한 예약 가능 여부. <br>
@@ -45,7 +45,7 @@ public class ReservationQueryController {
 	 */
 	@GetMapping("statusOfSeatsOfTheEvent")
 	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(@ModelAttribute ReservationRequest request) {
-		return seatService.statusOfSeatsOfTheEvent(request);
+		return seatManagementService.statusOfSeatsOfTheEvent(request);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class ReservationQueryController {
 
 	@GetMapping("isSpecificSeatAvailable")
 	public Boolean isSpecificSeatAvailable(@ModelAttribute ReservationRequest request) {
-		return seatService.isSpecificSeatAvailable(request);
+		return seatManagementService.isSpecificSeatAvailable(request);
 	}
 
 	/**
