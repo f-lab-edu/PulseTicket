@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.book;
+package personnel.jupitorsendsme.pulseticket;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +17,7 @@ import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 import personnel.jupitorsendsme.pulseticket.service.ReservationBookingService;
-import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
+import personnel.jupitorsendsme.pulseticket.service.SeatService;
 import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 
 @SpringBootTest
@@ -27,7 +27,7 @@ import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 public class ReservationBookingServiceIntegrationTest {
 
 	private final ReservationBookingService reservationBookingService;
-	private final ReservationQueryService reservationQueryService;
+	private final SeatService seatService;
 	private final ReservationRepository reservationRepository;
 	private final UserManagementService userManagementService;
 
@@ -71,6 +71,6 @@ public class ReservationBookingServiceIntegrationTest {
 		assertThat(reservationRepository.findById(response.getReservationId())).isNotNull();
 
 		// seat 업데이트 됬는지 확인
-		assertThat(reservationQueryService.getSeat(request).getStatus()).isEqualTo(Seat.SeatStatus.RESERVED);
+		assertThat(seatService.getSeat(request).getStatus()).isEqualTo(Seat.SeatStatus.RESERVED);
 	}
 }

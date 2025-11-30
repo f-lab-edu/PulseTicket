@@ -7,10 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
+import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotAvailableException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotFoundException;
+import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
 @Service
@@ -18,6 +20,8 @@ import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 @Transactional(readOnly = true)
 public class SeatService {
 	private final SeatRepository seatRepository;
+	private final EventRepository eventRepository;
+	private final ForeignKeyValidator foreignKeyValidator;
 
 	/**
 	 * 특정 이벤트의 예약 가능한 좌석 조회 - 시각적 표현 <br>
@@ -69,5 +73,12 @@ public class SeatService {
 			throw new SeatNotAvailableException(seat);
 
 		return seat;
+	}
+
+	@Transactional
+	public Seat createValidSeat(Seat seat) {
+		foreignKeyValidator.validateExists(eventRepository, seat, Event.class, seat.getEventId(), "event_id");
+		
+		return seatRepository.save(seat);
 	}
 }
