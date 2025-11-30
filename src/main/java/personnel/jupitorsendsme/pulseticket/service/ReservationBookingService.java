@@ -19,7 +19,7 @@ import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 public class ReservationBookingService {
 
 	private final UserManagementService userManagementService;
-	private final ReservationQueryService reservationQueryService;
+	private final SeatService seatService;
 	private final ReservationRepository reservationRepository;
 
 	/**
@@ -30,7 +30,7 @@ public class ReservationBookingService {
 	@Transactional
 	public ReservationBookingResponse book(ReservationRequest request) {
 		User user = userManagementService.getValidUser(request);
-		Seat seat = reservationQueryService.getAvailableSeat(request);
+		Seat seat = seatService.getAvailableSeat(request);
 
 		Reservation created = makeReservation(user, seat);
 
