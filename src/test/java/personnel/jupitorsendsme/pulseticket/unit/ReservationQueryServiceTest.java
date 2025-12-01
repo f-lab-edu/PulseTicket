@@ -1,6 +1,8 @@
-package personnel.jupitorsendsme.pulseticket;
+package personnel.jupitorsendsme.pulseticket.unit;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,7 @@ public class ReservationQueryServiceTest {
 		testEvent = eventRepository.save(Event.builder()
 			.name("Test Event")
 			.totalSeats(10)
+			.ticketPrice(BigDecimal.valueOf(15000L))
 			.build());
 
 		seatRepository.save(Seat.builder()

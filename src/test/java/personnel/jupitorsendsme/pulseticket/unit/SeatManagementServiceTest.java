@@ -1,6 +1,8 @@
-package personnel.jupitorsendsme.pulseticket.entity;
+package personnel.jupitorsendsme.pulseticket.unit;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import lombok.RequiredArgsConstructor;
+import personnel.jupitorsendsme.pulseticket.entity.Event;
+import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberDuplicateException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberOutOfRangeException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
@@ -34,6 +38,7 @@ public class SeatManagementServiceTest {
 			.builder()
 			.name("TestEvent")
 			.totalSeats(10)
+			.ticketPrice(BigDecimal.valueOf(15000L))
 			.build();
 
 		testEventId = eventRepository.save(testEvent).getId();
