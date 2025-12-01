@@ -14,11 +14,12 @@ CREATE TABLE users
 -- EVENTS 테이블
 CREATE TABLE events
 (
-    id          BIGSERIAL PRIMARY KEY,
-    name        VARCHAR(255) NOT NULL,
-    total_seats INT          NOT NULL,
-    created_at  TIMESTAMP    NOT NULL,
-    updated_at  TIMESTAMP    NOT NULL
+    id           BIGSERIAL PRIMARY KEY,
+    name         VARCHAR(255)   NOT NULL,
+    total_seats  INT            NOT NULL,
+    ticket_price Numeric(10, 2) NOT NULL,
+    created_at   TIMESTAMP      NOT NULL,
+    updated_at   TIMESTAMP      NOT NULL
 );
 
 -- SEATS 테이블

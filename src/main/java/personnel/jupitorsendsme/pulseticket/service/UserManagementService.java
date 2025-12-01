@@ -15,8 +15,8 @@ import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
 @Transactional(readOnly = true)
 public class UserManagementService {
 
-	final UserRepository userRepository;
-	final HashingServiceArgon2id passwordHashingService;
+	private final UserRepository userRepository;
+	private final HashingServiceArgon2id passwordHashingService;
 
 	/**
 	 * 유저 등록 유무 확인
@@ -74,16 +74,12 @@ public class UserManagementService {
 	 * @return 유효한 회원 정보일 경우 회원 Entity 반환
 	 */
 	public User getValidUser(ReservationRequest request) {
-		User user = findUserByLoginId(request);
+		User user = userRepository.findUserByLoginId(request.getLoginId())
+			.orElseThrow(() -> new UserNotFoundException(request));
 
 		if (!passwordHashingService.verify(request, user))
 			throw new InvalidCredentialException(request);
 
 		return user;
-	}
-
-	public User findUserByLoginId(ReservationRequest request) {
-		return userRepository.findUserByLoginId(request.getLoginId())
-			.orElseThrow(() -> new UserNotFoundException(request.getLoginId()));
 	}
 }

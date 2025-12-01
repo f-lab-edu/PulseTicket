@@ -10,6 +10,11 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
+import personnel.jupitorsendsme.pulseticket.exception.InvalidStatusException;
+import personnel.jupitorsendsme.pulseticket.exception.reservation.AlreadyPaidReservationException;
+import personnel.jupitorsendsme.pulseticket.exception.reservation.CancelledReservationException;
+import personnel.jupitorsendsme.pulseticket.exception.reservation.ExpiredReservationException;
+import personnel.jupitorsendsme.pulseticket.exception.reservation.ReservationNotFoundException;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
 
@@ -40,5 +45,25 @@ public class ReservationQueryService {
 		List<Reservation> reservations = reservationRepository.findByUser_LoginId(request.getLoginId());
 
 		return ReservationQueryResponse.from(reservations);
+	}
+
+	public Reservation getReservation(ReservationRequest request) {
+		return reservationRepository.findByIdWithRelations(request.getReservationId())
+			.orElseThrow(() -> new ReservationNotFoundException(request));
+	}
+
+	public Reservation getPayableReservation(ReservationRequest request) {
+		Reservation reservation = this.getReservation(request);
+
+		// 예약 상태별 결제 가능 여부 검증
+		switch (reservation.getStatus()) {
+			case PENDING -> {
+				return reservation;
+			}
+			case CONFIRMED -> throw new AlreadyPaidReservationException(reservation);
+			case CANCELLED -> throw new CancelledReservationException(reservation);
+			case EXPIRED -> throw new ExpiredReservationException(reservation);
+			default -> throw new InvalidStatusException(reservation);
+		}
 	}
 }
