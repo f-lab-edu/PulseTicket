@@ -56,11 +56,9 @@ public class SeatManagementService {
 	 * @return 찾은 Seat Entity <br>
 	 */
 	public Seat getSeat(ReservationRequest request) {
-		Long eventId = request.getEventId();
-		Integer seatNumber = request.getSeatNumber();
 
-		return seatRepository.findByEvent_IdAndSeatNumber(eventId, seatNumber)
-			.orElseThrow(() -> new SeatNotFoundException(eventId, seatNumber));
+		return seatRepository.findByEvent_IdAndSeatNumber(request.getEventId(), request.getSeatNumber())
+			.orElseThrow(() -> new SeatNotFoundException(request));
 	}
 
 	/**
@@ -82,19 +80,36 @@ public class SeatManagementService {
 	 */
 	@Transactional
 	public Seat createSeat(Seat seat) {
+		Seat created = null;
+
+		if (this.isValidSeat(seat))
+			created = seatRepository.save(seat);
+
+		return created;
+	}
+
+	@Transactional
+	public Seat proceedSeat(Seat seat) {
+		seat.proceed();
+		return seat;
+	}
+
+	public Boolean isValidSeat(Seat seat) {
 		Event event = eventRepository.findById(seat.getEventId())
 			.orElseThrow(
-				() -> new InvalidForeignKeyException(seat, Event.class, String.valueOf(seat.getEventId()), "event_id"));
+				() -> new InvalidForeignKeyException(seat, Event.class, String.valueOf(seat.getEventId()),
+					Seat.seatToEventForeignKeyColumnName));
+		seat.setEvent(event);
 
 		Integer seatNumber = seat.getSeatNumber();
 		if (seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats()) {
-			throw new SeatNumberOutOfRangeException(event.getId(), seatNumber, event.getTotalSeats());
+			throw new SeatNumberOutOfRangeException(seat);
 		}
 
 		if (seatRepository.existsByEvent_IdAndSeatNumber(event.getId(), seatNumber)) {
-			throw new SeatNumberDuplicateException(event.getId(), seatNumber);
+			throw new SeatNumberDuplicateException(seat);
 		}
 
-		return seatRepository.save(seat);
+		return true;
 	}
 }

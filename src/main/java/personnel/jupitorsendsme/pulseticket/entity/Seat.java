@@ -41,6 +41,8 @@ import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatPhaseExcep
 @AllArgsConstructor
 public class Seat extends BaseEntity {
 
+	public static final String seatToEventForeignKeyColumnName = "event_id";
+
 	/**
 	 * 좌석 고유 식별자
 	 */
@@ -51,12 +53,12 @@ public class Seat extends BaseEntity {
 	 * 소속 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", insertable = false, updatable = false)
+	@JoinColumn(name = seatToEventForeignKeyColumnName, insertable = false, updatable = false)
 	private Event event;
 	/**
 	 * 소속 이벤트의 id
 	 */
-	@Column(name = "event_id", nullable = false)
+	@Column(name = seatToEventForeignKeyColumnName, nullable = false)
 	private Long eventId;
 	/**
 	 * 좌석 번호
