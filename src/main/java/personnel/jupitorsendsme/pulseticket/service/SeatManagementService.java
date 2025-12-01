@@ -81,23 +81,9 @@ public class SeatManagementService {
 	public Seat createSeat(Seat seat) {
 		Seat created = null;
 
-		if (this.isValidSeat(seat))
-			created = seatRepository.save(seat);
-
-		return created;
-	}
-
-	@Transactional
-	public Seat proceedSeat(Seat seat) {
-		seat.proceed();
-		return seat;
-	}
-
-	public Boolean isValidSeat(Seat seat) {
 		Event event = eventRepository.findById(seat.getEventId())
 			.orElseThrow(
 				() -> new Seat.InvalidEventForeignKeyException(seat));
-		seat.setEvent(event);
 
 		Integer seatNumber = seat.getSeatNumber();
 		if (seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats()) {
@@ -108,6 +94,14 @@ public class SeatManagementService {
 			throw new SeatNumberDuplicateException(seat);
 		}
 
-		return true;
+		created = seatRepository.save(seat);
+
+		return created;
+	}
+
+	@Transactional
+	public Seat proceedSeat(Seat seat) {
+		seat.proceed();
+		return seat;
 	}
 }
