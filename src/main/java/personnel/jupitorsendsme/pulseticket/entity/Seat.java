@@ -3,11 +3,10 @@ package personnel.jupitorsendsme.pulseticket.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatPhaseException;
-import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatStatusDbValueException;
 
 /**
  * 좌석 정보를 관리하는 엔티티
@@ -68,8 +66,8 @@ public class Seat extends BaseEntity {
 	/**
 	 * 좌석 상태 (AVAILABLE, RESERVED, SOLD)
 	 */
-	@Convert(converter = SeatStatusConverter.class)
-	@Column(columnDefinition = "smallint", nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20, nullable = false)
 	private SeatStatus status;
 	/**
 	 * 예약 만료 일시
@@ -111,48 +109,18 @@ public class Seat extends BaseEntity {
 	 */
 	@Getter
 	public enum SeatStatus {
-		SOLD((short)3, null),
-		RESERVED((short)2, SOLD),
-		AVAILABLE((short)1, RESERVED);
+		SOLD(null),
+		RESERVED(SOLD),
+		AVAILABLE(RESERVED);
 
-		private final short dbValue;
 		private final SeatStatus next;
 
-		SeatStatus(short dbValue, SeatStatus next) {
-			this.dbValue = dbValue;
+		SeatStatus(SeatStatus next) {
 			this.next = next;
-		}
-
-		public static SeatStatus toEnum(int dbValue) {
-			return switch (dbValue) {
-				case 1 -> SeatStatus.AVAILABLE;
-				case 2 -> SeatStatus.RESERVED;
-				case 3 -> SeatStatus.SOLD;
-				default -> throw new IllegalSeatStatusDbValueException(dbValue);
-			};
 		}
 
 		public SeatStatus nextPhase() {
 			return this.next;
-		}
-	}
-
-	@Converter
-	private static class SeatStatusConverter implements AttributeConverter<SeatStatus, Short> {
-		@Override
-		public Short convertToDatabaseColumn(SeatStatus attribute) {
-			if (attribute == null) {
-				return null;
-			}
-			return attribute.getDbValue();
-		}
-
-		@Override
-		public SeatStatus convertToEntityAttribute(Short dbData) {
-			if (dbData == null) {
-				return null;
-			}
-			return SeatStatus.toEnum(dbData);
 		}
 	}
 }

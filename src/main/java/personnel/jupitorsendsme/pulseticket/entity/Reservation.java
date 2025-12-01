@@ -3,11 +3,10 @@ package personnel.jupitorsendsme.pulseticket.entity;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.exception.reservation.IllegalReservationStatusDbValueException;
 
 /**
  * 예약 정보를 관리하는 엔티티
@@ -79,8 +77,8 @@ public class Reservation extends BaseEntity {
 	/**
 	 * 예약 상태 (PENDING, CONFIRMED, CANCELLED)
 	 */
-	@Convert(converter = ReservationStatusConverter.class)
-	@Column(columnDefinition = "smallint", nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20, nullable = false)
 	private ReservationStatus status;
 	/**
 	 * 예약 만료 일시
@@ -153,47 +151,11 @@ public class Reservation extends BaseEntity {
 	 * CANCELLED : 예약이 취소된 상태 <br>
 	 * Expired : 예약은 했으나 일정시간 결제를 안해서 만료된 상태.
 	 */
-	@Getter
 	public enum ReservationStatus {
-		PENDING((short)1),
-		CONFIRMED((short)2),
-		CANCELLED((short)3),
-		EXPIRED((short)4);
-
-		private final short dbValue;
-
-		ReservationStatus(short dbValue) {
-			this.dbValue = dbValue;
-		}
-
-		public static ReservationStatus fromDbValue(int dbValue) {
-			return switch (dbValue) {
-				case 1 -> ReservationStatus.PENDING;
-				case 2 -> ReservationStatus.CONFIRMED;
-				case 3 -> ReservationStatus.CANCELLED;
-				case 4 -> ReservationStatus.EXPIRED;
-				default -> throw new IllegalReservationStatusDbValueException(dbValue);
-			};
-		}
-	}
-
-	@Converter
-	private static class ReservationStatusConverter implements AttributeConverter<ReservationStatus, Short> {
-		@Override
-		public Short convertToDatabaseColumn(ReservationStatus attribute) {
-			if (attribute == null) {
-				return null;
-			}
-			return attribute.getDbValue();
-		}
-
-		@Override
-		public ReservationStatus convertToEntityAttribute(Short dbData) {
-			if (dbData == null) {
-				return null;
-			}
-			return ReservationStatus.fromDbValue(dbData);
-		}
+		PENDING,
+		CONFIRMED,
+		CANCELLED,
+		EXPIRED
 	}
 
 	/**
