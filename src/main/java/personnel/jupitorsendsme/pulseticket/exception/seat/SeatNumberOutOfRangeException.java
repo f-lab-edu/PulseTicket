@@ -9,7 +9,8 @@ public class SeatNumberOutOfRangeException extends RuntimeException {
 	private final Integer totalSeats;
 
 	public SeatNumberOutOfRangeException(Long eventId, Integer seatNumber, Integer totalSeats) {
-		super("좌석번호 범위 오류 - eventId: " + eventId + ", seatNumber: " + seatNumber + ", totalSeats: " + totalSeats);
+		super(String.format("좌석번호 범위 오류 - eventId: %d, seatNumber: %d, totalSeats: %d",
+			eventId, seatNumber, totalSeats));
 		this.eventId = eventId;
 		this.seatNumber = seatNumber;
 		this.totalSeats = totalSeats;

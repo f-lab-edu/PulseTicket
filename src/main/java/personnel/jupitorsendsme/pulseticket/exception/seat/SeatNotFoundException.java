@@ -8,7 +8,7 @@ public class SeatNotFoundException extends RuntimeException {
 	private final Integer seatNumber;
 
 	public SeatNotFoundException(Long eventId, Integer seatNumber) {
-		super("좌석 정보 검색 안됨 - 이벤트 번호 : " + eventId + ", 좌석 번호 : " + seatNumber);
+		super(String.format("좌석 정보 검색 안됨 - eventId: %d, seatNumber: %d", eventId, seatNumber));
 		this.eventId = eventId;
 		this.seatNumber = seatNumber;
 	}
