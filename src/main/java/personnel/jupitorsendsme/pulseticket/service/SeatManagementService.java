@@ -10,7 +10,6 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
-import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotAvailableException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotFoundException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberDuplicateException;
@@ -97,8 +96,7 @@ public class SeatManagementService {
 	public Boolean isValidSeat(Seat seat) {
 		Event event = eventRepository.findById(seat.getEventId())
 			.orElseThrow(
-				() -> new InvalidForeignKeyException(seat, Event.class, String.valueOf(seat.getEventId()),
-					Seat.seatToEventForeignKeyColumnName));
+				() -> new Seat.InvalidEventForeignKeyException(seat));
 		seat.setEvent(event);
 
 		Integer seatNumber = seat.getSeatNumber();

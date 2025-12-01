@@ -41,8 +41,6 @@ import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatPhaseExcep
 @AllArgsConstructor
 public class Seat extends BaseEntity {
 
-	public static final String seatToEventForeignKeyColumnName = "event_id";
-
 	/**
 	 * 좌석 고유 식별자
 	 */
@@ -53,12 +51,12 @@ public class Seat extends BaseEntity {
 	 * 소속 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = seatToEventForeignKeyColumnName, insertable = false, updatable = false)
+	@JoinColumn(name = "event_id", insertable = false, updatable = false)
 	private Event event;
 	/**
 	 * 소속 이벤트의 id
 	 */
-	@Column(name = seatToEventForeignKeyColumnName, nullable = false)
+	@Column(name = "event_id", nullable = false)
 	private Long eventId;
 	/**
 	 * 좌석 번호
@@ -123,6 +121,16 @@ public class Seat extends BaseEntity {
 
 		public SeatStatus nextPhase() {
 			return this.next;
+		}
+	}
+
+	@Getter
+	public static class InvalidEventForeignKeyException extends RuntimeException {
+		private final Long eventId;
+
+		public InvalidEventForeignKeyException(Seat seat) {
+			super(String.format("Seat :: 유효하지 않은 외부키 - 이벤트 id 값 - eventId: %d", seat.getEventId()));
+			this.eventId = seat.getEventId();
 		}
 	}
 }

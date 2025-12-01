@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.exception.InvalidForeignKeyException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberDuplicateException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberOutOfRangeException;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
@@ -66,7 +65,7 @@ public class SeatManagementServiceTest {
 			.build();
 
 		assertThatThrownBy(() -> seatManagementService.createSeat(seat))
-			.isInstanceOf(InvalidForeignKeyException.class);
+			.isInstanceOf(Seat.InvalidEventForeignKeyException.class);
 	}
 
 	/**
