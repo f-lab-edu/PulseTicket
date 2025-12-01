@@ -1,5 +1,6 @@
 package personnel.jupitorsendsme.pulseticket.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -48,4 +49,10 @@ public class Event extends BaseEntity {
 	 */
 	@OneToMany(mappedBy = "event")
 	private List<Seat> seats;
+
+	/**
+	 * 티켓 가격
+	 */
+	@Column(name = "ticket_price", nullable = false)
+	private BigDecimal ticketPrice;
 }
