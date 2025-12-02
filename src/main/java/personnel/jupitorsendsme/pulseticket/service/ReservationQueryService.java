@@ -10,10 +10,10 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
-import personnel.jupitorsendsme.pulseticket.exception.InvalidStatusException;
 import personnel.jupitorsendsme.pulseticket.exception.reservation.AlreadyPaidReservationException;
 import personnel.jupitorsendsme.pulseticket.exception.reservation.CancelledReservationException;
 import personnel.jupitorsendsme.pulseticket.exception.reservation.ExpiredReservationException;
+import personnel.jupitorsendsme.pulseticket.exception.reservation.InvalidReservationStatusException;
 import personnel.jupitorsendsme.pulseticket.exception.reservation.ReservationNotFoundException;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
 import personnel.jupitorsendsme.pulseticket.repository.SeatRepository;
@@ -63,7 +63,7 @@ public class ReservationQueryService {
 			case CONFIRMED -> throw new AlreadyPaidReservationException(reservation);
 			case CANCELLED -> throw new CancelledReservationException(reservation);
 			case EXPIRED -> throw new ExpiredReservationException(reservation);
-			default -> throw new InvalidStatusException(reservation);
+			default -> throw new InvalidReservationStatusException(reservation);
 		}
 	}
 }

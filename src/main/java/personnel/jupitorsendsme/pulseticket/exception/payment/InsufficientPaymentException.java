@@ -2,6 +2,8 @@ package personnel.jupitorsendsme.pulseticket.exception.payment;
 
 import java.math.BigDecimal;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.Getter;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
@@ -15,6 +17,7 @@ public class InsufficientPaymentException extends RuntimeException {
 	private final Long eventId;
 	private final BigDecimal ticketPrice;
 	private final BigDecimal paymentAmount;
+	private final HttpStatus httpStatus;
 
 	public InsufficientPaymentException(Event event, ReservationRequest request) {
 		super(String.format("결재 금액 부족 - userLoginId: %s, eventId : %d, 필요 금액: %s, 전송 금액: %s",
@@ -23,5 +26,6 @@ public class InsufficientPaymentException extends RuntimeException {
 		this.eventId = event.getId();
 		this.ticketPrice = event.getTicketPrice();
 		this.paymentAmount = request.getPaymentAmount();
+		this.httpStatus = HttpStatus.PAYMENT_REQUIRED;
 	}
 }
