@@ -123,14 +123,4 @@ public class Seat extends BaseEntity {
 			return this.next;
 		}
 	}
-
-	@Getter
-	public static class InvalidEventForeignKeyException extends RuntimeException {
-		private final Long eventId;
-
-		public InvalidEventForeignKeyException(Seat seat) {
-			super(String.format("Seat :: 유효하지 않은 외부키 - 이벤트 id 값 - eventId: %d", seat.getEventId()));
-			this.eventId = seat.getEventId();
-		}
-	}
 }

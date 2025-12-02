@@ -68,15 +68,7 @@ tasks.withType<JavaCompile> {
 tasks.withType<Test> {
     systemProperty("file.encoding", "UTF-8")
     useJUnitPlatform()
-
-    // gradle.properties 값을 시스템 프로퍼티로 전달
-    systemProperty("TEST_POSTGRES_PORT", findProperty("TEST_POSTGRES_PORT") ?: "")
-    systemProperty("TEST_POSTGRES_DB", findProperty("TEST_POSTGRES_DB") ?: "")
-    systemProperty("TEST_POSTGRES_USER", findProperty("TEST_POSTGRES_USER") ?: "")
-    systemProperty("TEST_POSTGRES_PASSWORD", findProperty("TEST_POSTGRES_PASSWORD") ?: "")
-    systemProperty("TEST_REDIS_PORT", findProperty("TEST_REDIS_PORT") ?: "")
-    systemProperty("TEST_REDIS_PASSWORD", findProperty("TEST_REDIS_PASSWORD") ?: "")
-
+    
     // 클래스 데이터 공유 관련 경고 방지
     jvmArgs("-Xshare:off")
 

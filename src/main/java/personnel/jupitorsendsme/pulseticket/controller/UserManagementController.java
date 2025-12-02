@@ -1,7 +1,6 @@
 package personnel.jupitorsendsme.pulseticket.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,7 @@ public class UserManagementController {
 	private final UserManagementService userManagementService;
 
 	@GetMapping("isUserPresent")
-	Boolean isUserPresent(@ModelAttribute ReservationRequest request) {
+	Boolean isUserPresent(ReservationRequest request) {
 		return userManagementService.isUserPresent(request);
 	}
 

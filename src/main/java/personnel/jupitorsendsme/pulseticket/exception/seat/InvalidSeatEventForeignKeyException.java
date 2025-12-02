@@ -1,0 +1,14 @@
+package personnel.jupitorsendsme.pulseticket.exception.seat;
+
+import lombok.Getter;
+import personnel.jupitorsendsme.pulseticket.entity.Seat;
+
+@Getter
+public class InvalidSeatEventForeignKeyException extends RuntimeException {
+	private final Long eventId;
+
+	public InvalidSeatEventForeignKeyException(Seat seat) {
+		super(String.format("Seat :: 유효하지 않은 외부키 - 이벤트 id 값 - eventId: %d", seat.getEventId()));
+		this.eventId = seat.getEventId();
+	}
+}

@@ -10,6 +10,7 @@ import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
+import personnel.jupitorsendsme.pulseticket.exception.seat.InvalidSeatEventForeignKeyException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotAvailableException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNotFoundException;
 import personnel.jupitorsendsme.pulseticket.exception.seat.SeatNumberDuplicateException;
@@ -83,7 +84,7 @@ public class SeatManagementService {
 
 		Event event = eventRepository.findById(seat.getEventId())
 			.orElseThrow(
-				() -> new Seat.InvalidEventForeignKeyException(seat));
+				() -> new InvalidSeatEventForeignKeyException(seat));
 
 		Integer seatNumber = seat.getSeatNumber();
 		if (seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats()) {
