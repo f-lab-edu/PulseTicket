@@ -23,7 +23,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import personnel.jupitorsendsme.pulseticket.exception.seat.IllegalSeatPhaseException;
 
 /**
  * 좌석 정보를 관리하는 엔티티
@@ -92,14 +91,12 @@ public class Seat extends BaseEntity {
 		}
 	}
 
-	public void proceed() {
-		SeatStatus next = this.getStatus().nextPhase();
+	public void reserve() {
+		this.status = SeatStatus.RESERVED;
+	}
 
-		if (next == null) {
-			throw new IllegalSeatPhaseException(this);
-		}
-
-		this.status = next;
+	public void sell() {
+		this.status = SeatStatus.SOLD;
 	}
 
 	public boolean isReservationAvailable() {
@@ -118,18 +115,8 @@ public class Seat extends BaseEntity {
 	 */
 	@Getter
 	public enum SeatStatus {
-		SOLD(null),
-		RESERVED(SOLD),
-		AVAILABLE(RESERVED);
-
-		private final SeatStatus next;
-
-		SeatStatus(SeatStatus next) {
-			this.next = next;
-		}
-
-		public SeatStatus nextPhase() {
-			return this.next;
-		}
+		AVAILABLE,
+		RESERVED,
+		SOLD
 	}
 }

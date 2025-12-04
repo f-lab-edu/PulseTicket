@@ -41,7 +41,7 @@ public class ReservationBookingService {
 		Reservation reserve = Reservation.reserve(user, seat);
 		Reservation created = reservationRepository.save(reserve);
 
-		seat.proceed();
+		seat.reserve();
 
 		return created;
 	}

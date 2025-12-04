@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +108,7 @@ public class PayManagementServiceTest {
 	 * 예약 결제 - 유효하지 않는 사용자
 	 */
 	@Test
+	@DisplayName("예약결제시 없는 사용자 아이디인 경우 UserNotFoundException 발생")
 	void payReservation_userNotFound() {
 		ReservationRequest request = createValidReservationRequest();
 		request.setLoginId("notValid");
@@ -117,6 +119,7 @@ public class PayManagementServiceTest {
 	}
 
 	@Test
+	@DisplayName("예약 결제시 loginId 는 유효하나 패스워드가 유효하지 않은 경우 InvalidCredentialException 발생")
 	void payReservation_unauthorizedUser() {
 		ReservationRequest request = createValidReservationRequest();
 		request.setLoginId(testUserLoginId);
@@ -130,6 +133,7 @@ public class PayManagementServiceTest {
 	 * 예약 결제 - 예약 정보가 유효하지 않을때
 	 */
 	@Test
+	@DisplayName("예약 결제시 예약 정보를 찾을 수 없는 경우 ReservationNotFoundException 발생")
 	void payReservation_invalidReservation() {
 		ReservationRequest request = createValidReservationRequest();
 		request.setReservationId(-1L);
@@ -142,6 +146,7 @@ public class PayManagementServiceTest {
 	 * 예약 결제 - 이미 결제 된 경우
 	 */
 	@Test
+	@DisplayName("예약 결제시 이미 결제된 예약인 경우 AlreadyPaidReservationException 발생")
 	void payReservation_alreadyPaid() {
 		testReservation.confirm();
 
@@ -153,6 +158,7 @@ public class PayManagementServiceTest {
 	 * 예약 결제 - 이미 취소된 예약
 	 */
 	@Test
+	@DisplayName("예약 결제시 이미 취소된 예약인 경우 CancelledReservationException 발생")
 	void payReservation_cancelledReservation() {
 		testReservation.cancel();
 
@@ -164,6 +170,7 @@ public class PayManagementServiceTest {
 	 * 예약 결제 - 이미 만료된 예약
 	 */
 	@Test
+	@DisplayName("예약 결제시 이미 만료된 예약인 경우 ExpiredReservationException 발생")
 	void payReservation_expiredReservation() {
 		testReservation.expire();
 
@@ -175,9 +182,9 @@ public class PayManagementServiceTest {
 	 * 예약 결제 - 티켓 값이 모자랄때
 	 */
 	@Test
+	@DisplayName("예약 결제시 결제하려는 금액이 모자란 경우 ")
 	void payReservation_notEnoughMoney() {
-		// 좌석 상태 변경 (AVAILABLE -> RESERVED)
-		testSeat.proceed();
+		testSeat.reserve();
 
 		ReservationRequest request = createValidReservationRequest();
 		request.setPaymentAmount(BigDecimal.valueOf(-10000));
@@ -191,8 +198,7 @@ public class PayManagementServiceTest {
 	 */
 	@Test
 	void payReservation_success() {
-		// 좌석 상태 변경 (AVAILABLE -> RESERVED)
-		testSeat.proceed();
+		testSeat.reserve();
 
 		// 메서드 실행
 		payManagementService.payReservation(validRequest);

@@ -33,7 +33,7 @@ public class PayManagementService {
 			throw new InsufficientPaymentException(event, request);
 
 		// Seat update
-		seat.proceed();
+		seat.sell();
 
 		// Reservation Update
 		reservation.confirm();
