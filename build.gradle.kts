@@ -7,6 +7,8 @@ plugins {
 group = "personnel.jupitorSendsme"
 version = "0.0.1-SNAPSHOT"
 description = "PulseTicket"
+// Mockito agent 정적 로딩을 위한 변수
+val mockitoAgent = configurations.create("mockitoAgent")
 
 java {
     toolchain {
@@ -28,15 +30,27 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    // Spring Session Redis 의존성 추가
-    // Redis를 세션 저장소로 사용하기 위한 의존성
     implementation("org.springframework.session:spring-session-data-redis")
+
+    // lombok
     compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("org.postgresql:postgresql")
+
+    // dev
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.assertj:assertj-core")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testCompileOnly("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testRuntimeOnly("com.h2database:h2")
+    testImplementation("com.github.codemonstur:embedded-redis:1.4.3")
+
+    // Mockito agent (Java 21+ 지원)
+    mockitoAgent("org.mockito:mockito-core") { isTransitive = false }
 
     // Argon2id 비밀번호 해싱
     implementation("org.springframework.security:spring-security-crypto")
@@ -54,6 +68,12 @@ tasks.withType<JavaCompile> {
 tasks.withType<Test> {
     systemProperty("file.encoding", "UTF-8")
     useJUnitPlatform()
+    
+    // 클래스 데이터 공유 관련 경고 방지
+    jvmArgs("-Xshare:off")
+
+    // Mockito agent 정적 로딩 (Java 21+ 동적 agent 로딩 경고 방지)
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }
 
 // ============================================================================

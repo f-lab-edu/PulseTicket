@@ -5,7 +5,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.User;
 
 @Service
@@ -62,14 +62,14 @@ public class HashingServiceArgon2id {
 	/**
 	 * 입력된 원본 패스워드와 해싱된 패스워드가 일치하는지 확인
 	 * @param rawPassword 비교하고자 하는 원본 패스워드, 이전에 해싱된 패스워드가 담긴 객체
-	 * @param hashedPassword 이전에 해싱된 패스워드
+	 * @param passwordHash 이전에 해싱된 패스워드
 	 * @return 일치 여부
 	 */
-	public boolean verify(String rawPassword, String hashedPassword) {
-		return encoder.matches(rawPassword, hashedPassword);
+	public boolean verify(String rawPassword, String passwordHash) {
+		return encoder.matches(rawPassword, passwordHash);
 	}
 
-	public boolean verify(ReservationBookingRequest request, User user) {
+	public boolean verify(ReservationRequest request, User user) {
 		return this.verify(request.getPassword(), user.getPasswordHash());
 	}
 }

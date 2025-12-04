@@ -3,15 +3,15 @@ package personnel.jupitorsendsme.pulseticket.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingRequest;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationQueryResponse;
+import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
+import personnel.jupitorsendsme.pulseticket.service.SeatManagementService;
 
 /**
  * 좌석 조회 컨트롤러
@@ -24,6 +24,7 @@ import personnel.jupitorsendsme.pulseticket.service.ReservationQueryService;
 public class ReservationQueryController {
 
 	private final ReservationQueryService reservationQueryService;
+	private final SeatManagementService seatManagementService;
 
 	/**
 	 * 특정 이벤트에 대한 예약 가능 여부. <br>
@@ -32,7 +33,7 @@ public class ReservationQueryController {
 	 * @return 예약 가능 여부
 	 */
 	@GetMapping("isBookingEventAvailable")
-	public Boolean isBookingEventAvailable(@ModelAttribute ReservationBookingRequest request) {
+	public Boolean isBookingEventAvailable(ReservationRequest request) {
 		return reservationQueryService.isBookingEventAvailable(request);
 	}
 
@@ -42,8 +43,8 @@ public class ReservationQueryController {
 	 * @return 특정 이벤트의 좌석 정보 리스트
 	 */
 	@GetMapping("statusOfSeatsOfTheEvent")
-	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(@ModelAttribute ReservationBookingRequest request) {
-		return reservationQueryService.statusOfSeatsOfTheEvent(request);
+	public List<SeatStatusResponse> statusOfSeatsOfTheEvent(ReservationRequest request) {
+		return seatManagementService.statusOfSeatsOfTheEvent(request);
 	}
 
 	/**
@@ -53,8 +54,8 @@ public class ReservationQueryController {
 	 */
 
 	@GetMapping("isSpecificSeatAvailable")
-	public Boolean isSpecificSeatAvailable(@ModelAttribute ReservationBookingRequest request) {
-		return reservationQueryService.isSpecificSeatAvailable(request);
+	public Boolean isSpecificSeatAvailable(ReservationRequest request) {
+		return seatManagementService.isSpecificSeatAvailable(request);
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class ReservationQueryController {
 	 * @return 예약 목록이 담긴 DTO
 	 */
 	@GetMapping("inquiryUserReservations")
-	public List<ReservationQueryResponse> inquiryUserReservations(@ModelAttribute ReservationBookingRequest request) {
+	public List<ReservationQueryResponse> inquiryUserReservations(ReservationRequest request) {
 		return reservationQueryService.inquiryUserReservations(request);
 	}
 }

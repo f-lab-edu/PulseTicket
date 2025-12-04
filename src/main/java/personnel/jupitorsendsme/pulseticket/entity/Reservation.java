@@ -47,25 +47,37 @@ public class Reservation extends BaseEntity {
 	 * 예약한 사용자
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(
+		name = "user_id",
+		nullable = false,
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+	)
 	private User user;
 	/**
 	 * 예약된 좌석
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "seat_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(
+		name = "seat_id",
+		nullable = false,
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+	)
 	private Seat seat;
 	/**
 	 * 예약 대상 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(
+		name = "event_id",
+		nullable = false,
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+	)
 	private Event event;
 	/**
 	 * 예약 상태 (PENDING, CONFIRMED, CANCELLED)
 	 */
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Column(length = 20, nullable = false)
 	private ReservationStatus status;
 	/**
 	 * 예약 만료 일시
@@ -93,6 +105,7 @@ public class Reservation extends BaseEntity {
 		return Reservation.builder()
 			.user(user)
 			.seat(seat)
+			.event(seat.getEvent())
 			.status(Reservation.ReservationStatus.PENDING)
 			.expiresAt(LocalDateTime.now().plus(Reservation.RESERVATION_EXPIRATION))
 			.build();

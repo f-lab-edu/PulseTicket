@@ -1,5 +1,9 @@
 package personnel.jupitorsendsme.pulseticket.dto;
 
+import java.math.BigDecimal;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +13,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
-public class ReservationBookingRequest {
+@AllArgsConstructor
+public class ReservationRequest {
 	/**
 	 * 예약신청자 로그인 ID
 	 */
@@ -30,4 +36,14 @@ public class ReservationBookingRequest {
 	 * 예약하고자 하는 시트 번호
 	 */
 	private Integer seatNumber;
+
+	/**
+	 * 예약 고유 번호
+	 */
+	private Long reservationId;
+
+	/**
+	 * 결제 금액
+	 */
+	private BigDecimal paymentAmount;
 }
