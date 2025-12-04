@@ -12,12 +12,12 @@ import personnel.jupitorsendsme.pulseticket.exception.payment.InsufficientPaymen
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PayManagementService {
 	private final ReservationQueryService reservationQueryService;
 	private final UserManagementService userManagementService;
 	private final EventManagementService eventManagementService;
 
+	@Transactional
 	public void payReservation(ReservationRequest request) {
 
 		// 사용자 검증

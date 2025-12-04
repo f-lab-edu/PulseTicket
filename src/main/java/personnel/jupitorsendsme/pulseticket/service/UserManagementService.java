@@ -12,7 +12,6 @@ import personnel.jupitorsendsme.pulseticket.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserManagementService {
 
 	private final UserRepository userRepository;
@@ -23,6 +22,7 @@ public class UserManagementService {
 	 * @param request 등록되어있는지 체크하려는 사용자 id 가 담긴 객체
 	 * @return true : 등록된 사용자, false : 미등록된 사용자
 	 */
+	@Transactional(readOnly = true)
 	public boolean isUserPresent(ReservationRequest request) {
 		return userRepository.existsByLoginId(request.getLoginId());
 	}
@@ -63,6 +63,7 @@ public class UserManagementService {
 	 * @param request 유효한지 판단하고자 하는 사용자 id, password 다 담긴 객체
 	 * @return true : loginId 이 존재하고 loginId, password 가 일치함 / false : 불일치
 	 */
+	@Transactional(readOnly = true)
 	public boolean isUserValid(ReservationRequest request) {
 		this.getValidUser(request);
 		return true;
@@ -73,6 +74,7 @@ public class UserManagementService {
 	 * @param request user id, password 가 담긴 객체
 	 * @return 유효한 회원 정보일 경우 회원 Entity 반환
 	 */
+	@Transactional(readOnly = true)
 	public User getValidUser(ReservationRequest request) {
 		User user = userRepository.findUserByLoginId(request.getLoginId())
 			.orElseThrow(() -> new UserNotFoundException(request));
