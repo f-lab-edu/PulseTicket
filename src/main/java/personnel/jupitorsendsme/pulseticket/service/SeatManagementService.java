@@ -72,7 +72,7 @@ public class SeatManagementService {
 	public Seat getAvailableSeat(ReservationRequest request) {
 		Seat seat = getSeat(request);
 
-		if (seat.getStatus() != Seat.SeatStatus.AVAILABLE)
+		if (seat.isReservationAvailable())
 			throw new SeatNotAvailableException(seat);
 
 		return seat;
@@ -90,7 +90,7 @@ public class SeatManagementService {
 				() -> new InvalidSeatEventForeignKeyException(seat));
 
 		Integer seatNumber = seat.getSeatNumber();
-		if (seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats()) {
+		if (seat.isOutOfRange()) {
 			throw new SeatNumberOutOfRangeException(seat);
 		}
 

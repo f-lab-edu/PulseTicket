@@ -102,6 +102,14 @@ public class Seat extends BaseEntity {
 		this.status = next;
 	}
 
+	public boolean isReservationAvailable() {
+		return this.status == SeatStatus.AVAILABLE;
+	}
+
+	public boolean isOutOfRange() {
+		return this.seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats();
+	}
+
 	/**
 	 * Seats 테이블의 status 컬럼에 해당하는 상태 <br>
 	 * Available : 예약 가능 <br>
