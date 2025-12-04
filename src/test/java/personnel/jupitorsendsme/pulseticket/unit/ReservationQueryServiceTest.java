@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -48,14 +49,13 @@ public class ReservationQueryServiceTest {
 	 * 이벤트가 예약 가능한지에 대한 기본 테스트
 	 */
 	@Test
+	@DisplayName("예약 가능한 이벤트에 대해서 이벤트가 가능한지 조회시 true 를 반환")
 	void isBookingEventAvailable_success() {
 
 		ReservationRequest request = ReservationRequest.builder()
 			.eventId(testEvent.getId())
 			.build();
 
-		boolean available = reservationQueryService.isBookingEventAvailable(request);
-
-		assertThat(available).isTrue();
+		assertThat(reservationQueryService.isBookingEventAvailable(request)).isTrue();
 	}
 }

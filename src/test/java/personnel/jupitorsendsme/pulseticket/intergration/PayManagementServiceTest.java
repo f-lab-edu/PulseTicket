@@ -197,6 +197,7 @@ public class PayManagementServiceTest {
 	 * 예약 결제 기본 테스트
 	 */
 	@Test
+	@DisplayName("예약 성공시 예약 상태가 CONFIRMED 로 업데이트, 좌석 상태가 SOLD 로 업데이트")
 	void payReservation_success() {
 		testSeat.reserve();
 

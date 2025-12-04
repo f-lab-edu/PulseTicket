@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -31,10 +32,9 @@ public class ProxyTest {
 	private final UserRepository userRepository;
 	private final ReservationRepository reservationRepository;
 
-	/**
-	 * getId() 호출 시 프록시가 초기화되는지 확인
-	 */
 	@Test
+	@DisplayName("Seat 의 Entity 필드의 getId() 를 호출시 select 문을 호출하는 지,"
+		+ "그리고 Event 의 다른 속성을 조회 시 Select 문을 호출하는지 확인")
 	void testProxyGetId() {
 		// 준비
 		Event event = eventRepository.save(Event.builder()
@@ -69,11 +69,9 @@ public class ProxyTest {
 		assertThat(eventId).isEqualTo(event.getId());
 	}
 
-	/**
-	 * Reservation.reserve() 메서드에서 seat.getEvent() 호출 시
-	 * Event 프록시가 저장되는지, 아니면 실제 Event 조회를 위한 SELECT 문이 실행되는지 확인
-	 */
 	@Test
+	@DisplayName("Reservation.reserve() 메서드에서 seat.getEvent() 호출 시"
+		+ "Event 프록시가 저장되는지, 아니면 실제 Event 조회를 위한 SELECT 문이 실행되는지 확인")
 	void testReservationSaveWithEventProxy() {
 		// User, Event, Seat 생성 및 저장
 		User user = userRepository.save(User.builder()

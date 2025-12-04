@@ -72,7 +72,7 @@ public class SeatManagementService {
 	public Seat getAvailableSeat(ReservationRequest request) {
 		Seat seat = getSeat(request);
 
-		if (seat.isReservationAvailable())
+		if (!seat.isReservationAvailable())
 			throw new SeatNotAvailableException(seat);
 
 		return seat;

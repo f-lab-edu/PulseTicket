@@ -2,6 +2,9 @@ package personnel.jupitorsendsme.pulseticket.intergration;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.math.BigDecimal;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationBookingResponse;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
+import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.repository.EventRepository;
 import personnel.jupitorsendsme.pulseticket.repository.ReservationRepository;
@@ -38,17 +42,19 @@ public class ReservationBookingServiceIntegrationTest {
 	 * 예약 테스트
 	 */
 	@Test
+	@DisplayName("좌석 예약시 reservation 데이터가 1개 생기고, 해당하는 Seat 데이터의 상태가 RESERVED")
 	public void bookTest() {
 		Event testEvent = Event
 			.builder()
 			.name("TestConcert")
 			.totalSeats(50)
+			.ticketPrice(BigDecimal.valueOf(5000))
 			.build();
 		testEvent = eventRepository.save(testEvent);
 
 		Seat testSeat = Seat.builder()
 			.event(testEvent)
-			.seatNumber(8)
+			.seatNumber(10)
 			.status(Seat.SeatStatus.AVAILABLE)
 			.build();
 		testSeat = seatRepository.save(testSeat);
@@ -67,7 +73,9 @@ public class ReservationBookingServiceIntegrationTest {
 		ReservationBookingResponse response = reservationBookingService.book(request);
 
 		// reservation 데이터 확인
-		assertThat(reservationRepository.findById(response.getReservationId())).isNotNull();
+		assertThat(reservationRepository.findById(response.getReservationId())).isPresent();
+		Iterable<Reservation> all = reservationRepository.findAll();
+		assertThat(all).hasSize(1);
 
 		// seat 업데이트 됬는지 확인
 		assertThat(seatManagementService.getSeat(request).getStatus()).isEqualTo(Seat.SeatStatus.RESERVED);
