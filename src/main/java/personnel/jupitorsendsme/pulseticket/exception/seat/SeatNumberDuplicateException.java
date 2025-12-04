@@ -12,7 +12,7 @@ public class SeatNumberDuplicateException extends RuntimeException {
 
 	public SeatNumberDuplicateException(Seat seat) {
 		super(String.format("좌석번호 중복 - eventId: %d, seatNumber: %d",
-			seat.getEventId(), seat.getSeatNumber()));
+			seat.getEvent().getId(), seat.getSeatNumber()));
 		this.seat = seat;
 		this.httpStatus = HttpStatus.CONFLICT;
 	}

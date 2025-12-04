@@ -48,7 +48,7 @@ public class ReservationQueryService {
 	}
 
 	public Reservation getReservation(ReservationRequest request) {
-		return reservationRepository.findByIdWithRelations(request.getReservationId())
+		return reservationRepository.findById(request.getReservationId())
 			.orElseThrow(() -> new ReservationNotFoundException(request));
 	}
 

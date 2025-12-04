@@ -31,18 +31,18 @@ public class SeatManagementServiceTest {
 	private final SeatManagementService seatManagementService;
 	private final EventRepository eventRepository;
 
-	private Long testEventId;
+	private Event testEvent;
 
 	@BeforeAll
 	void setUp() {
-		Event testEvent = Event
+		testEvent = Event
 			.builder()
 			.name("TestEvent")
 			.totalSeats(10)
 			.ticketPrice(BigDecimal.valueOf(15000L))
 			.build();
 
-		testEventId = eventRepository.save(testEvent).getId();
+		testEvent = eventRepository.save(testEvent);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class SeatManagementServiceTest {
 	@Test
 	void createSeat_success() {
 		Seat seat = Seat.builder()
-			.eventId(testEventId)
+			.event(testEvent)
 			.seatNumber(10)
 			.build();
 
@@ -63,10 +63,10 @@ public class SeatManagementServiceTest {
 	 */
 	@Test
 	void createSeat_InvalidForeignKey() {
-		Long invalidEventId = -1L;
+		Event invalidEvent = Event.builder().id(-1L).build();
 
 		Seat seat = Seat.builder()
-			.eventId(invalidEventId)
+			.event(invalidEvent)
 			.seatNumber(10)
 			.build();
 
@@ -80,7 +80,7 @@ public class SeatManagementServiceTest {
 	@Test
 	void createSeat_seatNumberBelowMinimum_throws() {
 		Seat seat = Seat.builder()
-			.eventId(testEventId)
+			.event(testEvent)
 			.seatNumber(0)
 			.build();
 
@@ -94,7 +94,7 @@ public class SeatManagementServiceTest {
 	@Test
 	void createSeat_seatNumberAboveTotal_throws() {
 		Seat seat = Seat.builder()
-			.eventId(testEventId)
+			.event(testEvent)
 			.seatNumber(11)
 			.build();
 
@@ -108,13 +108,13 @@ public class SeatManagementServiceTest {
 	@Test
 	void createSeat_seatNumberDuplicate_throws() {
 		Seat firstSeat = Seat.builder()
-			.eventId(testEventId)
+			.event(testEvent)
 			.seatNumber(1)
 			.build();
 		seatManagementService.createSeat(firstSeat);
 
 		Seat duplicateSeat = Seat.builder()
-			.eventId(testEventId)
+			.event(testEvent)
 			.seatNumber(1)
 			.build();
 

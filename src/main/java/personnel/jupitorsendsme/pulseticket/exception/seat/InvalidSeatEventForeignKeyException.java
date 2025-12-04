@@ -11,8 +11,8 @@ public class InvalidSeatEventForeignKeyException extends RuntimeException {
 	private final HttpStatus httpStatus;
 
 	public InvalidSeatEventForeignKeyException(Seat seat) {
-		super(String.format("Seat :: 유효하지 않은 외부키 - 이벤트 id 값 - eventId: %d", seat.getEventId()));
-		this.eventId = seat.getEventId();
+		super(String.format("Seat :: 유효하지 않은 외부키 - 이벤트 id 값 - eventId: %d", seat.getEvent().getId()));
+		this.eventId = seat.getEvent().getId();
 		this.httpStatus = HttpStatus.BAD_REQUEST;
 	}
 }

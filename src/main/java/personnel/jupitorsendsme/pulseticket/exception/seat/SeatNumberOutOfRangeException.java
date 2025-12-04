@@ -12,7 +12,7 @@ public class SeatNumberOutOfRangeException extends RuntimeException {
 
 	public SeatNumberOutOfRangeException(Seat seat) {
 		super(String.format("좌석번호 범위 오류 - eventId: %d, seatNumber: %d, totalSeats: %d",
-			seat.getEventId(), seat.getSeatNumber(), seat.getEvent() != null ? seat.getEvent().getTotalSeats() : null));
+			seat.getEvent().getId(), seat.getSeatNumber(), seat.getEvent().getTotalSeats()));
 		this.seat = seat;
 		this.httpStatus = HttpStatus.BAD_REQUEST;
 	}

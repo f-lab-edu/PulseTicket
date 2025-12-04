@@ -38,7 +38,7 @@ public class ReservationQueryServiceTest {
 			.build());
 
 		seatRepository.save(Seat.builder()
-			.eventId(testEvent.getId())
+			.event(testEvent)
 			.seatNumber(1)
 			.status(Seat.SeatStatus.AVAILABLE)
 			.build());

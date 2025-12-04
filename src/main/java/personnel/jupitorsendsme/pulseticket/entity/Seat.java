@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,13 +53,12 @@ public class Seat extends BaseEntity {
 	 * 소속 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", insertable = false, updatable = false)
+	@JoinColumn(
+		name = "event_id",
+		nullable = false,
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+	)
 	private Event event;
-	/**
-	 * 소속 이벤트의 id
-	 */
-	@Column(name = "event_id", nullable = false)
-	private Long eventId;
 	/**
 	 * 좌석 번호
 	 */

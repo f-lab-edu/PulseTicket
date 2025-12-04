@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -41,14 +40,12 @@ import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 @ActiveProfiles("test")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Import({PayManagementService.class, HashingServiceArgon2id.class, ReservationQueryService.class,
-	UserManagementService.class, EventManagementService.class, TestEntityManager.class})
+	UserManagementService.class, EventManagementService.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PayManagementServiceTest {
 
 	private final PayManagementService payManagementService;
 	private final HashingServiceArgon2id hashingServiceArgon2id;
-	// TODO : 왜 지금 테스트에서 testEntityManager 로 flush, clear 를 해야하는지 알아내야 한다.
-	private final TestEntityManager testEntityManager;
 	private final UserRepository userRepository;
 	private final EventRepository eventRepository;
 	private final SeatRepository seatRepository;
@@ -94,7 +91,6 @@ public class PayManagementServiceTest {
 		this.testSeat = this.seatRepository.save(
 			Seat.builder()
 				.event(this.testEvent)
-				.eventId(this.testEvent.getId())
 				.seatNumber(1)
 				.status(Seat.SeatStatus.AVAILABLE)
 				.build()
@@ -103,9 +99,6 @@ public class PayManagementServiceTest {
 		this.testReservation = this.reservationRepository.save(
 			Reservation.reserve(this.testUser, this.testSeat)
 		);
-
-		// flush만 하고 clear는 안 함 → 엔티티들이 영속 상태 유지
-		testEntityManager.flush();
 
 		validRequest = createValidReservationRequest();
 	}
@@ -183,10 +176,8 @@ public class PayManagementServiceTest {
 	 */
 	@Test
 	void payReservation_notEnoughMoney() {
-		// event 로딩을 위해 clear 필요
+		// 좌석 상태 변경 (AVAILABLE -> RESERVED)
 		testSeat.proceed();
-		testEntityManager.flush();
-		testEntityManager.clear();
 
 		ReservationRequest request = createValidReservationRequest();
 		request.setPaymentAmount(BigDecimal.valueOf(-10000));
@@ -200,10 +191,8 @@ public class PayManagementServiceTest {
 	 */
 	@Test
 	void payReservation_success() {
-		// event 로딩을 위해 clear 필요, 좌석 상태 변경 (AVAILABLE -> RESERVED)
+		// 좌석 상태 변경 (AVAILABLE -> RESERVED)
 		testSeat.proceed();
-		testEntityManager.flush();
-		testEntityManager.clear();
 
 		// 메서드 실행
 		payManagementService.payReservation(validRequest);

@@ -14,8 +14,8 @@ public class SeatNotAvailableException extends RuntimeException {
 
 	public SeatNotAvailableException(Seat seat) {
 		super(String.format("예약이 불가능한 좌석 - eventId: %d, seatNumber: %d, status: %s",
-			seat.getEventId(), seat.getSeatNumber(), seat.getStatus()));
-		this.eventId = seat.getEventId();
+			seat.getEvent().getId(), seat.getSeatNumber(), seat.getStatus()));
+		this.eventId = seat.getEvent().getId();
 		this.seatNumber = seat.getSeatNumber();
 		this.status = seat.getStatus();
 		this.httpStatus = HttpStatus.CONFLICT;

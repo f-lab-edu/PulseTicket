@@ -48,7 +48,6 @@ public class ReservationBookingServiceIntegrationTest {
 
 		Seat testSeat = Seat.builder()
 			.event(testEvent)
-			.eventId(testEvent.getId())
 			.seatNumber(8)
 			.status(Seat.SeatStatus.AVAILABLE)
 			.build();
