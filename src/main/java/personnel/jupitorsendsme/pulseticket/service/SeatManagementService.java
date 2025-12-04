@@ -83,8 +83,6 @@ public class SeatManagementService {
 	 */
 	@Transactional
 	public Seat createSeat(Seat seat) {
-		Seat created;
-
 		Event event = eventRepository.findById(seat.getEvent().getId())
 			.orElseThrow(
 				() -> new InvalidSeatEventForeignKeyException(seat));
@@ -98,8 +96,6 @@ public class SeatManagementService {
 			throw new SeatNumberDuplicateException(seat);
 		}
 
-		created = seatRepository.save(seat);
-
-		return created;
+		return seatRepository.save(seat);
 	}
 }
