@@ -38,18 +38,6 @@ qodana.yaml
 ### VS Code ###
 .vscode/
 
-
-### AI Tool ###
-.serena
-CLAUDE.md
-.cursor
-.claude
-.mcp.json
-AGENTS.md
-.codex
-GEMINI.md
-.gemini
-
 ### Temp Files ###
 cookies.txt
 
