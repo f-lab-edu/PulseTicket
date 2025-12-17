@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.unit;
+package personnel.jupitorsendsme.pulseticket.intergration;
 
 import static org.assertj.core.api.Assertions.*;
 
