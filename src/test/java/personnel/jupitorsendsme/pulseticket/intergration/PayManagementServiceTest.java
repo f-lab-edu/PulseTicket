@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -42,7 +41,6 @@ import personnel.jupitorsendsme.pulseticket.service.UserManagementService;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Import({PayManagementService.class, HashingServiceArgon2id.class, ReservationQueryService.class,
 	UserManagementService.class, EventManagementService.class})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PayManagementServiceTest {
 
 	private final PayManagementService payManagementService;

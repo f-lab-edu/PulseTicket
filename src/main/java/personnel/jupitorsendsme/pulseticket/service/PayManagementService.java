@@ -19,7 +19,6 @@ public class PayManagementService {
 
 	@Transactional
 	public void payReservation(ReservationRequest request) {
-
 		// 사용자 검증
 		userManagementService.isUserValid(request);
 

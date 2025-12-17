@@ -68,7 +68,7 @@ tasks.withType<JavaCompile> {
 tasks.withType<Test> {
     systemProperty("file.encoding", "UTF-8")
     useJUnitPlatform()
-    
+
     // 클래스 데이터 공유 관련 경고 방지
     jvmArgs("-Xshare:off")
 
