@@ -2,11 +2,8 @@ package personnel.jupitorsendsme.pulseticket.exception;
 
 import java.net.URI;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,8 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<Object> customExceptionHandler(Exception ex, @Nullable Object body, HttpHeaders headers,
-		HttpStatusCode statusCode, WebRequest request) {
+	public ResponseEntity<Object> customExceptionHandler(Exception ex, WebRequest request) throws Exception {
 
 		if (ex instanceof ErrorResponse errorResponse) {
 			ProblemDetail detail = errorResponse.getBody();
@@ -37,6 +33,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			);
 		}
 
-		return super.handleExceptionInternal(ex, body, headers, statusCode, request);
+		return super.handleException(ex, request);
 	}
 }
