@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<Object> customExceptionHandler(Exception ex, WebRequest request) throws Exception {
@@ -24,15 +23,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				detail.setInstance(URI.create(servletWebRequest.getRequest().getRequestURI()));
 			}
 
-			return handleExceptionInternal(
-				ex,
-				detail,
-				errorResponse.getHeaders(),
-				errorResponse.getStatusCode(),
-				request
-			);
+			return ResponseEntity.status(detail.getStatus()).body(detail);
 		}
 
-		return super.handleException(ex, request);
+		throw ex;
 	}
 }
