@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.math.BigDecimal;
+import java.util.function.BiConsumer;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,8 +63,8 @@ public class PayManagementControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().string("true"));
 
-		verify(payManagementService).payReservation(
-			refEq(validRequest));    // refEq 를 안쓰면 주소값이 달라 테스트에 실패한다. 값을 검증하려면 refEq 를 써야한다.
+		assertMethodParameterEquals(payManagementService, PayManagementService::payReservation, requestCaptor,
+			validRequest);
 	}
 
 	@Test
@@ -88,12 +89,17 @@ public class PayManagementControllerTest {
 			.andExpect(jsonPath("$.title").value("존재하지 않는 사용자"))
 			.andExpect(jsonPath("$.detail").value(String.format("%s id 를 가진 사용자가 없음", notValidLoginId)));
 
-		verify(payManagementService).payReservation(requestCaptor.capture());
+		assertMethodParameterEquals(payManagementService, PayManagementService::payReservation, requestCaptor,
+			requestWithNotValidLoginId);
+	}
 
-		ReservationRequest capturedRequest = requestCaptor.getValue();
-		assertThat(capturedRequest)
+	public <T, E> void assertMethodParameterEquals(T mockClass, BiConsumer<T, E> targetMethod,
+		ArgumentCaptor<E> captor, E targetObject) {
+		targetMethod.accept(verify(mockClass), captor.capture());
+
+		assertThat(captor.getValue())
 			.usingRecursiveComparison()
-			.isEqualTo(requestWithNotValidLoginId);
+			.isEqualTo(targetObject);
 	}
 
 	public ReservationRequest createValidReservationRequest() {
