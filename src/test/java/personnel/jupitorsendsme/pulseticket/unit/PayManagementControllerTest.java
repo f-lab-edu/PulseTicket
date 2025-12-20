@@ -1,12 +1,11 @@
 package personnel.jupitorsendsme.pulseticket.unit;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static personnel.jupitorsendsme.pulseticket.util.MockitoTestUtils.*;
 
 import java.math.BigDecimal;
-import java.util.function.BiConsumer;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,7 +60,7 @@ public class PayManagementControllerTest {
 					.content(objectMapper.writeValueAsString(
 						validRequest)))  // Controller 에 @RequestBody 를 썼더라도 content 로 값을 지정해주어야 하며, serialize 해야한다.
 			.andExpect(status().isOk())
-			.andExpect(content().string("true"));
+			.andExpect(jsonPath("$.data").value(true));
 
 		assertMethodParameterEquals(payManagementService, PayManagementService::payReservation, requestCaptor,
 			validRequest);
@@ -91,15 +90,6 @@ public class PayManagementControllerTest {
 
 		assertMethodParameterEquals(payManagementService, PayManagementService::payReservation, requestCaptor,
 			requestWithNotValidLoginId);
-	}
-
-	public <T, E> void assertMethodParameterEquals(T mockClass, BiConsumer<T, E> targetMethod,
-		ArgumentCaptor<E> captor, E targetObject) {
-		targetMethod.accept(verify(mockClass), captor.capture());
-
-		assertThat(captor.getValue())
-			.usingRecursiveComparison()
-			.isEqualTo(targetObject);
 	}
 
 	public ReservationRequest createValidReservationRequest() {
