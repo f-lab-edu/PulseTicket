@@ -60,7 +60,7 @@ public class PayManagementControllerTest {
 					.content(objectMapper.writeValueAsString(
 						validRequest)))  // Controller 에 @RequestBody 를 썼더라도 content 로 값을 지정해주어야 하며, serialize 해야한다.
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.data").value(true));
+			.andExpect(jsonPath("$").value(true));
 
 		assertMethodParameterEquals(payManagementService, PayManagementService::payReservation, requestCaptor,
 			validRequest);
