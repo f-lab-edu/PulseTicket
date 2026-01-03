@@ -144,6 +144,17 @@ public class Reservation extends BaseEntity {
 	}
 
 	/**
+	 * Reservation Entity 영속화시 상태 초기화
+	 * status가 없으면 PENDING으로 설정
+	 */
+	@Override
+	protected void prePersistHook() {
+		if (this.status == null) {
+			this.status = ReservationStatus.PENDING;
+		}
+	}
+
+	/**
 	 * Reservation 테이블의 status 컬럼에 해당하는 상태 <br>
 	 * Pending : 예약 직후 상태. 아직 결제는 안한 상태 <br>
 	 * CONFIRMED : 결제해서 예약된 상태 <br>
@@ -155,16 +166,5 @@ public class Reservation extends BaseEntity {
 		CONFIRMED,
 		CANCELLED,
 		EXPIRED
-	}
-
-	/**
-	 * Reservation Entity 영속화시 상태 초기화
-	 * status가 없으면 PENDING으로 설정
-	 */
-	@Override
-	protected void prePersistHook() {
-		if (this.status == null) {
-			this.status = ReservationStatus.PENDING;
-		}
 	}
 }

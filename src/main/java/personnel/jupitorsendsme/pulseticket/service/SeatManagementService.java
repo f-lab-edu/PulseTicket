@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 import personnel.jupitorsendsme.pulseticket.entity.Event;
+import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 import personnel.jupitorsendsme.pulseticket.entity.SeatStatusResponse;
 import personnel.jupitorsendsme.pulseticket.exception.seat.InvalidSeatEventForeignKeyException;
@@ -58,9 +59,15 @@ public class SeatManagementService {
 	 */
 	@Transactional(readOnly = true)
 	public Seat getSeat(ReservationRequest request) {
-
 		return seatRepository.findByEvent_IdAndSeatNumber(request.getEventId(), request.getSeatNumber())
 			.orElseThrow(() -> new SeatNotFoundException(request));
+	}
+
+	@Transactional(readOnly = true)
+	public Seat getSeat(Reservation reservation) {
+		return seatRepository.findByEvent_IdAndSeatNumber(reservation.getEvent().getId(),
+				reservation.getSeat().getSeatNumber())
+			.orElseThrow(() -> new SeatNotFoundException(reservation));
 	}
 
 	/**

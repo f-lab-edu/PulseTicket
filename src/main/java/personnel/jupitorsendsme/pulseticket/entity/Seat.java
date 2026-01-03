@@ -91,6 +91,10 @@ public class Seat extends BaseEntity {
 		}
 	}
 
+	public void free() {
+		this.status = SeatStatus.AVAILABLE;
+	}
+
 	public void reserve() {
 		this.status = SeatStatus.RESERVED;
 	}

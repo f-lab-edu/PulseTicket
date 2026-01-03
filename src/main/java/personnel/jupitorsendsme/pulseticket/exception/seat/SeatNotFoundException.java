@@ -7,6 +7,7 @@ import org.springframework.web.ErrorResponse;
 
 import lombok.NonNull;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
+import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 
 public class SeatNotFoundException extends RuntimeException implements ErrorResponse {
 	private final Long eventId;
@@ -18,6 +19,14 @@ public class SeatNotFoundException extends RuntimeException implements ErrorResp
 			request.getEventId(), request.getSeatNumber()));
 		this.eventId = request.getEventId();
 		this.seatNumber = request.getSeatNumber();
+		this.httpStatus = HttpStatus.NOT_FOUND;
+	}
+
+	public SeatNotFoundException(Reservation reservation) {
+		super(String.format("좌석 정보 검색 안됨 - eventId: %d, seatNumber: %d",
+			reservation.getEvent().getId(), reservation.getSeat().getSeatNumber()));
+		this.eventId = reservation.getEvent().getId();
+		this.seatNumber = reservation.getSeat().getSeatNumber();
 		this.httpStatus = HttpStatus.NOT_FOUND;
 	}
 
