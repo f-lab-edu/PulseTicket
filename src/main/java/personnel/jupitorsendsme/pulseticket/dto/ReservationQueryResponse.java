@@ -3,37 +3,23 @@ package personnel.jupitorsendsme.pulseticket.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import personnel.jupitorsendsme.pulseticket.entity.Reservation;
 import personnel.jupitorsendsme.pulseticket.entity.Seat;
 
-@Getter
+/**
+ * @param reservationId
+예약 고유 번호
+ * @param eventId
+이벤트 고유 번호
+ * @param seatNumber
+좌석 번호
+ * @param seatStatus
+좌석의 상태
+{@link Seat.SeatStatus} */
 @Builder
-@AllArgsConstructor
-public class ReservationQueryResponse {
-
-	/**
-	 * 예약 고유 번호
-	 */
-	private final Long reservationId;
-
-	/**
-	 * 이벤트 고유 번호
-	 */
-	private final Long eventId;
-
-	/**
-	 * 좌석 번호
-	 */
-	private final Integer seatNumber;
-
-	/**
-	 * 좌석의 상태
-	 * {@link Seat.SeatStatus}
-	 */
-	private final Seat.SeatStatus seatStatus;
+public record ReservationQueryResponse(Long reservationId, Long eventId, Integer seatNumber,
+									   Seat.SeatStatus seatStatus) {
 
 	/**
 	 * Reservation 으로부터 ReservationQueryResponse 를 변환
