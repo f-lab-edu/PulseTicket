@@ -36,7 +36,7 @@ public class User extends BaseEntity {
 	/**
 	 * 로그인 ID (중복 불가)
 	 */
-	@Column(name = "login_id", nullable = false, unique = true, length = 50)
+	@Column(name = "login_id", nullable = false, unique = true, length = 100)
 	private String loginId;
 
 	/**

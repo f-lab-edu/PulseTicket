@@ -1,4 +1,4 @@
-package personnel.jupitorsendsme.pulseticket.exception.user;
+package personnel.jupitorsendsme.pulseticket.exception.reservation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -8,13 +8,13 @@ import org.springframework.web.ErrorResponse;
 import lombok.NonNull;
 import personnel.jupitorsendsme.pulseticket.dto.ReservationRequest;
 
-public class UserNotFoundException extends RuntimeException implements ErrorResponse {
-	private final String loginId;
+public class ReservationNotFoundException extends RuntimeException implements ErrorResponse {
+	private final Long reservationId;
 	private final HttpStatus httpStatus;
 
-	public UserNotFoundException(ReservationRequest request) {
-		super("사용자 조회 안됨 - login Id : " + request.getLoginId());
-		this.loginId = request.getLoginId();
+	public ReservationNotFoundException(ReservationRequest request) {
+		super("예약을 찾을 수 없음 - reservationId: " + request.getReservationId());
+		this.reservationId = request.getReservationId();
 		this.httpStatus = HttpStatus.NOT_FOUND;
 	}
 
@@ -28,8 +28,8 @@ public class UserNotFoundException extends RuntimeException implements ErrorResp
 	@NonNull
 	public ProblemDetail getBody() {
 		ProblemDetail detail = ProblemDetail.forStatusAndDetail(this.httpStatus,
-			String.format("%s id 를 가진 사용자가 없음", this.loginId));
-		detail.setTitle("존재하지 않는 사용자");
+			String.format("예약 ID %d를 찾을 수 없음", this.reservationId));
+		detail.setTitle("예약을 찾을 수 없음");
 
 		return detail;
 	}

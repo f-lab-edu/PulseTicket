@@ -38,21 +38,12 @@ qodana.yaml
 ### VS Code ###
 .vscode/
 
-
-### AI Tool ###
-.serena
-CLAUDE.md
-.cursor
-.claude
-.mcp.json
-AGENTS.md
-.codex
-
 ### Temp Files ###
 cookies.txt
 
 ### Environment Variables ###
 .env
+gradle.properties
 
 ### Docker Compose Override ###
 docker-compose.override.yml

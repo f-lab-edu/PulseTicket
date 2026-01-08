@@ -41,7 +41,6 @@ public class ReservationQueryResponse {
 	 * @return 변환된 ReservationQueryResponse 객체
 	 */
 	public static ReservationQueryResponse from(Reservation reservation) {
-
 		return ReservationQueryResponse.builder()
 			.reservationId(reservation.getId())
 			.eventId(reservation.getEvent().getId())
@@ -51,7 +50,6 @@ public class ReservationQueryResponse {
 	}
 
 	public static List<ReservationQueryResponse> from(List<Reservation> reservations) {
-
 		return reservations.stream().map(ReservationQueryResponse::from).collect(Collectors.toList());
 	}
 }

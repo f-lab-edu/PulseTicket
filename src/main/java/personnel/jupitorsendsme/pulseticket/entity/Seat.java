@@ -52,7 +52,11 @@ public class Seat extends BaseEntity {
 	 * 소속 이벤트
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(
+		name = "event_id",
+		nullable = false,
+		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+	)
 	private Event event;
 	/**
 	 * 좌석 번호
@@ -60,10 +64,10 @@ public class Seat extends BaseEntity {
 	@Column(name = "seat_number", nullable = false)
 	private Integer seatNumber;
 	/**
-	 * 좌석 상태 (AVAILABLE, RESERVED, CONFIRMED)
+	 * 좌석 상태 (AVAILABLE, RESERVED, SOLD)
 	 */
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Column(length = 20, nullable = false)
 	private SeatStatus status;
 	/**
 	 * 예약 만료 일시
@@ -77,22 +81,30 @@ public class Seat extends BaseEntity {
 	private List<Reservation> reservations;
 
 	/**
-	 * 해당 좌석 예약 처리
+	 * Seats Entity 영속화시 상태 초기화
+	 * status가 없으면 AVAILABLE 로 설정
 	 */
-	public void reserve() {
-		switch (this.status) {
-			case RESERVED -> throw new IllegalStateException("이미 예약된 좌석");
-			case SOLD -> throw new IllegalStateException("이미 결제완료된 좌석");
+	@Override
+	protected void prePersistHook() {
+		if (this.status == null) {
+			this.status = SeatStatus.AVAILABLE;
 		}
+	}
+
+	public void reserve() {
 		this.status = SeatStatus.RESERVED;
 	}
 
-	public void sold() {
-		switch (this.status) {
-			case AVAILABLE -> throw new IllegalStateException("예약 가능한 좌석 상태. 예약이 되고 나서 결제해야 함");
-			case SOLD -> throw new IllegalStateException("이미 판매됨");
-		}
+	public void sell() {
 		this.status = SeatStatus.SOLD;
+	}
+
+	public boolean isReservationAvailable() {
+		return this.status == SeatStatus.AVAILABLE;
+	}
+
+	public boolean isOutOfRange() {
+		return this.seatNumber == null || seatNumber < 1 || seatNumber > event.getTotalSeats();
 	}
 
 	/**
@@ -101,20 +113,10 @@ public class Seat extends BaseEntity {
 	 * Reserved : 예약된 상태 <br>
 	 * Sold : 예약이 구매된 상태 (paid)
 	 */
+	@Getter
 	public enum SeatStatus {
 		AVAILABLE,
 		RESERVED,
 		SOLD
-	}
-
-	/**
-	 * Seats Entity 영속화시 상태 초기화
-	 * status가 없으면 PENDING으로 설정
-	 */
-	@Override
-	protected void prePersistHook() {
-		if (this.status == null) {
-			this.status = SeatStatus.AVAILABLE;
-		}
 	}
 }
