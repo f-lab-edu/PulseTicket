@@ -33,4 +33,9 @@ public class ReservationBookingController {
 	ReservationBookingResponse booking(@RequestBody ReservationRequest request) {
 		return reservationBookingService.book(request);
 	}
+
+	@PostMapping("/cancel")
+	ReservationBookingResponse cancel(@RequestBody ReservationRequest request) {
+		return reservationBookingService.cancel(request);
+	}
 }

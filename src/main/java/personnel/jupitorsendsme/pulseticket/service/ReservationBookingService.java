@@ -20,6 +20,7 @@ public class ReservationBookingService {
 
 	private final UserManagementService userManagementService;
 	private final SeatManagementService seatManagementService;
+	private final ReservationQueryService reservationQueryService;
 	private final ReservationRepository reservationRepository;
 
 	/**
@@ -32,17 +33,22 @@ public class ReservationBookingService {
 		User user = userManagementService.getValidUser(request);
 		Seat seat = seatManagementService.getAvailableSeat(request);
 
-		Reservation created = makeReservation(user, seat);
+		Reservation created = Reservation.reserve(user, seat);
+		reservationRepository.save(created);
+
+		seat.reserve();
 
 		return ReservationBookingResponse.success(created);
 	}
 
-	private Reservation makeReservation(User user, Seat seat) {
-		Reservation reserve = Reservation.reserve(user, seat);
-		Reservation created = reservationRepository.save(reserve);
+	@Transactional
+	public ReservationBookingResponse cancel(ReservationRequest request) {
+		Reservation reservationToCancel = reservationQueryService.getReservation(request);
+		reservationToCancel.cancel();
 
-		seat.reserve();
+		Seat correspondingSeat = seatManagementService.getSeat(reservationToCancel);
+		correspondingSeat.free();
 
-		return created;
+		return ReservationBookingResponse.success(reservationToCancel);
 	}
 }
