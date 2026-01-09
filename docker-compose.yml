@@ -53,7 +53,7 @@ services:
     networks:
       - pulseticket-network
     healthcheck:
-      test: [ "CMD", "redis-cli", "-p", "${REDIS_PORT:-6379}", "--raw", "incr", "ping" ]
+      test: [ "CMD-SHELL", "redis-cli -p ${REDIS_PORT:-6379} -a \"$$REDIS_PASSWORD\" ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -68,6 +68,8 @@ services:
   # 소스 코드 변경 시 자동 반영을 위한 볼륨 마운트 사용
   # ============================================================================
   app:
+    ports:
+      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
     build:
       # 개발 모드용 Dockerfile 사용
       context: .
@@ -84,7 +86,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_HOST: ${SPRING_DATA_REDIS_HOST}
       SPRING_DATA_REDIS_PORT: ${REDIS_PORT:-6379}
       SPRING_DATA_REDIS_PASSWORD: ${SPRING_DATA_REDIS_PASSWORD}
       # 프로파일 설정 (개발 환경)
@@ -116,6 +118,11 @@ services:
       logging: "promtail"
       logging_jobname: "pulseticket-app"
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health/readiness || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # ============================================================================
   # Grafana 서비스
